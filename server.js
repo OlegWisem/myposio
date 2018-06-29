@@ -5,6 +5,7 @@ const passport = require('passport');
 
 // Init Routes
 const users = require('./api/users');
+const companies = require('./api/companies');
 
 // Init Express
 const app = express();
@@ -27,6 +28,7 @@ app.use(bodyParser.json());
 
 // Use Routes
 app.use('/api/users', users);
+app.use('/api/companies', companies);
 
 app.get('/', (req, res) => {
   res.send('test');
