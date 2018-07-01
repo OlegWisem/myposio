@@ -66,4 +66,52 @@ router.post(
   }
 );
 
+// @route   GET api/companies/all
+// @desc    Get all companies
+// @access  Public
+router.get('/all', (req, res) => {
+  let errors = {};
+  Company.find()
+    .populate('user', ['name'])
+    .then(companies => {
+      if (!companies) {
+        errors.nocompany = 'There are no companies';
+        return res.status(404).json(errors);
+      }
+      res.json(companies);
+    })
+    .catch(err => res.status(404).json({ company: 'There are no companies' }));
+});
+
+// @route   GET api/companies
+// @desc    Get current users companies
+// @access  Private
+router.get(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    let errors = {};
+    Company.findOne({ user: req.user.id })
+      .populate('user', ['name'])
+      .then(companies => {
+        if (!companies) {
+          errors.nocompanies = 'There is no companies for this user';
+          return res.status(404).json(errors);
+        }
+        res.json(companies);
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+
+// @route   GET api/companies/:id
+// @desc    Get company by ID
+// @access  Public
+router.get('/:id', (req, res) => {
+  Company.findById(req.params.id)
+    .then(company => res.json(company))
+    .catch(err =>
+      res.status(404).json({ nocompanyfound: 'No company found with that ID' })
+    );
+});
 module.exports = router;
