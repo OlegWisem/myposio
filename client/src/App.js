@@ -7,10 +7,14 @@ import { setCurrentUser, logoutUser } from './actions/authActions';
 import { Provider } from 'react-redux';
 import store from './store';
 
+import PrivateRoute from './components/common/PrivateRoute';
+
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 
 import Register from './components/auth/Register';
+import Login from './components/auth/Login';
+import Dashboard from './components/dashboard/Dashboard';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -26,7 +30,14 @@ if (localStorage.jwtToken) {
   // Check for expired token
   const currectTime = Date.now() / 1000;
   if (decoded.exp < currectTime) {
-    // TODO: LOGOUT USER
+    // Logout user
+    store.dispatch(logoutUser());
+
+    // Clear currect profile
+    //store.dispatch(clearCurrentProfile());
+
+    // Redirect to login
+    window.location.href = '/login';
   }
 }
 
@@ -39,6 +50,8 @@ class App extends Component {
             <Navbar />
             <Switch>
               <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <PrivateRoute exact path="/dashboard" component={Dashboard} />
             </Switch>
             <Footer />
           </div>

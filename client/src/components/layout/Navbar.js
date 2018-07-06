@@ -61,7 +61,7 @@ class Navbar extends Component {
                 <span className="lin-menu" />
               </button>
               <a className="navbar-brand" href="index.html">
-                <img src={Logo} style={{ width: 90, marginRight: 5 }} alt />
+                <img src={Logo} style={{ width: 90, marginRight: 5 }} alt="" />
               </a>
             </div>
             <div className="collapse navbar-collapse" id="main-navbar">

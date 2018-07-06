@@ -16,7 +16,7 @@ const TextField = ({
   return (
     <div className="form-group">
       <div className={classnames({ 'input-icon': icon })}>
-        {icon && <i className="lni-unlock" />}
+        {icon && <i className={icon} />}
         {label && <label>{label}</label>}
         <input
           type={type}
@@ -29,8 +29,8 @@ const TextField = ({
           onChange={onChange}
           disabled={disabled}
         />
+        {error && <div className="invalid-feedback">{error}</div>}
       </div>
-      {error && <div className="invalid-feedback">{error}</div>}
     </div>
   );
 };

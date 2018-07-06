@@ -2,17 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { registerUser } from '../../actions/authActions';
+import { loginUser } from '../../actions/authActions';
 import TextField from '../common/TextField';
 
-class Register extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
       email: '',
       password: '',
-      password2: '',
       errors: {}
     };
   }
@@ -24,19 +22,23 @@ class Register extends Component {
     return null;
   }
 
+  componentDidUpdate() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+  }
+
   onChange = e => this.setState({ [e.target.name]: e.target.value });
 
   onSubmit = e => {
     e.preventDefault();
 
-    const newUser = {
-      name: this.state.name,
+    const userData = {
       email: this.state.email,
-      password: this.state.password,
-      password2: this.state.password2
+      password: this.state.password
     };
 
-    this.props.registerUser(newUser, this.props.history);
+    this.props.loginUser(userData);
   };
 
   render() {
@@ -47,14 +49,14 @@ class Register extends Component {
         <div id="page-banner-area" className="page-banner">
           <div className="page-banner-title">
             <div className="text-center">
-              <h2>Register</h2>
+              <h2>Login</h2>
               <a href="#">
                 <i className="lni-home" /> Home
               </a>
               <span className="crumbs-spacer">
                 <i className="lni-chevron-right" />
               </span>
-              <span className="current">Register</span>
+              <span className="current">Login</span>
             </div>
           </div>
         </div>
@@ -64,26 +66,13 @@ class Register extends Component {
             <div className="row justify-content-center">
               <div className="col-lg-5 col-md-6 col-xs-12">
                 <div className="page-login-form box">
-                  <h3>Create Your account</h3>
-                  <form
-                    className="login-form"
-                    onSubmit={this.onSubmit}
-                    noValidate
-                  >
-                    <TextField
-                      placeholder="Your Name"
-                      name="name"
-                      type="text"
-                      icon="lni-bubble"
-                      value={this.state.name}
-                      onChange={this.onChange}
-                      error={errors.name}
-                    />
+                  <h3>Login</h3>
+                  <form className="login-form" onSubmit={this.onSubmit}>
                     <TextField
                       placeholder="Email"
                       name="email"
                       type="email"
-                      icon="lni-envelope"
+                      icon="lni-user"
                       value={this.state.email}
                       onChange={this.onChange}
                       error={errors.email}
@@ -97,24 +86,13 @@ class Register extends Component {
                       onChange={this.onChange}
                       error={errors.password}
                     />
-                    <TextField
-                      placeholder="Retype Password"
-                      name="password2"
-                      type="password"
-                      icon="lni-unlock"
-                      value={this.state.password2}
-                      onChange={this.onChange}
-                      error={errors.password2}
-                    />
-
                     <input
                       type="submit"
-                      value="Register"
+                      value="Login"
                       className="btn btn-common log-btn mt-3"
                     />
                     <p className="text-center">
-                      Already have an account?
-                      <Link to="/login"> Sign In</Link>
+                      <Link to="/register">Don't have an account?</Link>
                     </p>
                   </form>
                 </div>
@@ -127,8 +105,8 @@ class Register extends Component {
   }
 }
 
-Register.propTypes = {
-  registerUser: PropTypes.func.isRequired,
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -140,5 +118,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { registerUser }
-)(withRouter(Register));
+  { loginUser }
+)(Login);
