@@ -409,7 +409,7 @@ a.back-to-top:hover, a.back-to-top:focus {
 }
 
 #page-banner-area {
-  background: url(../img/background/banner.jpg) no-repeat;
+  background: url(../img/banner.jpg) no-repeat;
   background-position: 50% 50%;
   background-size: cover;
 }
@@ -2237,7 +2237,7 @@ Property wrapper Style
   background-repeat: no-repeat;
   border: none;
   margin: 0;
-  background: rgba(0, 0, 0, 0.04) url(../img/avatar/user-bg.jpg) top left repeat;
+  background: rgba(0, 0, 0, 0.04) url(../img/user-bg.jpg) top left repeat;
   background-size: cover;
   color: #ffffff;
 }

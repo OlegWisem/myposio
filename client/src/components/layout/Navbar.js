@@ -1,8 +1,47 @@
 import React, { Component } from 'react';
 import Logo from '../../img/logo-eng.svg';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { logoutUser } from '../../actions/authActions';
+//import { clearCurrentProfile } from '../../actions/authActions';
 
 class Navbar extends Component {
+  onLogoutClick(e) {
+    e.preventDefault();
+    //this.props.clearCurrentProfile();
+    this.props.logoutUser();
+  }
+
   render() {
+    const { isAuthenticated, user } = this.props.auth;
+
+    const guestLinks = (
+      <div>
+        <Link to="/login" className="header-top-button">
+          Log In
+        </Link>
+        <Link to="/register" className="header-top-button white-bg">
+          Sign Up
+        </Link>
+      </div>
+    );
+
+    const authLinks = (
+      <div>
+        <Link to="/dashboard" className="header-top-button white-bg">
+          Dashboard
+        </Link>
+        <a
+          href=""
+          onClick={this.onLogoutClick.bind(this)}
+          className="header-top-button"
+        >
+          Logout
+        </a>
+      </div>
+    );
+
     return (
       <div id="header-wrap">
         {/* Start Top Bar */}
@@ -28,12 +67,7 @@ class Navbar extends Component {
               </div>
               <div className="col-lg-5 col-md-3 col-xs-12">
                 <div className="header-top-right float-right">
-                  <a href="login.html" className="header-top-button">
-                    Log In
-                  </a>
-                  <a href="signup.html" className="header-top-button white-bg">
-                    Sign Up
-                  </a>
+                  {isAuthenticated ? authLinks : guestLinks}
                 </div>
               </div>
             </div>
@@ -66,7 +100,7 @@ class Navbar extends Component {
             </div>
             <div className="collapse navbar-collapse" id="main-navbar">
               <ul className="navbar-nav mr-auto w-100">
-                <li className="nav-item active">
+                <li className="nav-item">
                   <a className="nav-link" href="#">
                     Catalog
                   </a>
@@ -88,4 +122,16 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+Navbar.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(Navbar);
