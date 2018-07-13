@@ -91,7 +91,7 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     let errors = {};
-    Company.findOne({ user: req.user.id })
+    Company.find({ user: req.user.id })
       .populate('user', ['name'])
       .then(companies => {
         if (!companies) {

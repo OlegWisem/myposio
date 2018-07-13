@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/authActions';
 import TextField from '../common/TextField';
+import Banner from '../common/Banner';
 
 class Login extends Component {
   constructor(props) {
@@ -46,21 +47,7 @@ class Login extends Component {
 
     return (
       <div>
-        <div id="page-banner-area" className="page-banner">
-          <div className="page-banner-title">
-            <div className="text-center">
-              <h2>Login</h2>
-              <a href="#">
-                <i className="lni-home" /> Home
-              </a>
-              <span className="crumbs-spacer">
-                <i className="lni-chevron-right" />
-              </span>
-              <span className="current">Login</span>
-            </div>
-          </div>
-        </div>
-
+        <Banner pageName="Login" />
         <div id="content" className="section-padding">
           <div className="container">
             <div className="row justify-content-center">

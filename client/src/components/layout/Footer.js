@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Footer extends Component {
   render() {
@@ -16,7 +17,10 @@ class Footer extends Component {
                   </h3>
                   <ul className="footer-link">
                     <li>
-                      <a href="#">Catalog</a>
+                      <Link to="/">Home</Link>
+                    </li>
+                    <li>
+                      <Link to="/catalog">Catalog</Link>
                     </li>
                   </ul>
                 </div>
@@ -27,21 +31,14 @@ class Footer extends Component {
                   </h3>
                   <ul className="address">
                     <li>
-                      <a href="#">
-                        <i className="lni-map-marker" /> Maaninkavaarantie 5
-                        <br /> 97900 POSIO
-                      </a>
+                      <i className="lni-map-marker" /> Maaninkavaarantie 5
+                      <br /> 97900 POSIO
                     </li>
                     <li>
-                      <a href="#">
-                        <i className="lni-phone-handset" /> +358 44 767 4218
-                      </a>
+                      <i className="lni-phone-handset" /> +358 44 767 4218
                     </li>
                     <li>
-                      <a href="#">
-                        <i className="lni-envelope" />{' '}
-                        matkailu.neuvonta@posio.fi
-                      </a>
+                      <i className="lni-envelope" /> matkailu.neuvonta@posio.fi
                     </li>
                   </ul>
                 </div>

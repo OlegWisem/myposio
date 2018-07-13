@@ -12,7 +12,7 @@ const app = express();
 
 // Connect to MongoDB
 mongoose
-  .connect('mongodb://localhost/myposio')
+  .connect('mongodb://myposio:123456qwerty@ds235401.mlab.com:35401/myposio')
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
@@ -30,8 +30,11 @@ app.use(bodyParser.json());
 app.use('/api/users', users);
 app.use('/api/companies', companies);
 
-app.get('/', (req, res) => {
-  res.send('test');
+// Set static folder
+app.use(express.static('client/build'));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 });
 
 // Listen to port

@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions/authActions';
 import TextField from '../common/TextField';
+import Banner from '../common/Banner';
 
 class Register extends Component {
   constructor(props) {
@@ -44,21 +45,7 @@ class Register extends Component {
 
     return (
       <div>
-        <div id="page-banner-area" className="page-banner">
-          <div className="page-banner-title">
-            <div className="text-center">
-              <h2>Register</h2>
-              <a href="#">
-                <i className="lni-home" /> Home
-              </a>
-              <span className="crumbs-spacer">
-                <i className="lni-chevron-right" />
-              </span>
-              <span className="current">Register</span>
-            </div>
-          </div>
-        </div>
-
+        <Banner pageName="Register" />
         <div id="content" className="section-padding">
           <div className="container">
             <div className="row justify-content-center">

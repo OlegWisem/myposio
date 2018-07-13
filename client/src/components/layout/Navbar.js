@@ -14,7 +14,7 @@ class Navbar extends Component {
   }
 
   render() {
-    const { isAuthenticated, user } = this.props.auth;
+    const { isAuthenticated } = this.props.auth;
 
     const guestLinks = (
       <div>
@@ -58,9 +58,7 @@ class Navbar extends Component {
                     <i className="lni-envelope" /> matkailu.neuvonta@posio.fi
                   </li>
                   <li>
-                    <a href="#">
-                      <i className="lni-map-marker" /> Maaninkavaarantie 5 POSIO{' '}
-                    </a>
+                    <i className="lni-map-marker" /> Maaninkavaarantie 5 POSIO{' '}
                   </li>
                 </ul>
                 {/* End Contact Info */}
@@ -94,16 +92,16 @@ class Navbar extends Component {
                 <span className="navbar-toggler-icon" />
                 <span className="lin-menu" />
               </button>
-              <a className="navbar-brand" href="index.html">
+              <Link className="navbar-brand" to="/">
                 <img src={Logo} style={{ width: 90, marginRight: 5 }} alt="" />
-              </a>
+              </Link>
             </div>
             <div className="collapse navbar-collapse" id="main-navbar">
               <ul className="navbar-nav mr-auto w-100">
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <Link className="nav-link" to="/catalog">
                     Catalog
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -111,7 +109,7 @@ class Navbar extends Component {
           {/* Mobile Menu Start */}
           <ul className="mobile-menu">
             <li className="active">
-              <a href="#">Catalog</a>
+              <Link to="/catalog">Catalog</Link>
             </li>
           </ul>
           {/* Mobile Menu End */}

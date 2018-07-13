@@ -7,6 +7,7 @@ import { logoutUser } from '../../actions/authActions';
 import Banner from '../common/Banner';
 import TextField from '../common/TextField';
 import TextAreaField from '../common/TextAreaField';
+import { createCompany } from '../../actions/companyActions';
 
 class CreateCompany extends Component {
   constructor(props) {
@@ -27,10 +28,11 @@ class CreateCompany extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
+  static getDerivedStateFromProps(props, state) {
+    if (props.errors !== state.errors) {
+      return { errors: props.errors };
     }
+    return null;
   }
 
   onLogoutClick(e) {
@@ -40,7 +42,25 @@ class CreateCompany extends Component {
   }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
-  onSubmit = e => {};
+  onSubmit = e => {
+    e.preventDefault();
+
+    const companyData = {
+      name: this.state.name,
+      field: this.state.field,
+      address: this.state.address,
+      description: this.state.description,
+      phone: this.state.phone,
+      email: this.state.email,
+      website: this.state.website,
+      youtube: this.state.youtube,
+      twitter: this.state.twitter,
+      facebook: this.state.facebook,
+      instagram: this.state.instagram
+    };
+
+    this.props.createCompany(companyData, this.props.history);
+  };
   render() {
     const { user } = this.props.auth;
     const { errors } = this.state;
@@ -83,7 +103,7 @@ class CreateCompany extends Component {
                 <div className="my-address">
                   <h3 className="heading">Add new company</h3>
                   <div className="section-inforamation">
-                    <form>
+                    <form onSubmit={this.onSubmit}>
                       <div className="row">
                         <div className="col-sm-6">
                           <TextField
@@ -236,7 +256,8 @@ class CreateCompany extends Component {
 
 CreateCompany.propTypes = {
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  company: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -247,5 +268,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser }
+  { logoutUser, createCompany }
 )(withRouter(CreateCompany));

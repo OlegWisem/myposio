@@ -6,7 +6,7 @@ import {
   GET_ERRORS,
   GET_COMPANIES
 } from './types';
-import { logoutUser } from '../actions/authActions';
+//import { logoutUser } from '../actions/authActions';
 
 // Get current company
 export const getCurrentCompany = () => dispatch => {
