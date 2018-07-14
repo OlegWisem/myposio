@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Banner from '../common/Banner';
-import { getCurrentCompany } from '../../actions/companyActions';
+import {
+  getCurrentCompany,
+  clearCompanyItem
+} from '../../actions/companyActions';
 import Spinner from '../common/Spinner';
 import isEmpty from '../../validation/is-empty';
 import SideNavbar from '../layout/SideNavbar';
@@ -11,6 +14,7 @@ import SideNavbar from '../layout/SideNavbar';
 class Dashboard extends Component {
   componentDidMount() {
     this.props.getCurrentCompany();
+    this.props.clearCompanyItem();
   }
 
   render() {
@@ -25,7 +29,7 @@ class Dashboard extends Component {
       // Check if logged in user has company data
       if (Object.keys(company).length > 0) {
         dashboardContent = company.map(companyItem => (
-          <div>
+          <div key={companyItem._id}>
             <div className="mb-2">
               <h3 className="property-title">
                 <Link to="/dashboard">{companyItem.name}</Link>
@@ -41,6 +45,11 @@ class Dashboard extends Component {
                     <li>
                       <div className="adderess">
                         <i className="lni-map-marker" /> {companyItem.address}
+                      </div>
+                    </li>
+                    <li>
+                      <div className="adderess">
+                        <i className="lni-world" /> {companyItem.companyid}
                       </div>
                     </li>
                   </ul>
@@ -73,7 +82,10 @@ class Dashboard extends Component {
                 </div>
                 <div className="col-md-3 col-sm-12">
                   <div className="text-center">
-                    <Link to="edit-company" className="btn btn-common mt-2">
+                    <Link
+                      to={`/edit-company/${companyItem._id}`}
+                      className="btn btn-common mt-2"
+                    >
                       Edit
                     </Link>
                   </div>
@@ -143,5 +155,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCurrentCompany }
+  { getCurrentCompany, clearCompanyItem }
 )(Dashboard);

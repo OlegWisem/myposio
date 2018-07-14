@@ -6,6 +6,7 @@ module.exports = function validateCompanyInput(data) {
 
   data.name = !isEmpty(data.name) ? data.name : '';
   data.field = !isEmpty(data.field) ? data.field : '';
+  data.companyid = !isEmpty(data.companyid) ? data.companyid : '';
   data.address = !isEmpty(data.address) ? data.address : '';
   data.description = !isEmpty(data.description) ? data.description : '';
 
@@ -23,6 +24,10 @@ module.exports = function validateCompanyInput(data) {
 
   if (Validator.isEmpty(data.field)) {
     errors.field = 'Company field is required';
+  }
+
+  if (Validator.isEmpty(data.companyid)) {
+    errors.companyid = 'Company ID is required';
   }
 
   if (Validator.isEmpty(data.address)) {

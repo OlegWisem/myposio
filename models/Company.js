@@ -16,6 +16,10 @@ const CompanySchema = new Schema({
     type: String,
     required: true
   },
+  companyid: {
+    type: String,
+    required: true
+  },
   address: {
     type: String,
     required: true
@@ -51,6 +55,10 @@ const CompanySchema = new Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  isreviewed: {
+    type: Boolean,
+    default: false
   }
 });
 

@@ -2,7 +2,9 @@ import {
   GET_COMPANY,
   GET_COMPANIES,
   COMPANY_LOADING,
-  CLEAR_CURRENT_COMPANY
+  CLEAR_CURRENT_COMPANY,
+  GET_COMPANY_ITEM,
+  CLEAR_COMPANY_ITEM
 } from '../actions/types';
 
 const initialState = {
@@ -24,16 +26,27 @@ export default function(state = initialState, action) {
         company: action.payload,
         loading: false
       };
+    case GET_COMPANY_ITEM:
+      return {
+        ...state,
+        company_item: action.payload,
+        loading: false
+      };
     case GET_COMPANIES:
       return {
         ...state,
-        companys: action.payload,
+        companies: action.payload,
         loading: false
       };
     case CLEAR_CURRENT_COMPANY:
       return {
         ...state,
         company: null
+      };
+    case CLEAR_COMPANY_ITEM:
+      return {
+        ...state,
+        company_item: null
       };
     default:
       return state;

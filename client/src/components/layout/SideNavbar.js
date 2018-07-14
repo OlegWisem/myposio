@@ -34,8 +34,8 @@ class SideNavbar extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink exact activeClassName="active" to="/catalog">
-                  <i className="lni-files" /> Catalog
+                <NavLink exact activeClassName="active" to="/create-company">
+                  <i className="lni-plus" /> Add new company
                 </NavLink>
               </li>
               <li>

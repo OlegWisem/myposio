@@ -6,10 +6,15 @@ import { logoutUser } from '../../actions/authActions';
 import Banner from '../common/Banner';
 import TextField from '../common/TextField';
 import TextAreaField from '../common/TextAreaField';
-import { createCompany } from '../../actions/companyActions';
+import {
+  editCompany,
+  getCompanyByID,
+  clearCurrentCompany,
+  deleteCompanyByID
+} from '../../actions/companyActions';
 import SideNavbar from '../layout/SideNavbar';
 
-class CreateCompany extends Component {
+class EditCompany extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,6 +34,20 @@ class CreateCompany extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.getCompanyByID(this.props.match.params.company_id);
+    this.props.clearCurrentCompany();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.company !== prevProps.company) {
+      const { ...company } = this.props.company.company_item;
+      this.setState(prevState => ({
+        ...prevState,
+        ...company
+      }));
+    }
+  }
   static getDerivedStateFromProps(props, state) {
     if (props.errors !== state.errors) {
       return { errors: props.errors };
@@ -40,6 +59,13 @@ class CreateCompany extends Component {
     e.preventDefault();
     //this.props.clearCurrentProfile();
     this.props.logoutUser();
+  }
+
+  onDeleteClick(e) {
+    this.props.deleteCompanyByID(
+      this.props.match.params.company_id,
+      this.props.history
+    );
   }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -61,14 +87,18 @@ class CreateCompany extends Component {
       instagram: this.state.instagram
     };
 
-    this.props.createCompany(companyData, this.props.history);
+    this.props.editCompany(
+      companyData,
+      this.props.match.params.company_id,
+      this.props.history
+    );
   };
   render() {
     const { errors } = this.state;
 
     return (
       <div>
-        <Banner pageName="Add new company" />
+        <Banner pageName="Edit company" />
         <section className="user-page section-padding">
           <div className="container">
             <div className="row">
@@ -77,7 +107,7 @@ class CreateCompany extends Component {
               </div>
               <div className="col-lg-8 col-md-7 col-xs-12">
                 <div className="my-address">
-                  <h3 className="heading">Add new company</h3>
+                  <h3 className="heading">Edit company</h3>
                   <div className="section-inforamation">
                     <form onSubmit={this.onSubmit}>
                       <div className="row">
@@ -224,9 +254,15 @@ class CreateCompany extends Component {
                         <div className="mx-auto">
                           <input
                             type="submit"
-                            value="Add new company"
+                            value="Edit company"
                             className="btn btn-common mt-2"
                           />
+                          <button
+                            onClick={this.onDeleteClick.bind(this)}
+                            className="btn btn-danger mt-2 ml-2"
+                          >
+                            Delete company
+                          </button>
                         </div>
                       </div>
                     </form>
@@ -241,10 +277,10 @@ class CreateCompany extends Component {
   }
 }
 
-CreateCompany.propTypes = {
+EditCompany.propTypes = {
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
-  company: PropTypes.func.isRequired
+  company: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -255,5 +291,11 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser, createCompany }
-)(withRouter(CreateCompany));
+  {
+    logoutUser,
+    editCompany,
+    getCompanyByID,
+    clearCurrentCompany,
+    deleteCompanyByID
+  }
+)(withRouter(EditCompany));
