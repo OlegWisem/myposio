@@ -10,6 +10,7 @@ const User = require('../models/User');
 
 // Load Input Validation
 const validateRegisterInput = require('../validation/register');
+const validateProfileInput = require('../validation/profile');
 const validateLoginInput = require('../validation/login');
 
 // @route   GET api/users/test
@@ -82,7 +83,9 @@ router.post('/login', (req, res) => {
         // Create JWT Payload
         const payload = {
           id: user.id,
-          name: user.name
+          name: user.name,
+          email: user.email,
+          phone: user.phone
         };
 
         // Sign Token
@@ -115,7 +118,40 @@ router.get(
     res.json({
       id: req.user.id,
       name: req.user.name,
-      email: req.user.email
+      email: req.user.email,
+      phone: req.user.phone
+    });
+  }
+);
+
+// @route   POST api/users
+// @desc    Update user
+// @access  Private
+router.post(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateProfileInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      //Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
+    // Get fields
+    const profileFields = {};
+    profileFields.user = req.user.id;
+    if (req.body.name) profileFields.name = req.body.name;
+    if (req.body.email) profileFields.email = req.body.email;
+    if (req.body.phone) profileFields.phone = req.body.phone;
+
+    User.findOneAndUpdate(
+      { user: profileFields.user },
+      { $set: profileFields },
+      { new: true }
+    ).then(profile => {
+      res.json(profile);
     });
   }
 );

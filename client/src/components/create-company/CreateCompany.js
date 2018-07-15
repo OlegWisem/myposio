@@ -8,6 +8,7 @@ import TextField from '../common/TextField';
 import TextAreaField from '../common/TextAreaField';
 import { createCompany } from '../../actions/companyActions';
 import SideNavbar from '../layout/SideNavbar';
+import Navbar from '../layout/Navbar';
 
 class CreateCompany extends Component {
   constructor(props) {
@@ -68,6 +69,7 @@ class CreateCompany extends Component {
 
     return (
       <div>
+        <Navbar />
         <Banner pageName="Add new company" />
         <section className="user-page section-padding">
           <div className="container">

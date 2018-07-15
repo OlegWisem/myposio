@@ -109,6 +109,20 @@ export const deleteCompanyByID = (company_id, history) => dispatch => {
     );
 };
 
+// Update profile
+export const updateProfile = (userData, history) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post('/api/users', userData)
+    .then(res => history.push('/dashboard'))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 // Company loading
 export const setCompanyLoading = () => {
   return {

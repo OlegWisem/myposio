@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { loginUser } from '../../actions/authActions';
 import TextField from '../common/TextField';
 import Banner from '../common/Banner';
+import Navbar from '../layout/Navbar';
 
 class Login extends Component {
   constructor(props) {
@@ -47,6 +48,7 @@ class Login extends Component {
 
     return (
       <div>
+        <Navbar />
         <Banner pageName="Login" />
         <div id="content" className="section-padding">
           <div className="container">

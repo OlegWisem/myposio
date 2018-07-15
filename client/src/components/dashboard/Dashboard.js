@@ -10,6 +10,7 @@ import {
 import Spinner from '../common/Spinner';
 import isEmpty from '../../validation/is-empty';
 import SideNavbar from '../layout/SideNavbar';
+import Navbar from '../layout/Navbar';
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -31,9 +32,16 @@ class Dashboard extends Component {
         dashboardContent = company.map(companyItem => (
           <div key={companyItem._id}>
             <div className="mb-2">
-              <h3 className="property-title">
+              <h3 className="property-title mb-0">
                 <Link to="/dashboard">{companyItem.name}</Link>
               </h3>
+              {companyItem.isreviewed === true ? (
+                <span className="text-success">Published</span>
+              ) : (
+                <span className="text-danger" style={{ fontSize: 14 }}>
+                  Under Review
+                </span>
+              )}
               <div className="row">
                 <div className="col-md-4 col-sm-12">
                   <ul className="additional-details">
@@ -107,6 +115,7 @@ class Dashboard extends Component {
     }
     return (
       <div>
+        <Navbar />
         <Banner pageName="Dashboard" />
         <section className="user-page section-padding">
           <div className="container">

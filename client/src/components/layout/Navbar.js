@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Logo from '../../img/logo-eng.svg';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
@@ -99,10 +99,37 @@ class Navbar extends Component {
             <div className="collapse navbar-collapse" id="main-navbar">
               <ul className="navbar-nav mr-auto w-100">
                 <li className="nav-item">
-                  <Link className="nav-link" to="/catalog">
-                    Catalog
-                  </Link>
+                  <NavLink
+                    exact
+                    activeClassName="active"
+                    className="nav-link"
+                    to="/"
+                  >
+                    Home
+                  </NavLink>
                 </li>
+                <li className="nav-item">
+                  <NavLink
+                    exact
+                    activeClassName="active"
+                    className="nav-link"
+                    to="/catalog"
+                  >
+                    Catalog
+                  </NavLink>
+                </li>
+                {isAuthenticated === true && (
+                  <li className="nav-item">
+                    <NavLink
+                      exact
+                      activeClassName="active"
+                      className="nav-link"
+                      to="/dashboard"
+                    >
+                      Dashboard
+                    </NavLink>
+                  </li>
+                )}
               </ul>
             </div>
           </div>

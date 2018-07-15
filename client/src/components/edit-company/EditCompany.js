@@ -13,6 +13,7 @@ import {
   deleteCompanyByID
 } from '../../actions/companyActions';
 import SideNavbar from '../layout/SideNavbar';
+import Navbar from '../layout/Navbar';
 
 class EditCompany extends Component {
   constructor(props) {
@@ -98,6 +99,7 @@ class EditCompany extends Component {
 
     return (
       <div>
+        <Navbar />
         <Banner pageName="Edit company" />
         <section className="user-page section-padding">
           <div className="container">

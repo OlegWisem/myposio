@@ -39,6 +39,11 @@ class SideNavbar extends Component {
                 </NavLink>
               </li>
               <li>
+                <NavLink exact activeClassName="active" to="/edit-profile">
+                  <i className="lni-pencil-alt" /> Edit profile
+                </NavLink>
+              </li>
+              <li>
                 <a href="" onClick={this.onLogoutClick.bind(this)}>
                   <i className="lni-exit" />Log Out
                 </a>

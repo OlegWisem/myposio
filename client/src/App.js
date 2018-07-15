@@ -9,14 +9,16 @@ import store from './store';
 
 import PrivateRoute from './components/common/PrivateRoute';
 
-import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 
+import Home from './components/home/Home';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import CreateCompany from './components/create-company/CreateCompany';
 import EditCompany from './components/edit-company/EditCompany';
+import EditProfile from './components/edit-profile/EditProfile';
+import Catalog from './components/catalog/Catalog';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -49,10 +51,11 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div className="App">
-            <Navbar />
             <Switch>
+              <Route exact path="/" component={Home} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/catalog" component={Catalog} />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute
                 exact
@@ -63,6 +66,11 @@ class App extends Component {
                 exact
                 path="/edit-company/:company_id"
                 component={EditCompany}
+              />
+              <PrivateRoute
+                exact
+                path="/edit-profile"
+                component={EditProfile}
               />
             </Switch>
             <Footer />
