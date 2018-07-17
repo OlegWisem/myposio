@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import isEmpty from '../../validation/is-empty';
 
@@ -57,12 +58,12 @@ class CatalogItem extends Component {
                 </div>
                 <div className="col-md-3 col-sm-12">
                   <div className="text-center">
-                    <a
-                      href="./single-company.html"
+                    <Link
+                      to={`/company/${company._id}`}
                       className="btn btn-common mt-2"
                     >
                       Learn more
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>

@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { GET_ERRORS, SET_CURRECT_USER } from './types';
+import {
+  GET_ERRORS,
+  SET_CURRECT_USER,
+  GET_PROFILE,
+  CLEAR_ERRORS
+} from './types';
 import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 
@@ -44,6 +49,45 @@ export const loginUser = userData => dispatch => {
     );
 };
 
+// Get current profile
+export const getCurrentProfile = () => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .get('/api/users/current')
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: {}
+      })
+    );
+};
+
+// Update profile
+export const updateProfile = (userData, history, logout) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post('/api/users/update', userData)
+    .then(res => {
+      if (logout) {
+        dispatch(logoutUser());
+      } else {
+        history.push('/dashboard');
+      }
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 // Set logged in user
 export const setCurrentUser = decoded => {
   return {
@@ -63,4 +107,11 @@ export const logoutUser = () => dispatch => {
   // Set currect user to {}
   // Set isAuthenticated to false
   dispatch(setCurrentUser({}));
+};
+
+// Clear errors
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS
+  };
 };

@@ -19,6 +19,7 @@ import CreateCompany from './components/create-company/CreateCompany';
 import EditCompany from './components/edit-company/EditCompany';
 import EditProfile from './components/edit-profile/EditProfile';
 import Catalog from './components/catalog/Catalog';
+import Company from './components/company/Company';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -56,6 +57,7 @@ class App extends Component {
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/catalog" component={Catalog} />
+              <Route exact path="/company/:id" component={Company} />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute
                 exact

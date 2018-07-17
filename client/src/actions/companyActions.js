@@ -79,6 +79,7 @@ export const getCompanies = () => dispatch => {
 
 // Get company by ID
 export const getCompanyByID = id => dispatch => {
+  dispatch(setCompanyLoading());
   axios
     .get(`/api/companies/${id}`)
     .then(res =>
@@ -100,20 +101,6 @@ export const deleteCompanyByID = (company_id, history) => dispatch => {
   dispatch(clearErrors());
   axios
     .delete(`/api/companies/${company_id}`)
-    .then(res => history.push('/dashboard'))
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
-    );
-};
-
-// Update profile
-export const updateProfile = (userData, history) => dispatch => {
-  dispatch(clearErrors());
-  axios
-    .post('/api/users', userData)
     .then(res => history.push('/dashboard'))
     .catch(err =>
       dispatch({

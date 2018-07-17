@@ -124,11 +124,11 @@ router.get(
   }
 );
 
-// @route   POST api/users
+// @route   POST api/users/update
 // @desc    Update user
 // @access  Private
 router.post(
-  '/',
+  '/update',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     const { errors, isValid } = validateProfileInput(req.body);
@@ -141,18 +141,19 @@ router.post(
 
     // Get fields
     const profileFields = {};
-    profileFields.user = req.user.id;
     if (req.body.name) profileFields.name = req.body.name;
     if (req.body.email) profileFields.email = req.body.email;
     if (req.body.phone) profileFields.phone = req.body.phone;
 
     User.findOneAndUpdate(
-      { user: profileFields.user },
+      { _id: req.user.id },
       { $set: profileFields },
       { new: true }
-    ).then(profile => {
-      res.json(profile);
-    });
+    )
+      .then(profile => {
+        res.json(profile);
+      })
+      .catch(err => res.status(404).json(err));
   }
 );
 
