@@ -163,6 +163,7 @@ router.get(
 // @access  Public
 router.get('/:id', (req, res) => {
   Company.findById(req.params.id)
+    .populate('user', ['name', 'phone', 'email'])
     .then(company => res.json(company))
     .catch(err =>
       res.status(404).json({ nocompanyfound: 'No company found with that ID' })

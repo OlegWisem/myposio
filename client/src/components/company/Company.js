@@ -5,11 +5,28 @@ import { getCompanyByID } from '../../actions/companyActions';
 import Spinner from '../common/Spinner';
 import Banner from '../common/Banner';
 import Navbar from '../layout/Navbar';
+import isEmpty from '../../validation/is-empty';
 
 class Company extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      user: {},
+      field: '',
+      companyid: '',
+      address: '',
+      description: '',
+      phone: '',
+      email: '',
+      website: '',
+      social: {},
+      errors: {}
+    };
+  }
+
   componentDidMount() {
     this.props.getCompanyByID(this.props.match.params.id);
-    this.props.clearCurrentCompany();
   }
 
   componentDidUpdate(prevProps) {
@@ -24,25 +41,26 @@ class Company extends Component {
 
   render() {
     const { company_item, loading } = this.props.company;
+    const { user, social } = this.state;
     let companyContent;
 
-    if (loading) {
+    if (company_item === null || loading) {
       companyContent = <Spinner />;
     } else {
       companyContent = (
         <div>
           <Banner pageName={this.state.name} />
+
           <div id="content" className="section-padding">
             <div className="container">
               <div className="property-details">
                 <div className="row">
-                  <div className="col-lg-4 col-md-12 col-xs-12">
+                  <div className="col-lg-12 col-md-12 col-xs-12">
                     <div className="info">
-                      <h3>Lapin Satu Ky</h3>
-                      <p className="room-type">Hotelli ja ravintola</p>
+                      <h3>{this.state.name}</h3>
+                      <p className="room-type">{this.state.field}</p>
                       <p className="address">
-                        <i className="lni-map-marker" /> Kattavaniementie 1,
-                        Posio
+                        <i className="lni-map-marker" /> {this.state.address}
                       </p>
                     </div>
                   </div>
@@ -53,50 +71,35 @@ class Company extends Component {
                 <div className="col-lg-8 col-md-12 col-xs-12">
                   <div className="inner-box property-dsc">
                     <h2 className="desc-title">Company Description</h2>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Cras et dui vestibulum, bibendum purus sit amet, vulputate
-                      mauris. Ut adipiscing gravida tincidunt. Duis euismod
-                      placerat rhoncus. Phasellus mollis imperdiet placerat. Sed
-                      ac turpis nisl. Mauris at ante mauris. Aliquam posuere
-                      fermentum lorem, a aliquam mauris rutrum a. Curabitur sit
-                      amet pretium lectus, nec consequat orci.{' '}
-                    </p>
-                    <p>
-                      Duis non tincidunt dui. Sed vehicula, libero at eleifend
-                      accumsan, lectus massa mollis metus, a malesuada velit
-                      orci nec elit Suspendisse nisl mauris, rhoncus quis
-                      faucibus vitae, commodo vitae neque. Nullam vulputate
-                      feugiat diam, id tempor neque hendreit quis. Curabitur ut
-                      felis ultrices, pellentesque augue ac, bibendum lorem.
-                      Curabitur non volutpat augue. Aliquam malesuada
-                      scelerisque tortor eget mollis.{' '}
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Facere nisi sequi quo laborum eveniet illum ex doloremque
-                      porro repellat. Saepe sed atque eos inventore facilis
-                      officiis dolorum, incidunt optio iure! Itaque libero et
-                      vel labore voluptatem natus nulla, sunt quaerat velit
-                      officia! Ipsum fuga magni, sapiente reprehenderit dolores
-                      eaque excepturi facilis, praesentium.
-                    </p>
+                    <p>{this.state.description}</p>
                   </div>
                   <div className="inner-box short-info">
                     <h2 className="desc-title">Summary</h2>
                     <ul className="additional-details">
-                      <li>
-                        <strong>Puh.:</strong>
-                        <span>0458864588</span>
-                      </li>
-                      <li>
-                        <strong>E-mail:</strong>
-                        <span>info@lapinsatu.com</span>
-                      </li>
-                      <li>
-                        <strong>www:</strong>
-                        <span>lapinsatu.com</span>
-                      </li>
+                      {isEmpty(this.state.phone) ? null : (
+                        <li>
+                          <strong>Phone.:</strong>
+                          <span>{this.state.phone}</span>
+                        </li>
+                      )}
+                      {isEmpty(this.state.email) ? null : (
+                        <li>
+                          <strong>E-mail:</strong>
+                          <span>{this.state.email}</span>
+                        </li>
+                      )}
+                      {isEmpty(this.state.website) ? null : (
+                        <li>
+                          <strong>www:</strong>
+                          <span>{this.state.website}</span>
+                        </li>
+                      )}
+                      {isEmpty(this.state.companyid) ? null : (
+                        <li>
+                          <strong>Company ID:</strong>
+                          <span>{this.state.companyid}</span>
+                        </li>
+                      )}
                     </ul>
                   </div>
                   <div className="inner-box location-map">
@@ -117,12 +120,13 @@ class Company extends Component {
                           className="agent-details mt-2"
                           style={{ marginLeft: 20 }}
                         >
-                          <h3>
-                            <a href="#">Irina Karppinen</a>
-                          </h3>
-                          <span>
-                            <i className="lni-phone-handset" />045 886 4588
-                          </span>
+                          <h3>{user.name}</h3>
+                          {isEmpty(user.phone) ? null : (
+                            <span>
+                              <i className="lni-phone-handset" />
+                              {user.phone}
+                            </span>
+                          )}
                         </div>
                       </div>
                       <input
@@ -149,26 +153,20 @@ class Company extends Component {
                   <div className="widget widget-social">
                     <h3 className="sidebar-title">Social Media</h3>
                     <ul className="social-icons">
-                      <li>
-                        <a className="twitter" href="#">
-                          <i className="lni-twitter-filled" />
-                        </a>
-                      </li>
-                      <li>
-                        <a className="facebook" href="#">
-                          <i className="lni-facebook-filled" />
-                        </a>
-                      </li>
-                      <li>
-                        <a className="google" href="#">
-                          <i className="lni-google-plus" />
-                        </a>
-                      </li>
-                      <li>
-                        <a className="linkedin" href="#">
-                          <i className="lni-linkedin-filled" />
-                        </a>
-                      </li>
+                      {isEmpty(social.twitter) ? null : (
+                        <li>
+                          <a className="twitter" href={social.twitter}>
+                            <i className="lni-twitter-filled" />
+                          </a>
+                        </li>
+                      )}
+                      {isEmpty(social.facebook) ? null : (
+                        <li>
+                          <a className="facebook" href={social.facebook}>
+                            <i className="lni-facebook-filled" />
+                          </a>
+                        </li>
+                      )}
                     </ul>
                   </div>
                 </aside>

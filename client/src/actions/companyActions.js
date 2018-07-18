@@ -79,6 +79,7 @@ export const getCompanies = () => dispatch => {
 
 // Get company by ID
 export const getCompanyByID = id => dispatch => {
+  dispatch(clearErrors());
   dispatch(setCompanyLoading());
   axios
     .get(`/api/companies/${id}`)
