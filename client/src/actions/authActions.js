@@ -49,6 +49,19 @@ export const loginUser = userData => dispatch => {
     );
 };
 
+// Change Password
+export const changePassword = userData => dispatch => {
+  axios
+    .post('/api/users/changepassword', userData)
+    .then(res => dispatch(logoutUser()))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 // Get current profile
 export const getCurrentProfile = () => dispatch => {
   dispatch(clearErrors());

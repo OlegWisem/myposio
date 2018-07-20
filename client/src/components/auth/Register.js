@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { registerUser } from '../../actions/authActions';
+import { registerUser, clearErrors } from '../../actions/authActions';
 import TextField from '../common/TextField';
 import Banner from '../common/Banner';
 import Navbar from '../layout/Navbar';
@@ -17,6 +17,10 @@ class Register extends Component {
       password2: '',
       errors: {}
     };
+  }
+
+  componentDidMount() {
+    this.props.clearErrors();
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -129,5 +133,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { registerUser }
+  { registerUser, clearErrors }
 )(withRouter(Register));

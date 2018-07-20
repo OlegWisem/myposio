@@ -18,6 +18,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import CreateCompany from './components/create-company/CreateCompany';
 import EditCompany from './components/edit-company/EditCompany';
 import EditProfile from './components/edit-profile/EditProfile';
+import ChangePassword from './components/change-password/ChangePassword';
 import Catalog from './components/catalog/Catalog';
 import Company from './components/company/Company';
 
@@ -73,6 +74,11 @@ class App extends Component {
                 exact
                 path="/edit-profile"
                 component={EditProfile}
+              />
+              <PrivateRoute
+                exact
+                path="/change-password"
+                component={ChangePassword}
               />
             </Switch>
             <Footer />

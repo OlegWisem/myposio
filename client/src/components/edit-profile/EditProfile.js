@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { clearCurrentCompany } from '../../actions/companyActions';
 import { updateProfile, getCurrentProfile } from '../../actions/authActions';
@@ -114,9 +114,12 @@ class EditProfile extends Component {
                               onClick={() => this.setState({ open: true })}
                               className="btn btn-common mt-2"
                             />
-                            <button className="btn btn-common mt-2 ml-2">
+                            <Link
+                              to="/change-password"
+                              className="btn btn-common mt-2 ml-2"
+                            >
                               Change password
-                            </button>
+                            </Link>
                           </div>
                         </div>
                       </div>

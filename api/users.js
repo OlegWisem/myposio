@@ -12,6 +12,7 @@ const User = require('../models/User');
 const validateRegisterInput = require('../validation/register');
 const validateProfileInput = require('../validation/profile');
 const validateLoginInput = require('../validation/login');
+const validateChangePasswordInput = require('../validation/changePassword');
 
 // @route   GET api/users/test
 // @desc    Tests users route
@@ -52,6 +53,50 @@ router.post('/register', (req, res) => {
     }
   });
 });
+
+// @route   POST api/users/changepassword
+// @desc    Change user's password
+// @access  Private
+router.post(
+  '/changepassword',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateChangePasswordInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    const oldpassword = req.body.oldpassword;
+
+    // Find user by email
+    User.findOne({ email: req.body.email }).then(user => {
+      // Check for user
+      if (!user) {
+        errors.email = 'User not found';
+        return res.status(404).json(errors);
+      } else {
+        // Check Old Password
+        bcrypt.compare(oldpassword, user.password).then(isMatch => {
+          if (isMatch) {
+            // User Matched
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(req.body.password, salt, (err, hash) => {
+                if (err) throw err;
+                user.set({ password: hash });
+                user.save().then(profile => res.json(profile));
+              });
+            });
+          } else {
+            errors.oldpassword = 'Password incorrect';
+            return res.status(400).json(errors);
+          }
+        });
+      }
+    });
+  }
+);
 
 // @route   GET api/users/login
 // @desc    Login User / Returning JWT Token

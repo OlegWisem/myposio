@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginUser } from '../../actions/authActions';
+import { loginUser, clearErrors } from '../../actions/authActions';
 import TextField from '../common/TextField';
 import Banner from '../common/Banner';
 import Navbar from '../layout/Navbar';
@@ -15,6 +15,10 @@ class Login extends Component {
       password: '',
       errors: {}
     };
+  }
+
+  componentDidMount() {
+    this.props.clearErrors();
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -107,5 +111,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser }
+  { loginUser, clearErrors }
 )(Login);
