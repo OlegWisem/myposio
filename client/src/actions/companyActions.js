@@ -7,7 +7,9 @@ import {
   GET_COMPANIES,
   GET_COMPANY_ITEM,
   CLEAR_COMPANY_ITEM,
-  CLEAR_ERRORS
+  CLEAR_ERRORS,
+  GET_COMPANY_FOR_REVIEW,
+  PUBLISH_COMPANY
 } from './types';
 //import { logoutUser } from '../actions/authActions';
 
@@ -26,6 +28,43 @@ export const getCurrentCompany = () => dispatch => {
       dispatch({
         type: GET_COMPANY,
         payload: {}
+      })
+    );
+};
+
+// Get companies for review
+export const getCompaniesForReview = () => dispatch => {
+  dispatch(setCompanyLoading());
+  axios
+    .get('/api/companies/review')
+    .then(res =>
+      dispatch({
+        type: GET_COMPANY_FOR_REVIEW,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_COMPANY_FOR_REVIEW,
+        payload: {}
+      })
+    );
+};
+
+// Publish company
+export const publishCompany = company_id => dispatch => {
+  axios
+    .get(`/api/companies/review/${company_id}`)
+    .then(res =>
+      dispatch({
+        type: PUBLISH_COMPANY,
+        payload: company_id
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
       })
     );
 };

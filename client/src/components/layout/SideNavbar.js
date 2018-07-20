@@ -44,6 +44,11 @@ class SideNavbar extends Component {
                 </NavLink>
               </li>
               <li>
+                <NavLink exact activeClassName="active" to="/review">
+                  <i className="lni-check-mark-circle" /> Review companies
+                </NavLink>
+              </li>
+              <li>
                 <a href="" onClick={this.onLogoutClick.bind(this)}>
                   <i className="lni-exit" />Log Out
                 </a>

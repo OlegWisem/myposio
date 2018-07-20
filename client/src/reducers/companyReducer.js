@@ -4,7 +4,9 @@ import {
   COMPANY_LOADING,
   CLEAR_CURRENT_COMPANY,
   GET_COMPANY_ITEM,
-  CLEAR_COMPANY_ITEM
+  CLEAR_COMPANY_ITEM,
+  GET_COMPANY_FOR_REVIEW,
+  PUBLISH_COMPANY
 } from '../actions/types';
 
 const initialState = {
@@ -25,6 +27,17 @@ export default function(state = initialState, action) {
         ...state,
         company: action.payload,
         loading: false
+      };
+    case GET_COMPANY_FOR_REVIEW:
+      return {
+        ...state,
+        company: action.payload,
+        loading: false
+      };
+    case PUBLISH_COMPANY:
+      return {
+        ...state,
+        company: state.company.filter(company => company._id !== action.payload)
       };
     case GET_COMPANY_ITEM:
       return {

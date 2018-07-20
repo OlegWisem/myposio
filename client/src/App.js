@@ -21,6 +21,7 @@ import EditProfile from './components/edit-profile/EditProfile';
 import ChangePassword from './components/change-password/ChangePassword';
 import Catalog from './components/catalog/Catalog';
 import Company from './components/company/Company';
+import Review from './components/review/Review';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -80,6 +81,7 @@ class App extends Component {
                 path="/change-password"
                 component={ChangePassword}
               />
+              <PrivateRoute exact path="/review" component={Review} />
             </Switch>
             <Footer />
           </div>

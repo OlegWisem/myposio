@@ -110,8 +110,7 @@ class EditProfile extends Component {
                           <div className="mx-auto">
                             <input
                               type="submit"
-                              value="Edit company"
-                              onClick={() => this.setState({ open: true })}
+                              value="Edit profile"
                               className="btn btn-common mt-2"
                             />
                             <Link

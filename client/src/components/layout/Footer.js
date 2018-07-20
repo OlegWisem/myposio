@@ -24,21 +24,28 @@ class Footer extends Component {
                     </li>
                   </ul>
                 </div>
-                <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                   <h3 className="footer-titel">
                     Contact
                     <span>Info</span>
                   </h3>
                   <ul className="address">
                     <li>
-                      <i className="lni-map-marker" /> Maaninkavaarantie 5
-                      <br /> 97900 POSIO
+                      <a href="">
+                        <i className="lni-map-marker" /> Maaninkavaarantie 5,
+                        97900 POSIO
+                      </a>
                     </li>
                     <li>
-                      <i className="lni-phone-handset" /> +358 44 767 4218
+                      <a href="">
+                        <i className="lni-phone-handset" /> +358 44 767 4218
+                      </a>
                     </li>
                     <li>
-                      <i className="lni-envelope" /> matkailu.neuvonta@posio.fi
+                      <a href="">
+                        <i className="lni-envelope" />{' '}
+                        matkailu.neuvonta@posio.fi
+                      </a>
                     </li>
                   </ul>
                 </div>

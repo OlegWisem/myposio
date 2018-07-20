@@ -125,7 +125,7 @@ router.delete(
 // @access  Public
 router.get('/all', (req, res) => {
   let errors = {};
-  Company.find()
+  Company.find({ isreviewed: true })
     .populate('user', ['name'])
     .then(companies => {
       if (!companies) {
@@ -155,6 +155,45 @@ router.get(
         res.json(companies);
       })
       .catch(err => res.status(404).json(err));
+  }
+);
+
+// @route   GET api/companies/review
+// @desc    Get all companies for review
+// @access  Private
+router.get(
+  '/review',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    let errors = {};
+    Company.find({ isreviewed: false })
+      .populate('user', ['name'])
+      .then(companies => {
+        if (!companies) {
+          errors.nocompanies = 'There is no companies for this user';
+          return res.status(404).json(errors);
+        }
+        res.json(companies);
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+
+// @route   GET api/companies/review/:company_id
+// @desc    Publish the company
+// @access  Private
+router.get(
+  '/review/:company_id',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Company.findOneAndUpdate(
+      { _id: req.params.company_id },
+      { $set: { isreviewed: true } },
+      { new: true }
+    ).then(company => {
+      // Update
+      res.json(company);
+    });
   }
 );
 
