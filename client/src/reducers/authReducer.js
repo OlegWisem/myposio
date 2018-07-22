@@ -1,4 +1,8 @@
-import { SET_CURRECT_USER, GET_PROFILE } from '../actions/types';
+import {
+  SET_CURRECT_USER,
+  GET_PROFILE,
+  VALIDATE_TOKEN
+} from '../actions/types';
 import isEmpty from '../validation/is-empty';
 
 const initialState = {
@@ -19,6 +23,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         profile: action.payload
+      };
+    case VALIDATE_TOKEN:
+      return {
+        ...state,
+        user: action.payload
       };
     default:
       return state;

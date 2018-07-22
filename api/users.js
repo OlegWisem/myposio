@@ -4,6 +4,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../config/keys');
 const passport = require('passport');
+const sendGrid = require('@sendgrid/mail');
+const crypto = require('crypto');
+const moment = require('moment');
 
 // Load User model
 const User = require('../models/User');
@@ -13,6 +16,14 @@ const validateRegisterInput = require('../validation/register');
 const validateProfileInput = require('../validation/profile');
 const validateLoginInput = require('../validation/login');
 const validateChangePasswordInput = require('../validation/changePassword');
+const validateForgotPasswordInput = require('../validation/forgotPassword');
+const validateResetPasswordInput = require('../validation/resetPassword');
+const validateNewPasswordInput = require('../validation/newPassword');
+
+// Set Mail API key
+sendGrid.setApiKey(
+  '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'
+);
 
 // @route   GET api/users/test
 // @desc    Tests users route
@@ -201,5 +212,146 @@ router.post(
       .catch(err => res.status(404).json(err));
   }
 );
+
+// @route   GET api/users/mail/test
+// @desc    Test mail
+// @access  Public
+router.get('/mail/test', (req, res) => {
+  const msg = {
+    to: 'wisemik4@gmail.com',
+    from: 'test@example.com',
+    subject: 'Sending with SendGrid is Fun',
+    text: 'and easy to do anywhere, even with Node.js',
+    html: '<strong>and easy to do anywhere, even with Node.js</strong>'
+  };
+  sendGrid.send(msg);
+
+  res.json({ mail: 'done' });
+});
+
+// @route   POST api/users/forgot
+// @desc    Forgot password - generate token and send e-mail
+// @access  Public
+router.post('/forgot', (req, res) => {
+  const { errors, isValid } = validateForgotPasswordInput(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    //Return any errors with 400 status
+    return res.status(400).json(errors);
+  }
+
+  User.findOne({ email: req.body.email }).then(user => {
+    // Check for user
+    if (!user) {
+      errors.email = 'User not found';
+      return res.status(404).json(errors);
+    }
+    crypto.randomBytes(20, (err, buffer) => {
+      if (err) throw err;
+      const token = buffer.toString('hex');
+
+      User.findByIdAndUpdate(
+        { _id: user._id },
+        {
+          reset_password_token: token,
+          reset_password_expires: moment().add(10, 'days') // 10 days until expires
+        },
+        { upsert: true, new: true }
+      )
+        .then(newUser => {
+          // Send e-mail
+          const msg = {
+            to: req.body.email,
+            from: 'info@myposio.com',
+            subject: 'Password Recovery',
+            templateId: 'e52d49f2-014e-4ae3-8845-e9e08e94742d',
+            substitutions: {
+              email: req.body.email,
+              token: token
+            }
+          };
+          sendGrid.send(msg);
+
+          res.json({ success: true });
+        })
+        .catch(err => res.status(404).json(err));
+    });
+  });
+});
+
+// @route   GET api/users/reset
+// @desc    Forgot password - validate token
+// @access  Public
+router.get('/reset', (req, res) => {
+  const { errors, isValid } = validateResetPasswordInput(req.query);
+
+  // Check Validation
+  if (!isValid) {
+    //Return any errors with 400 status
+    return res.status(400).json(errors);
+  }
+
+  User.findOne({
+    email: req.query.email,
+    reset_password_token: req.query.token
+  }).then(user => {
+    // Check for user
+    if (!user) {
+      errors.email = 'Invalid request';
+      return res.status(404).json(errors);
+    }
+    // Check for token
+    if (moment().isAfter(user.reset_password_expires)) {
+      errors.email = 'Token has expired';
+      return res.status(404).json(errors);
+    }
+    res.json({ valid: true });
+  });
+});
+
+// @route   POST api/users/reset
+// @desc    Forgot password - set new password
+// @access  Public
+router.post('/reset', (req, res) => {
+  const { errors, isValid } = validateNewPasswordInput(req.query, req.body);
+
+  // Check Validation
+  if (!isValid) {
+    //Return any errors with 400 status
+    return res.status(400).json(errors);
+  }
+
+  User.findOne({
+    email: req.query.email,
+    reset_password_token: req.query.token
+  }).then(user => {
+    // Check for user
+    if (!user) {
+      errors.email = 'Invalid request';
+      return res.status(404).json(errors);
+    }
+
+    // Check for token
+    if (moment().isAfter(user.reset_password_expires)) {
+      errors.token = 'Token has expired';
+      return res.status(404).json(errors);
+    }
+
+    // Change the password
+    // User Matched
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(req.body.password, salt, (err, hash) => {
+        if (err) throw err;
+        user.set({
+          password: hash,
+          reset_password_token: undefined,
+          reset_password_expires: undefined
+        });
+        user.save().then(profile => res.json(profile));
+      });
+    });
+  });
+});
 
 module.exports = router;

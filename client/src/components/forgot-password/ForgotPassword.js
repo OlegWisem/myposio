@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginUser, clearErrors } from '../../actions/authActions';
+import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
+import { clearErrors, requestNewPassword } from '../../actions/authActions';
 import TextField from '../common/TextField';
 import Banner from '../common/Banner';
 import Navbar from '../layout/Navbar';
 
-class Login extends Component {
+class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      password: '',
       errors: {}
     };
   }
@@ -40,11 +39,10 @@ class Login extends Component {
     e.preventDefault();
 
     const userData = {
-      email: this.state.email,
-      password: this.state.password
+      email: this.state.email
     };
 
-    this.props.loginUser(userData);
+    this.props.requestNewPassword(userData, this.props.history);
   };
 
   render() {
@@ -53,13 +51,13 @@ class Login extends Component {
     return (
       <div>
         <Navbar />
-        <Banner pageName="Login" />
+        <Banner pageName="Forgot Password" />
         <div id="content" className="section-padding">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-lg-5 col-md-6 col-xs-12">
                 <div className="page-login-form box">
-                  <h3>Login</h3>
+                  <h3>Forgot Password?</h3>
                   <form className="login-form" onSubmit={this.onSubmit}>
                     <TextField
                       placeholder="Email"
@@ -70,23 +68,11 @@ class Login extends Component {
                       onChange={this.onChange}
                       error={errors.email}
                     />
-                    <TextField
-                      placeholder="Password"
-                      name="password"
-                      type="password"
-                      icon="lni-lock"
-                      value={this.state.password}
-                      onChange={this.onChange}
-                      error={errors.password}
-                    />
                     <input
                       type="submit"
-                      value="Login"
+                      value="Request New Password"
                       className="btn btn-common log-btn mt-3"
                     />
-                    <p className="text-center">
-                      <Link to="/forgot-password">Forgot Password?</Link>
-                    </p>
                     <p className="text-center">
                       <Link to="/register">Don't have an account?</Link>
                     </p>
@@ -101,8 +87,8 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
-  loginUser: PropTypes.func.isRequired,
+ForgotPassword.propTypes = {
+  requestNewPassword: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -114,5 +100,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser, clearErrors }
-)(Login);
+  { clearErrors, requestNewPassword }
+)(withRouter(ForgotPassword));

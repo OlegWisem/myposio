@@ -3,7 +3,8 @@ import {
   GET_ERRORS,
   SET_CURRECT_USER,
   GET_PROFILE,
-  CLEAR_ERRORS
+  CLEAR_ERRORS,
+  VALIDATE_TOKEN
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
@@ -93,6 +94,54 @@ export const updateProfile = (userData, history, logout) => dispatch => {
         history.push('/dashboard');
       }
     })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+// Request new password
+export const requestNewPassword = (userData, history) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post('api/users/forgot', userData)
+    .then(res => history.push('/forgot-password/success'))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+// Validate token
+export const validateToken = userData => dispatch => {
+  axios
+    .get(`api/users/reset?email=${userData.email}&token=${userData.token}`)
+    .then(res =>
+      dispatch({
+        type: VALIDATE_TOKEN,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+// Set new password
+export const setNewPassword = (paramsData, userData, history) => dispatch => {
+  axios
+    .post(
+      `api/users/reset?email=${paramsData.email}&token=${paramsData.token}`,
+      userData
+    )
+    .then(res => history.push('/login'))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,

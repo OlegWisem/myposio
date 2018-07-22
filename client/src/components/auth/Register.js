@@ -106,6 +106,9 @@ class Register extends Component {
                       className="btn btn-common log-btn mt-3"
                     />
                     <p className="text-center">
+                      <Link to="/forgot-password">Forgot Password?</Link>
+                    </p>
+                    <p className="text-center">
                       Already have an account?
                       <Link to="/login"> Sign In</Link>
                     </p>

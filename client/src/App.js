@@ -14,6 +14,9 @@ import Footer from './components/layout/Footer';
 import Home from './components/home/Home';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import ForgotPassword from './components/forgot-password/ForgotPassword';
+import ForgotPasswordSuccess from './components/forgot-password/SuccessMessage';
+import ResetPassword from './components/reset-password/ResetPassword';
 import Dashboard from './components/dashboard/Dashboard';
 import CreateCompany from './components/create-company/CreateCompany';
 import EditCompany from './components/edit-company/EditCompany';
@@ -60,6 +63,13 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/catalog" component={Catalog} />
               <Route exact path="/company/:id" component={Company} />
+              <Route exact path="/forgot-password" component={ForgotPassword} />
+              <Route exact path="/reset" component={ResetPassword} />
+              <Route
+                exact
+                path="/forgot-password/success"
+                component={ForgotPasswordSuccess}
+              />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute
                 exact
