@@ -11,7 +11,6 @@ import TextField from '../common/TextField';
 import Banner from '../common/Banner';
 import Navbar from '../layout/Navbar';
 import isEmpty from '../../validation/is-empty';
-import queryString from 'query-string';
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -26,10 +25,10 @@ class ResetPassword extends Component {
 
   componentDidMount() {
     this.props.clearErrors();
-    const parsed = queryString.parse(this.props.location.search);
+    const parsed = new URLSearchParams(this.props.location.search);
     const userData = {
-      email: !isEmpty(parsed.email) ? parsed.email : '',
-      token: !isEmpty(parsed.token) ? parsed.token : ''
+      email: !isEmpty(parsed.get('email')) ? parsed.get('email') : '',
+      token: !isEmpty(parsed.get('token')) ? parsed.get('token') : ''
     };
     this.props.validateToken(userData);
   }
@@ -63,11 +62,10 @@ class ResetPassword extends Component {
       password: this.state.password,
       password2: this.state.password2
     };
-
-    const parsed = queryString.parse(this.props.location.search);
+    const parsed = new URLSearchParams(this.props.location.search);
     const paramsData = {
-      email: !isEmpty(parsed.email) ? parsed.email : '',
-      token: !isEmpty(parsed.token) ? parsed.token : ''
+      email: !isEmpty(parsed.get('email')) ? parsed.get('email') : '',
+      token: !isEmpty(parsed.get('token')) ? parsed.get('token') : ''
     };
 
     this.props.setNewPassword(paramsData, userData, this.props.history);

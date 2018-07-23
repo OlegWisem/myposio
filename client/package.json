@@ -7,7 +7,6 @@
     "classnames": "^2.2.6",
     "jwt-decode": "^2.2.0",
     "prop-types": "^15.6.2",
-    "query-string": "^6.1.0",
     "react": "^16.4.1",
     "react-bootstrap-modal": "^4.1.1",
     "react-dom": "^16.4.1",
