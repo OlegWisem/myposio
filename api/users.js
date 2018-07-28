@@ -242,7 +242,7 @@ router.post(
         req.file.filename;
     }
 
-    /*if (req.file) {
+    if (req.file) {
       sharp.cache(false);
       sharp('uploads/temp/' + req.file.filename)
         .resize(200)
@@ -253,7 +253,7 @@ router.post(
           });
         })
         .catch(err => res.status(404).json(err));
-    }*/
+    }
     User.findOneAndUpdate(
       { _id: req.user.id },
       { $set: profileFields },
