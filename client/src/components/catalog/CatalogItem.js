@@ -25,11 +25,13 @@ class CatalogItem extends Component {
                         <i className="lni-map-marker" /> {company.address}
                       </div>
                     </li>
-                    <li>
-                      <div className="adderess">
-                        <i className="lni-world" /> {company.companyid}
-                      </div>
-                    </li>
+                    {isEmpty(company.companyid) ? null : (
+                      <li>
+                        <div className="adderess">
+                          <i className="lni-world" /> {company.companyid}
+                        </div>
+                      </li>
+                    )}
                   </ul>
                 </div>
                 <div className="col-md-5 col-sm-12">

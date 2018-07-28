@@ -7,6 +7,9 @@ const passport = require('passport');
 const sendGrid = require('@sendgrid/mail');
 const crypto = require('crypto');
 const moment = require('moment');
+const multer = require('multer');
+const sharp = require('sharp');
+const fs = require('fs');
 
 // Load User model
 const User = require('../models/User');
@@ -24,6 +27,33 @@ const validateNewPasswordInput = require('../validation/newPassword');
 sendGrid.setApiKey(
   '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'
 );
+
+// Set-up Multer
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './uploads/temp');
+  },
+  filename: function(req, file, cb) {
+    cb(null, new Date().getTime() + file.originalname);
+  }
+});
+
+// Accept only images
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 1024 * 1024 * 10 // Max File size in bytes (10 mb)
+  },
+  fileFilter
+});
 
 // @route   GET api/users/test
 // @desc    Tests users route
@@ -141,7 +171,8 @@ router.post('/login', (req, res) => {
           id: user.id,
           name: user.name,
           email: user.email,
-          phone: user.phone
+          phone: user.phone,
+          avatar: user.avatar
         };
 
         // Sign Token
@@ -175,7 +206,8 @@ router.get(
       id: req.user.id,
       name: req.user.name,
       email: req.user.email,
-      phone: req.user.phone
+      phone: req.user.phone,
+      avatar: req.user.avatar
     });
   }
 );
@@ -185,6 +217,7 @@ router.get(
 // @access  Private
 router.post(
   '/update',
+  upload.single('avatar'),
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     const { errors, isValid } = validateProfileInput(req.body);
@@ -200,7 +233,27 @@ router.post(
     if (req.body.name) profileFields.name = req.body.name;
     if (req.body.email) profileFields.email = req.body.email;
     if (req.body.phone) profileFields.phone = req.body.phone;
+    if (req.file) {
+      profileFields.avatar =
+        req.protocol +
+        '://' +
+        req.get('host') +
+        '/uploads/' +
+        req.file.filename;
+    }
 
+    if (req.file) {
+      sharp.cache(false);
+      sharp('uploads/temp/' + req.file.filename)
+        .resize(200)
+        .toFile('uploads/' + req.file.filename)
+        .then(newFile => {
+          fs.unlink('uploads/temp/' + req.file.filename, err => {
+            if (err) throw err;
+          });
+        })
+        .catch(err => res.status(404).json(err));
+    }
     User.findOneAndUpdate(
       { _id: req.user.id },
       { $set: profileFields },

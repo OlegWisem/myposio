@@ -27,6 +27,9 @@ require('./config/passport')(passport);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// Multer middleware
+app.use('/uploads', express.static('./uploads'));
+
 // Use Routes
 app.use('/api/users', users);
 app.use('/api/companies', companies);

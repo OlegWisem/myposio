@@ -16,6 +16,7 @@ class EditProfile extends Component {
       name: '',
       email: '',
       phone: '',
+      avatar: null,
       errors: {}
     };
   }
@@ -40,23 +41,30 @@ class EditProfile extends Component {
   }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
+
+  onFileSelect = event => {
+    this.setState({
+      avatar: event.target.files[0]
+    });
+  };
+
   onSubmit = e => {
     e.preventDefault();
-    const userData = {
-      name: this.state.name,
-      email: this.state.email,
-      phone: this.state.phone
-    };
+    const data = new FormData();
+    data.append('avatar', this.state.avatar);
+    data.append('name', this.state.name);
+    data.append('email', this.state.email);
+    data.append('phone', this.state.phone);
 
     if (
       this.props.auth.profile.name !== this.state.name ||
       this.props.auth.profile.email !== this.state.email
     ) {
       if (window.confirm('Are you sure? You will be logged out.')) {
-        this.props.updateProfile(userData, this.props.history, true);
+        this.props.updateProfile(data, this.props.history, true);
       }
     }
-    this.props.updateProfile(userData, this.props.history, false);
+    this.props.updateProfile(data, this.props.history, false);
   };
   render() {
     const { errors } = this.state;
@@ -75,7 +83,11 @@ class EditProfile extends Component {
                 <div className="my-address">
                   <h3 className="heading">Edit profile</h3>
                   <div className="section-inforamation">
-                    <form className="login-form" onSubmit={this.onSubmit}>
+                    <form
+                      className="login-form"
+                      onSubmit={this.onSubmit}
+                      encType=""
+                    >
                       <div className="row justify-content-center">
                         <div className="col-lg-7 col-md-8 col-xs-12">
                           <TextField
@@ -106,6 +118,14 @@ class EditProfile extends Component {
                             value={this.state.phone}
                             onChange={this.onChange}
                             error={errors.phone}
+                          />
+                          <TextField
+                            label="Avatar"
+                            placeholder="Upload your avatar"
+                            name="avatar"
+                            type="file"
+                            onChange={this.onFileSelect}
+                            error={errors.avatar}
                           />
                           <div className="mx-auto">
                             <input

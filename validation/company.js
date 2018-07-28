@@ -26,10 +26,6 @@ module.exports = function validateCompanyInput(data) {
     errors.field = 'Company field is required';
   }
 
-  if (Validator.isEmpty(data.companyid)) {
-    errors.companyid = 'Company ID is required';
-  }
-
   if (Validator.isEmpty(data.address)) {
     errors.address = 'Address field is required';
   }

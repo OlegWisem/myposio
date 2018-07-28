@@ -19,11 +19,13 @@ class SideNavbar extends Component {
           {/*header */}
           <div className="header clearfix">
             <h2>{user.name}</h2>
-            <img
-              src="../../img/avatar.jpg"
-              alt="avatar"
-              className="img-fluid profile-img"
-            />
+            <div className="wrapper">
+              <img
+                src={user.avatar}
+                alt="avatar"
+                className="img-fluid profile-img"
+              />
+            </div>
           </div>
           {/* Detail */}
           <div className="detail clearfix">

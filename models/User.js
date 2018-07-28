@@ -20,11 +20,18 @@ const UserSchema = new Schema({
   phone: {
     type: String
   },
+  avatar: {
+    type: String
+  },
   reset_password_token: {
     type: String
   },
   reset_password_expires: {
     type: Date
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false
   },
   date: {
     type: Date,

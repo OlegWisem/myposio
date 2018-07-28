@@ -2231,7 +2231,7 @@ Property wrapper Style
 }
 
 .user-profile-box .header {
-  padding: 30px 20px 120px;
+  padding: 30px 20px 0px;
   text-align: center;
   position: relative;
   background-repeat: no-repeat;
@@ -2253,19 +2253,27 @@ Property wrapper Style
   color: #fff;
   font-weight: 400;
 }
+.user-profile-box .wrapper {
+  width:160px;
+  height:160px;
+  margin: 0px auto;
+  overflow: hidden;
+  border-radius:50%;
+  position: relative;
+  border: 5px solid #fff;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1), 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  background-clip: padding-box;
+  
+  top: 80px;
+
+}
 
 .user-profile-box .profile-img {
-  border-radius: 50%;
-  background-clip: padding-box;
-  border: 5px solid #fff;
-  bottom: -75px;
-  float: left;
-  height: 160px;
-  width: 160px;
-  left: 50%;
-  margin-left: -75px;
   position: absolute;
-  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1), 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  top:50%;
+  left:50%;
+  object-fit: cover;
+  transform: translate(-50%,-50%)
 }
 
 .user-profile-box .detail {

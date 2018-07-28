@@ -55,11 +55,13 @@ class Dashboard extends Component {
                         <i className="lni-map-marker" /> {companyItem.address}
                       </div>
                     </li>
-                    <li>
-                      <div className="adderess">
-                        <i className="lni-world" /> {companyItem.companyid}
-                      </div>
-                    </li>
+                    {isEmpty(companyItem.companyid) ? null : (
+                      <li>
+                        <div className="adderess">
+                          <i className="lni-world" /> {companyItem.companyid}
+                        </div>
+                      </li>
+                    )}
                   </ul>
                 </div>
                 <div className="col-md-5 col-sm-12">
