@@ -38,6 +38,9 @@ const CompanySchema = new Schema({
   website: {
     type: String
   },
+  category: {
+    type: String
+  },
   social: {
     youtube: {
       type: String

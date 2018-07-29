@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { logoutUser } from '../../actions/authActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import isEmpty from '../../validation/is-empty';
 
 class SideNavbar extends Component {
   onLogoutClick(e) {
@@ -21,7 +22,7 @@ class SideNavbar extends Component {
             <h2>{user.name}</h2>
             <div className="wrapper">
               <img
-                src={user.avatar}
+                src={isEmpty(user.avatar) ? 'img/avatar.jpg' : user.avatar}
                 alt="avatar"
                 className="img-fluid profile-img"
               />
@@ -45,11 +46,14 @@ class SideNavbar extends Component {
                   <i className="lni-pencil-alt" /> Edit profile
                 </NavLink>
               </li>
-              <li>
-                <NavLink exact activeClassName="active" to="/review">
-                  <i className="lni-check-mark-circle" /> Review companies
-                </NavLink>
-              </li>
+              {!user.isAdmin ? null : (
+                <li>
+                  <NavLink exact activeClassName="active" to="/review">
+                    <i className="lni-check-mark-circle" /> Review companies
+                  </NavLink>
+                </li>
+              )}
+
               <li>
                 <a href="" onClick={this.onLogoutClick.bind(this)}>
                   <i className="lni-exit" />Log Out

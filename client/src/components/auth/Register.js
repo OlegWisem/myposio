@@ -13,6 +13,7 @@ class Register extends Component {
     this.state = {
       name: '',
       email: '',
+      phone: '',
       password: '',
       password2: '',
       errors: {}
@@ -38,6 +39,7 @@ class Register extends Component {
     const newUser = {
       name: this.state.name,
       email: this.state.email,
+      phone: this.state.phone,
       password: this.state.password,
       password2: this.state.password2
     };
@@ -80,6 +82,15 @@ class Register extends Component {
                       value={this.state.email}
                       onChange={this.onChange}
                       error={errors.email}
+                    />
+                    <TextField
+                      placeholder="Your Phone"
+                      name="phone"
+                      type="text"
+                      icon="lni-phone-handset"
+                      value={this.state.phone}
+                      onChange={this.onChange}
+                      error={errors.phone}
                     />
                     <TextField
                       placeholder="Password"

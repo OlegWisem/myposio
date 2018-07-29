@@ -79,6 +79,7 @@ router.post('/register', (req, res) => {
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
+        phone: req.body.phone,
         password: req.body.password
       });
       bcrypt.genSalt(10, (err, salt) => {
@@ -172,7 +173,8 @@ router.post('/login', (req, res) => {
           name: user.name,
           email: user.email,
           phone: user.phone,
-          avatar: user.avatar
+          avatar: user.avatar,
+          isAdmin: user.isAdmin
         };
 
         // Sign Token
@@ -217,8 +219,8 @@ router.get(
 // @access  Private
 router.post(
   '/update',
-  upload.single('avatar'),
   passport.authenticate('jwt', { session: false }),
+  upload.single('avatar'),
   (req, res) => {
     const { errors, isValid } = validateProfileInput(req.body);
 

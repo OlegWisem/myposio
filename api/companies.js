@@ -44,6 +44,7 @@ router.post(
     if (req.body.email) companyFields.email = req.body.email;
     if (req.body.website) companyFields.website = req.body.website;
     if (req.body.phone) companyFields.phone = req.body.phone;
+    if (req.body.category) companyFields.category = req.body.category;
 
     // Social
     companyFields.social = {};
@@ -74,7 +75,7 @@ router.post(
 
     // Get fields
     const companyFields = {};
-    companyFields.user = req.user.id;
+    if (req.user.isAdmin === false) companyFields.user = req.user.id;
     if (req.body.name) companyFields.name = req.body.name;
     if (req.body.field) companyFields.field = req.body.field;
     if (req.body.companyid) companyFields.companyid = req.body.companyid;
@@ -92,14 +93,20 @@ router.post(
     if (req.body.facebook) companyFields.social.facebook = req.body.facebook;
     if (req.body.instagram) companyFields.social.instagram = req.body.instagram;
 
-    Company.findOneAndUpdate(
-      { user: companyFields.user, _id: req.params.company_id },
-      { $set: companyFields },
-      { new: true }
-    ).then(company => {
-      // Update
-      res.json(company);
-    });
+    const query = {};
+    query._id = req.params.company_id;
+    if (req.user.isAdmin === false) query.user = companyFields.user;
+
+    Company.findOneAndUpdate(query, { $set: companyFields }, { new: true })
+      .then(company => {
+        // Update
+        res.json(company);
+      })
+      .catch(err =>
+        res
+          .status(401)
+          .json({ company: 'You are not allowed to edit this company' })
+      );
   }
 );
 

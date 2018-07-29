@@ -38,7 +38,7 @@ class CatalogItem extends Component {
                   <ul className="additional-details">
                     {isEmpty(company.phone) ? null : (
                       <li>
-                        <strong>Puh.:</strong>
+                        <strong>Tel.:</strong>
                         <span>{company.phone}</span>
                       </li>
                     )}

@@ -6,6 +6,9 @@ import Spinner from '../common/Spinner';
 import Banner from '../common/Banner';
 import Navbar from '../layout/Navbar';
 import isEmpty from '../../validation/is-empty';
+import GoogleMapReact from 'google-map-react';
+import { Link } from 'react-router-dom';
+import Geocode from 'react-geocode';
 
 class Company extends Component {
   constructor(props) {
@@ -21,8 +24,35 @@ class Company extends Component {
       email: '',
       website: '',
       social: {},
-      errors: {}
+      errors: {},
+      center: {
+        lat: 66.1106316,
+        lng: 28.1586498
+      },
+      zoom: 12
     };
+  }
+
+  renderMarkers(map, maps, address) {
+    Geocode.setApiKey('AIzaSyCVZj6nRwT8LCAfOQK3Z6U9H3CoTs78QQE');
+    Geocode.enableDebug();
+    Geocode.fromAddress(address).then(
+      response => {
+        const { lat, lng } = response.results[0].geometry.location;
+        this.setState({ center: { lat, lng } });
+        let marker = new maps.Marker({
+          position: {
+            lat,
+            lng
+          },
+          map,
+          icon: 'img/location.png'
+        });
+      },
+      error => {
+        console.error(error);
+      }
+    );
   }
 
   componentDidMount() {
@@ -42,6 +72,173 @@ class Company extends Component {
   render() {
     const { company_item, loading } = this.props.company;
     const { user, social } = this.state;
+
+    var $main_color = '#2d313f',
+      $saturation = -20,
+      $brightness = 5;
+
+    var style = [
+      {
+        //set saturation for the labels on the map
+        elementType: 'labels',
+        stylers: [{ saturation: $saturation }]
+      },
+      {
+        //poi stands for point of interest - don't show these lables on the map
+        featureType: 'poi',
+        elementType: 'labels',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        //don't show highways lables on the map
+        featureType: 'road.highway',
+        elementType: 'labels',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        //don't show local road lables on the map
+        featureType: 'road.local',
+        elementType: 'labels.icon',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        //don't show arterial road lables on the map
+        featureType: 'road.arterial',
+        elementType: 'labels.icon',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        //don't show road lables on the map
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [{ visibility: 'off' }]
+      },
+      //style different elements on the map
+      {
+        featureType: 'transit',
+        elementType: 'geometry.fill',
+        stylers: [
+          { hue: $main_color },
+          { visibility: 'on' },
+          { lightness: $brightness },
+          { saturation: $saturation }
+        ]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'geometry.fill',
+        stylers: [
+          { hue: $main_color },
+          { visibility: 'on' },
+          { lightness: $brightness },
+          { saturation: $saturation }
+        ]
+      },
+      {
+        featureType: 'poi.government',
+        elementType: 'geometry.fill',
+        stylers: [
+          { hue: $main_color },
+          { visibility: 'on' },
+          { lightness: $brightness },
+          { saturation: $saturation }
+        ]
+      },
+      {
+        featureType: 'poi.sport_complex',
+        elementType: 'geometry.fill',
+        stylers: [
+          { hue: $main_color },
+          { visibility: 'on' },
+          { lightness: $brightness },
+          { saturation: $saturation }
+        ]
+      },
+      {
+        featureType: 'poi.attraction',
+        elementType: 'geometry.fill',
+        stylers: [
+          { hue: $main_color },
+          { visibility: 'on' },
+          { lightness: $brightness },
+          { saturation: $saturation }
+        ]
+      },
+      {
+        featureType: 'poi.business',
+        elementType: 'geometry.fill',
+        stylers: [
+          { hue: $main_color },
+          { visibility: 'on' },
+          { lightness: $brightness },
+          { saturation: $saturation }
+        ]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'geometry.fill',
+        stylers: [
+          { hue: $main_color },
+          { visibility: 'on' },
+          { lightness: $brightness },
+          { saturation: $saturation }
+        ]
+      },
+      {
+        featureType: 'transit.station',
+        elementType: 'geometry.fill',
+        stylers: [
+          { hue: $main_color },
+          { visibility: 'on' },
+          { lightness: $brightness },
+          { saturation: $saturation }
+        ]
+      },
+      {
+        featureType: 'landscape',
+        stylers: [
+          { hue: $main_color },
+          { visibility: 'on' },
+          { lightness: $brightness },
+          { saturation: $saturation }
+        ]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.fill',
+        stylers: [
+          { hue: $main_color },
+          { visibility: 'on' },
+          { lightness: $brightness },
+          { saturation: $saturation }
+        ]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.fill',
+        stylers: [
+          { hue: $main_color },
+          { visibility: 'on' },
+          { lightness: $brightness },
+          { saturation: $saturation }
+        ]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [
+          { hue: $main_color },
+          { visibility: 'on' },
+          { lightness: $brightness },
+          { saturation: $saturation }
+        ]
+      }
+    ];
+
+    const mapOptions = {
+      styles: style
+    };
+
     let companyContent;
 
     if (company_item === null || loading) {
@@ -104,7 +301,19 @@ class Company extends Component {
                   </div>
                   <div className="inner-box location-map">
                     <h2 className="desc-title">Location On Map</h2>
-                    <div id="conatiner-map" />
+                    <div style={{ height: '50vh', width: '100%' }}>
+                      <GoogleMapReact
+                        bootstrapURLKeys={{
+                          key: 'AIzaSyCVZj6nRwT8LCAfOQK3Z6U9H3CoTs78QQE'
+                        }}
+                        center={this.state.center}
+                        zoom={this.state.zoom}
+                        options={mapOptions}
+                        onGoogleApiLoaded={({ map, maps }) => {
+                          this.renderMarkers(map, maps, this.state.address);
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
                 {/*Sidebar*/}
@@ -168,126 +377,17 @@ class Company extends Component {
                         </li>
                       )}
                     </ul>
+                    <div className="text-center">
+                      <Link
+                        to={`/edit-company/${this.props.match.params.id}`}
+                        className="btn btn-common mt-2"
+                      >
+                        Edit This Company
+                      </Link>
+                    </div>
                   </div>
                 </aside>
                 {/*End sidebar*/}
-              </div>
-            </div>
-            <div className="container">
-              <div className="row">
-                <div className="col-12">
-                  <h2 className="desc-title">Similar Companies</h2>
-                </div>
-                <div className="col-lg-4 col-md-6 col-xs-12">
-                  <div className="property-main">
-                    <div className="property-wrap">
-                      <div className="property-item">
-                        <div className="item-body">
-                          <h3 className="property-title">
-                            <a href="property.html">Kota-Husky</a>
-                          </h3>
-                          <div className="adderess">
-                            <i className="lni-apartment" /> Safari
-                          </div>
-                          <div className="adderess">
-                            <i className="lni-map-marker" /> Jaksamontie 58,
-                            Karjalaisenniemi
-                          </div>
-                          <div className="pricin-list">
-                            <ul className="additional-details">
-                              <li>
-                                <strong>Puh.:</strong>
-                                <span>040 718 7287</span>
-                              </li>
-                              <li>
-                                <strong>E-mail:</strong>
-                                <span>info@kota-husky.fi</span>
-                              </li>
-                              <li>
-                                <strong>www:</strong>
-                                <span>kota-husky.fi</span>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-4 col-md-6 col-xs-12">
-                  <div className="property-main">
-                    <div className="property-wrap">
-                      <div className="property-item">
-                        <div className="item-body">
-                          <h3 className="property-title">
-                            <a href="property.html">
-                              Valkean Peuran Valtakunta
-                            </a>
-                          </h3>
-                          <div className="adderess">
-                            <i className="lni-apartment" /> Porosafari
-                          </div>
-                          <div className="adderess">
-                            <i className="lni-map-marker" /> Suottaniementie 31,
-                            Posio
-                          </div>
-                          <div className="pricin-list">
-                            <ul className="additional-details">
-                              <li>
-                                <strong>Puh.:</strong>
-                                <span>040 5853 663</span>
-                              </li>
-                              <li>
-                                <strong>E-mail:</strong>
-                                <span>info@valkeapeura.fi</span>
-                              </li>
-                              <li>
-                                <strong>www:</strong>
-                                <span>valkeapeura.fi</span>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-4 col-md-6 col-xs-12">
-                  <div className="property-main">
-                    <div className="property-wrap">
-                      <div className="property-item">
-                        <div className="item-body">
-                          <h3 className="property-title">
-                            <a href="property.html">Samero Oy</a>
-                          </h3>
-                          <div className="adderess">
-                            <i className="lni-apartment" /> Mökit
-                          </div>
-                          <div className="adderess">
-                            <i className="lni-map-marker" /> Maaninkavaarantie
-                            150, Karjalaisenniemi
-                          </div>
-                          <div className="pricin-list">
-                            <ul className="additional-details">
-                              <li>
-                                <strong>Puh.:</strong>
-                                <span>0400 261 285</span>
-                              </li>
-                              <li>
-                                <strong>E-mail:</strong>
-                                <span>matti.keranen@villipohjola.fi</span>
-                              </li>
-                              <li>
-                                <strong>www:</strong>
-                                <span>samero.fi</span>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

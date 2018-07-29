@@ -9,6 +9,7 @@ import TextAreaField from '../common/TextAreaField';
 import { createCompany } from '../../actions/companyActions';
 import SideNavbar from '../layout/SideNavbar';
 import Navbar from '../layout/Navbar';
+import SelectList from '../common/SelectList';
 
 class CreateCompany extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class CreateCompany extends Component {
       twitter: '',
       facebook: '',
       instagram: '',
+      category: null,
       errors: {}
     };
   }
@@ -42,6 +44,9 @@ class CreateCompany extends Component {
     //this.props.clearCurrentProfile();
     this.props.logoutUser();
   }
+  handleChange = category => {
+    this.setState({ category });
+  };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
   onSubmit = e => {
@@ -59,14 +64,37 @@ class CreateCompany extends Component {
       youtube: this.state.youtube,
       twitter: this.state.twitter,
       facebook: this.state.facebook,
-      instagram: this.state.instagram
+      instagram: this.state.instagram,
+      category: this.state.category
     };
 
     this.props.createCompany(companyData, this.props.history);
   };
   render() {
     const { errors } = this.state;
-
+    const options = [
+      { value: 'Service stations', label: 'Service stations' },
+      {
+        value: 'Maintenance and Construction',
+        label: 'Maintenance and Construction'
+      },
+      { value: 'Furniture and Home Sales', label: 'Furniture and Home Sales' },
+      {
+        value: 'Waste Management and Recycling',
+        label: 'Waste Management and Recycling'
+      },
+      { value: 'Real Estate', label: 'Real Estate' },
+      { value: 'Transport Services', label: 'Transport Services' },
+      { value: 'Sports and Recreation', label: 'Sports and Recreation' },
+      { value: 'Accommodation', label: 'Accommodation' },
+      { value: 'Tourist destinations', label: 'Tourist destinations' },
+      { value: 'Forest Services', label: 'Forest Services' },
+      { value: 'Restaurants', label: 'Restaurants' },
+      { value: 'Grocery', label: 'Grocery' },
+      { value: 'Health and wellness', label: 'Health and wellness' },
+      { value: 'Equipment rental', label: 'Equipment rental' },
+      { value: 'Other Services', label: 'Other Services' }
+    ];
     return (
       <div>
         <Navbar />
@@ -92,6 +120,16 @@ class CreateCompany extends Component {
                             value={this.state.name}
                             onChange={this.onChange}
                             error={errors.name}
+                          />
+                        </div>
+                        <div className="col-sm-6">
+                          <SelectList
+                            name="category"
+                            value={this.state.category}
+                            onChange={this.onChange}
+                            option={options}
+                            error={errors.category}
+                            label="Category"
                           />
                         </div>
                         <div className="col-sm-6">
