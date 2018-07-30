@@ -27,7 +27,7 @@ class CreateCompany extends Component {
       twitter: '',
       facebook: '',
       instagram: '',
-      category: null,
+      category: '',
       errors: {}
     };
   }
@@ -73,6 +73,7 @@ class CreateCompany extends Component {
   render() {
     const { errors } = this.state;
     const options = [
+      { value: 0, label: 'Select Catelogy' },
       { value: 'Service stations', label: 'Service stations' },
       {
         value: 'Maintenance and Construction',

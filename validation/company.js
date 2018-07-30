@@ -9,6 +9,7 @@ module.exports = function validateCompanyInput(data) {
   data.companyid = !isEmpty(data.companyid) ? data.companyid : '';
   data.address = !isEmpty(data.address) ? data.address : '';
   data.description = !isEmpty(data.description) ? data.description : '';
+  data.category = !isEmpty(data.category) ? data.category : '';
 
   if (!Validator.isLength(data.name, { min: 2, max: 50 })) {
     errors.name = 'Name needs to be between 2 and 50 characters';
@@ -20,6 +21,14 @@ module.exports = function validateCompanyInput(data) {
 
   if (Validator.isEmpty(data.name)) {
     errors.name = 'Company name is required';
+  }
+
+  if (Validator.isEmpty(data.category)) {
+    errors.category = 'Category is required';
+  }
+
+  if (data.category === '0') {
+    errors.category = 'Category is required';
   }
 
   if (Validator.isEmpty(data.field)) {

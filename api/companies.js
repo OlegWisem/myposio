@@ -85,6 +85,7 @@ router.post(
     if (req.body.email) companyFields.email = req.body.email;
     if (req.body.website) companyFields.website = req.body.website;
     if (req.body.phone) companyFields.phone = req.body.phone;
+    if (req.body.category) companyFields.category = req.body.category;
 
     // Social
     companyFields.social = {};

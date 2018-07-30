@@ -14,6 +14,7 @@ import {
 } from '../../actions/companyActions';
 import SideNavbar from '../layout/SideNavbar';
 import Navbar from '../layout/Navbar';
+import SelectList from '../common/SelectList';
 
 class EditCompany extends Component {
   constructor(props) {
@@ -85,7 +86,8 @@ class EditCompany extends Component {
       youtube: this.state.youtube,
       twitter: this.state.twitter,
       facebook: this.state.facebook,
-      instagram: this.state.instagram
+      instagram: this.state.instagram,
+      category: this.state.category
     };
 
     this.props.editCompany(
@@ -96,7 +98,30 @@ class EditCompany extends Component {
   };
   render() {
     const { errors } = this.state;
-
+    const options = [
+      { value: 0, label: 'Select Catelogy' },
+      { value: 'Service stations', label: 'Service stations' },
+      {
+        value: 'Maintenance and Construction',
+        label: 'Maintenance and Construction'
+      },
+      { value: 'Furniture and Home Sales', label: 'Furniture and Home Sales' },
+      {
+        value: 'Waste Management and Recycling',
+        label: 'Waste Management and Recycling'
+      },
+      { value: 'Real Estate', label: 'Real Estate' },
+      { value: 'Transport Services', label: 'Transport Services' },
+      { value: 'Sports and Recreation', label: 'Sports and Recreation' },
+      { value: 'Accommodation', label: 'Accommodation' },
+      { value: 'Tourist destinations', label: 'Tourist destinations' },
+      { value: 'Forest Services', label: 'Forest Services' },
+      { value: 'Restaurants', label: 'Restaurants' },
+      { value: 'Grocery', label: 'Grocery' },
+      { value: 'Health and wellness', label: 'Health and wellness' },
+      { value: 'Equipment rental', label: 'Equipment rental' },
+      { value: 'Other Services', label: 'Other Services' }
+    ];
     return (
       <div>
         <Navbar />
@@ -122,6 +147,16 @@ class EditCompany extends Component {
                             value={this.state.name}
                             onChange={this.onChange}
                             error={errors.name}
+                          />
+                        </div>
+                        <div className="col-sm-6">
+                          <SelectList
+                            name="category"
+                            value={this.state.category}
+                            onChange={this.onChange}
+                            option={options}
+                            error={errors.category}
+                            label="Category"
                           />
                         </div>
                         <div className="col-sm-6">
