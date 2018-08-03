@@ -10,6 +10,7 @@ import { createCompany } from '../../actions/companyActions';
 import SideNavbar from '../layout/SideNavbar';
 import Navbar from '../layout/Navbar';
 import SelectList from '../common/SelectList';
+import { FormattedMessage } from 'react-intl';
 
 class CreateCompany extends Component {
   constructor(props) {
@@ -73,33 +74,71 @@ class CreateCompany extends Component {
   render() {
     const { errors } = this.state;
     const options = [
-      { value: 0, label: 'Select Catelogy' },
-      { value: 'Service stations', label: 'Service stations' },
+      { value: 0, label: <FormattedMessage id="category.SelectCategory" /> },
+      {
+        value: 'Service stations',
+        label: <FormattedMessage id="category.Servicestations" />
+      },
       {
         value: 'Maintenance and Construction',
-        label: 'Maintenance and Construction'
+        label: <FormattedMessage id="category.MaintenanceandConstruction" />
       },
-      { value: 'Furniture and Home Sales', label: 'Furniture and Home Sales' },
+      {
+        value: 'Furniture and Home Sales',
+        label: <FormattedMessage id="category.FurnitureandHomeSales" />
+      },
       {
         value: 'Waste Management and Recycling',
-        label: 'Waste Management and Recycling'
+        label: <FormattedMessage id="category.WasteManagementandRecycling" />
       },
-      { value: 'Real Estate', label: 'Real Estate' },
-      { value: 'Transport Services', label: 'Transport Services' },
-      { value: 'Sports and Recreation', label: 'Sports and Recreation' },
-      { value: 'Accommodation', label: 'Accommodation' },
-      { value: 'Tourist destinations', label: 'Tourist destinations' },
-      { value: 'Forest Services', label: 'Forest Services' },
-      { value: 'Restaurants', label: 'Restaurants' },
-      { value: 'Grocery', label: 'Grocery' },
-      { value: 'Health and wellness', label: 'Health and wellness' },
-      { value: 'Equipment rental', label: 'Equipment rental' },
-      { value: 'Other Services', label: 'Other Services' }
+      {
+        value: 'Real Estate',
+        label: <FormattedMessage id="category.RealEstate" />
+      },
+      {
+        value: 'Transport Services',
+        label: <FormattedMessage id="category.TransportServices" />
+      },
+      {
+        value: 'Sports and Recreation',
+        label: <FormattedMessage id="category.SportsandRecreation" />
+      },
+      {
+        value: 'Accommodation',
+        label: <FormattedMessage id="category.Accommodation" />
+      },
+      {
+        value: 'Tourist destinations',
+        label: <FormattedMessage id="category.Touristdestinations" />
+      },
+      {
+        value: 'Forest Services',
+        label: <FormattedMessage id="category.ForestServices" />
+      },
+      {
+        value: 'Restaurants',
+        label: <FormattedMessage id="category.Restaurants" />
+      },
+      { value: 'Grocery', label: <FormattedMessage id="category.Grocery" /> },
+      {
+        value: 'Health and wellness',
+        label: <FormattedMessage id="category.Healthandwellness" />
+      },
+      {
+        value: 'Equipment rental',
+        label: <FormattedMessage id="category.Equipmentrental" />
+      },
+      {
+        value: 'Other Services',
+        label: <FormattedMessage id="category.OtherServices" />
+      }
     ];
     return (
       <div>
         <Navbar />
-        <Banner pageName="Add new company" />
+        <FormattedMessage id="createcompany.addnewcompany">
+          {addnewcompany => <Banner pageName={addnewcompany} />}
+        </FormattedMessage>
         <section className="user-page section-padding">
           <div className="container">
             <div className="row">
@@ -108,166 +147,256 @@ class CreateCompany extends Component {
               </div>
               <div className="col-lg-8 col-md-7 col-xs-12">
                 <div className="my-address">
-                  <h3 className="heading">Add new company</h3>
+                  <h3 className="heading">
+                    <FormattedMessage id="createcompany.addnewcompany" />
+                  </h3>
                   <div className="section-inforamation">
                     <form onSubmit={this.onSubmit}>
                       <div className="row">
                         <div className="col-sm-6">
-                          <TextField
-                            label="Company Name"
-                            placeholder="Enter Your Company Name"
-                            name="name"
-                            type="text"
-                            value={this.state.name}
-                            onChange={this.onChange}
-                            error={errors.name}
-                          />
+                          <FormattedMessage id="createcompany.companyname">
+                            {companyname => (
+                              <FormattedMessage id="createcompany.EnterYourCompanyName">
+                                {EnterYourCompanyName => (
+                                  <TextField
+                                    label={companyname}
+                                    placeholder={EnterYourCompanyName}
+                                    name="name"
+                                    type="text"
+                                    value={this.state.name}
+                                    onChange={this.onChange}
+                                    error={errors.name}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
                         </div>
                         <div className="col-sm-6">
-                          <SelectList
-                            name="category"
-                            value={this.state.category}
-                            onChange={this.onChange}
-                            option={options}
-                            error={errors.category}
-                            label="Category"
-                          />
+                          <FormattedMessage id="createcompany.category">
+                            {category => (
+                              <SelectList
+                                name="category"
+                                value={this.state.category}
+                                onChange={this.onChange}
+                                option={options}
+                                error={errors.category}
+                                label={category}
+                              />
+                            )}
+                          </FormattedMessage>
                         </div>
                         <div className="col-sm-6">
-                          <TextField
-                            label="Company Field"
-                            placeholder="Enter Your Company Field"
-                            name="field"
-                            type="text"
-                            value={this.state.field}
-                            onChange={this.onChange}
-                            error={errors.field}
-                          />
+                          <FormattedMessage id="createcompany.CompanyField">
+                            {CompanyField => (
+                              <FormattedMessage id="createcompany.EnterYourCompanyField">
+                                {EnterYourCompanyField => (
+                                  <TextField
+                                    label={CompanyField}
+                                    placeholder={EnterYourCompanyField}
+                                    name="field"
+                                    type="text"
+                                    value={this.state.field}
+                                    onChange={this.onChange}
+                                    error={errors.field}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
                         </div>
                         <div className="col-sm-6">
-                          <TextField
-                            label="Company ID"
-                            placeholder="Enter Your Company ID"
-                            name="companyid"
-                            type="text"
-                            value={this.state.companyid}
-                            onChange={this.onChange}
-                            error={errors.companyid}
-                          />
+                          <FormattedMessage id="createcompany.BusinessID">
+                            {BusinessID => (
+                              <FormattedMessage id="createcompany.EnterYourBusinessID">
+                                {EnterYourBusinessID => (
+                                  <TextField
+                                    label={BusinessID}
+                                    placeholder={EnterYourBusinessID}
+                                    name="companyid"
+                                    type="text"
+                                    value={this.state.companyid}
+                                    onChange={this.onChange}
+                                    error={errors.companyid}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
                         </div>
                         <div className="col-sm-6">
-                          <TextField
-                            label="Phone Number"
-                            placeholder="Ex: 0123456789"
-                            name="phone"
-                            type="text"
-                            value={this.state.phone}
-                            onChange={this.onChange}
-                            error={errors.phone}
-                          />
+                          <FormattedMessage id="createcompany.PhoneNumber">
+                            {PhoneNumber => (
+                              <FormattedMessage id="createcompany.PhoneNumberExample">
+                                {PhoneNumberExample => (
+                                  <TextField
+                                    label={PhoneNumber}
+                                    placeholder={PhoneNumberExample}
+                                    name="phone"
+                                    type="text"
+                                    value={this.state.phone}
+                                    onChange={this.onChange}
+                                    error={errors.phone}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
                         </div>
                         <div className="col-sm-6">
-                          <TextField
-                            label="Email Address"
-                            placeholder="Ex: example@domain.com"
-                            name="email"
-                            type="email"
-                            value={this.state.email}
-                            onChange={this.onChange}
-                            error={errors.email}
-                          />
+                          <FormattedMessage id="createcompany.EmailAddress">
+                            {EmailAddress => (
+                              <FormattedMessage id="createcompany.EmailAddressExample">
+                                {EmailAddressExample => (
+                                  <TextField
+                                    label={EmailAddress}
+                                    placeholder={EmailAddressExample}
+                                    name="email"
+                                    type="email"
+                                    value={this.state.email}
+                                    onChange={this.onChange}
+                                    error={errors.email}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
                         </div>
                         <div className="col-sm-6">
-                          <TextField
-                            label="Company Address"
-                            placeholder="Enter Your Company Address"
-                            name="address"
-                            type="text"
-                            value={this.state.address}
-                            onChange={this.onChange}
-                            error={errors.address}
-                          />
+                          <FormattedMessage id="createcompany.CompanyAddress">
+                            {CompanyAddress => (
+                              <FormattedMessage id="createcompany.EnterYourCompanyAddress">
+                                {EnterYourCompanyAddress => (
+                                  <TextField
+                                    label={CompanyAddress}
+                                    placeholder={EnterYourCompanyAddress}
+                                    name="address"
+                                    type="text"
+                                    value={this.state.address}
+                                    onChange={this.onChange}
+                                    error={errors.address}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
                         </div>
                         <div className="col-sm-6">
-                          <TextField
-                            label="Company Website"
-                            placeholder="Enter Your Company Website"
-                            name="website"
-                            type="text"
-                            value={this.state.website}
-                            onChange={this.onChange}
-                            error={errors.website}
-                          />
+                          <FormattedMessage id="createcompany.CompanyWebsite">
+                            {CompanyWebsite => (
+                              <FormattedMessage id="createcompany.EnterYourCompanyWebsite">
+                                {EnterYourCompanyWebsite => (
+                                  <TextField
+                                    label={CompanyWebsite}
+                                    placeholder={EnterYourCompanyWebsite}
+                                    name="website"
+                                    type="text"
+                                    value={this.state.website}
+                                    onChange={this.onChange}
+                                    error={errors.website}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
                         </div>
                         <div className="col-lg-12">
-                          <TextAreaField
-                            label="Company Description"
-                            placeholder="Write about your company"
-                            name="description"
-                            type="text"
-                            value={this.state.description}
-                            onChange={this.onChange}
-                            error={errors.description}
-                          />
+                          <FormattedMessage id="createcompany.CompanyDescription">
+                            {CompanyDescription => (
+                              <FormattedMessage id="createcompany.Writeaboutyourcompany">
+                                {Writeaboutyourcompany => (
+                                  <TextAreaField
+                                    label={CompanyDescription}
+                                    placeholder={Writeaboutyourcompany}
+                                    name="description"
+                                    type="text"
+                                    value={this.state.description}
+                                    onChange={this.onChange}
+                                    error={errors.description}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
                         </div>
                         <div className="col-sm-6 page-login-form">
                           <div className="login-form">
-                            <TextField
-                              placeholder="URL to your Twitter"
-                              name="twitter"
-                              icon="lni-twitter"
-                              type="text"
-                              value={this.state.twitter}
-                              onChange={this.onChange}
-                              error={errors.twitter}
-                            />
+                            <FormattedMessage id="createcompany.URLtoyourTwitter">
+                              {URLtoyourTwitter => (
+                                <TextField
+                                  placeholder={URLtoyourTwitter}
+                                  name="twitter"
+                                  icon="lni-twitter"
+                                  type="text"
+                                  value={this.state.twitter}
+                                  onChange={this.onChange}
+                                  error={errors.twitter}
+                                />
+                              )}
+                            </FormattedMessage>
                           </div>
                         </div>
                         <div className="col-sm-6 page-login-form">
                           <div className="login-form">
-                            <TextField
-                              placeholder="URL to your Facebook"
-                              name="facebook"
-                              icon="lni-facebook"
-                              type="text"
-                              value={this.state.facebook}
-                              onChange={this.onChange}
-                              error={errors.facebook}
-                            />
+                            <FormattedMessage id="createcompany.URLtoyourFacebook">
+                              {URLtoyourFacebook => (
+                                <TextField
+                                  placeholder={URLtoyourFacebook}
+                                  name="facebook"
+                                  icon="lni-facebook"
+                                  type="text"
+                                  value={this.state.facebook}
+                                  onChange={this.onChange}
+                                  error={errors.facebook}
+                                />
+                              )}
+                            </FormattedMessage>
                           </div>
                         </div>
                         <div className="col-sm-6 page-login-form">
                           <div className="login-form">
-                            <TextField
-                              placeholder="URL to your Instagram"
-                              name="instagram"
-                              icon="lni-instagram"
-                              type="text"
-                              value={this.state.instagram}
-                              onChange={this.onChange}
-                              error={errors.instagram}
-                            />
+                            <FormattedMessage id="createcompany.URLtoyourInstagram">
+                              {URLtoyourInstagram => (
+                                <TextField
+                                  placeholder={URLtoyourInstagram}
+                                  name="instagram"
+                                  icon="lni-instagram"
+                                  type="text"
+                                  value={this.state.instagram}
+                                  onChange={this.onChange}
+                                  error={errors.instagram}
+                                />
+                              )}
+                            </FormattedMessage>
                           </div>
                         </div>
                         <div className="col-sm-6 page-login-form">
                           <div className="login-form">
-                            <TextField
-                              placeholder="URL to your Youtube"
-                              name="youtube"
-                              icon="lni-display"
-                              type="text"
-                              value={this.state.youtube}
-                              onChange={this.onChange}
-                              error={errors.youtube}
-                            />
+                            <FormattedMessage id="createcompany.URLtoyourYoutube">
+                              {URLtoyourYoutube => (
+                                <TextField
+                                  placeholder={URLtoyourYoutube}
+                                  name="youtube"
+                                  icon="lni-display"
+                                  type="text"
+                                  value={this.state.youtube}
+                                  onChange={this.onChange}
+                                  error={errors.youtube}
+                                />
+                              )}
+                            </FormattedMessage>
                           </div>
                         </div>
                         <div className="mx-auto">
-                          <input
-                            type="submit"
-                            value="Add new company"
-                            className="btn btn-common mt-2"
-                          />
+                          <FormattedMessage id="createcompany.Addnewcompany">
+                            {Addnewcompany => (
+                              <input
+                                type="submit"
+                                value={Addnewcompany}
+                                className="btn btn-common mt-2"
+                              />
+                            )}
+                          </FormattedMessage>
                         </div>
                       </div>
                     </form>

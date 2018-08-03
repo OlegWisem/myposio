@@ -4,7 +4,8 @@ import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
 import { setCurrentUser, logoutUser } from './actions/authActions';
 
-import { Provider } from 'react-redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import store from './store';
 
 import PrivateRoute from './components/common/PrivateRoute';
@@ -25,6 +26,8 @@ import ChangePassword from './components/change-password/ChangePassword';
 import Catalog from './components/catalog/Catalog';
 import Company from './components/company/Company';
 import Review from './components/review/Review';
+import { IntlProvider } from 'react-intl';
+import messages from './lang/messages';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -53,8 +56,14 @@ if (localStorage.jwtToken) {
 
 class App extends Component {
   render() {
+    const { lang } = this.props;
     return (
-      <Provider store={store}>
+      <IntlProvider
+        locale={lang}
+        messages={messages[lang]}
+        key={lang}
+        textComponent={React.Fragment}
+      >
         <Router>
           <div className="App">
             <Switch>
@@ -96,9 +105,22 @@ class App extends Component {
             <Footer />
           </div>
         </Router>
-      </Provider>
+      </IntlProvider>
     );
   }
 }
 
-export default App;
+App.propTypes = {
+  lang: PropTypes.string.isRequired
+};
+
+function mapStateToProps(state) {
+  return {
+    lang: state.locale.lang
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  {}
+)(App);

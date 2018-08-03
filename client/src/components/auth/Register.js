@@ -6,6 +6,7 @@ import { registerUser, clearErrors } from '../../actions/authActions';
 import TextField from '../common/TextField';
 import Banner from '../common/Banner';
 import Navbar from '../layout/Navbar';
+import { FormattedMessage } from 'react-intl';
 
 class Register extends Component {
   constructor(props) {
@@ -53,75 +54,107 @@ class Register extends Component {
     return (
       <div>
         <Navbar />
-        <Banner pageName="Register" />
+        <FormattedMessage id="signup.register">
+          {register => <Banner pageName={register} />}
+        </FormattedMessage>
         <div id="content" className="section-padding">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-lg-5 col-md-6 col-xs-12">
                 <div className="page-login-form box">
-                  <h3>Create Your account</h3>
+                  <h3>
+                    <FormattedMessage id="signup.CreateYouraccount" />
+                  </h3>
                   <form
                     className="login-form"
                     onSubmit={this.onSubmit}
                     noValidate
                   >
-                    <TextField
-                      placeholder="Your Name"
-                      name="name"
-                      type="text"
-                      icon="lni-bubble"
-                      value={this.state.name}
-                      onChange={this.onChange}
-                      error={errors.name}
-                    />
-                    <TextField
-                      placeholder="Email"
-                      name="email"
-                      type="email"
-                      icon="lni-envelope"
-                      value={this.state.email}
-                      onChange={this.onChange}
-                      error={errors.email}
-                    />
-                    <TextField
-                      placeholder="Your Phone"
-                      name="phone"
-                      type="text"
-                      icon="lni-phone-handset"
-                      value={this.state.phone}
-                      onChange={this.onChange}
-                      error={errors.phone}
-                    />
-                    <TextField
-                      placeholder="Password"
-                      name="password"
-                      type="password"
-                      icon="lni-lock"
-                      value={this.state.password}
-                      onChange={this.onChange}
-                      error={errors.password}
-                    />
-                    <TextField
-                      placeholder="Retype Password"
-                      name="password2"
-                      type="password"
-                      icon="lni-unlock"
-                      value={this.state.password2}
-                      onChange={this.onChange}
-                      error={errors.password2}
-                    />
-
-                    <input
-                      type="submit"
-                      value="Register"
-                      className="btn btn-common log-btn mt-3"
-                    />
+                    <FormattedMessage id="signup.YourName">
+                      {YourName => (
+                        <TextField
+                          placeholder={YourName}
+                          name="name"
+                          type="text"
+                          icon="lni-bubble"
+                          value={this.state.name}
+                          onChange={this.onChange}
+                          error={errors.name}
+                        />
+                      )}
+                    </FormattedMessage>
+                    <FormattedMessage id="signup.Email">
+                      {Email => (
+                        <TextField
+                          placeholder={Email}
+                          name="email"
+                          type="email"
+                          icon="lni-envelope"
+                          value={this.state.email}
+                          onChange={this.onChange}
+                          error={errors.email}
+                        />
+                      )}
+                    </FormattedMessage>
+                    <FormattedMessage id="signup.YourPhone">
+                      {YourPhone => (
+                        <TextField
+                          placeholder={YourPhone}
+                          name="phone"
+                          type="text"
+                          icon="lni-phone-handset"
+                          value={this.state.phone}
+                          onChange={this.onChange}
+                          error={errors.phone}
+                        />
+                      )}
+                    </FormattedMessage>
+                    <FormattedMessage id="signup.Password">
+                      {Password => (
+                        <TextField
+                          placeholder={Password}
+                          name="password"
+                          type="password"
+                          icon="lni-lock"
+                          value={this.state.password}
+                          onChange={this.onChange}
+                          error={errors.password}
+                        />
+                      )}
+                    </FormattedMessage>
+                    <FormattedMessage id="signup.RetypePassword">
+                      {RetypePassword => (
+                        <TextField
+                          placeholder={RetypePassword}
+                          name="password2"
+                          type="password"
+                          icon="lni-unlock"
+                          value={this.state.password2}
+                          onChange={this.onChange}
+                          error={errors.password2}
+                        />
+                      )}
+                    </FormattedMessage>
+                    <FormattedMessage id="signup.register">
+                      {register => (
+                        <input
+                          type="submit"
+                          value={register}
+                          className="btn btn-common log-btn mt-3"
+                        />
+                      )}
+                    </FormattedMessage>
                     <p className="text-center">
-                      <Link to="/forgot-password">Forgot Password?</Link>
+                      <Link to="/forgot-password">
+                        <FormattedMessage id="signup.ForgotPassword" />
+                      </Link>
                     </p>
                     <p className="text-center">
-                      Already have an account?
-                      <Link to="/login"> Sign In</Link>
+                      <FormattedMessage id="signup.Alreadyhaveanaccount" />
+                      <Link to="/login">
+                        {' '}
+                        <FormattedMessage id="signup.SignIn" />
+                      </Link>
                     </p>
                   </form>
                 </div>

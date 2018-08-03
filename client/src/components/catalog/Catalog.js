@@ -7,6 +7,7 @@ import Spinner from '../common/Spinner';
 import Banner from '../common/Banner';
 import Navbar from '../layout/Navbar';
 import SelectList from '../common/SelectList';
+import { FormattedMessage } from 'react-intl';
 
 class Catalog extends Component {
   constructor(props) {
@@ -30,28 +31,64 @@ class Catalog extends Component {
     const { companies, loading } = this.props.company;
 
     const options = [
-      { value: 0, label: 'Select Catelogy' },
-      { value: 'Service stations', label: 'Service stations' },
+      { value: 0, label: <FormattedMessage id="category.SelectCategory" /> },
+      {
+        value: 'Service stations',
+        label: <FormattedMessage id="category.Servicestations" />
+      },
       {
         value: 'Maintenance and Construction',
-        label: 'Maintenance and Construction'
+        label: <FormattedMessage id="category.MaintenanceandConstruction" />
       },
-      { value: 'Furniture and Home Sales', label: 'Furniture and Home Sales' },
+      {
+        value: 'Furniture and Home Sales',
+        label: <FormattedMessage id="category.FurnitureandHomeSales" />
+      },
       {
         value: 'Waste Management and Recycling',
-        label: 'Waste Management and Recycling'
+        label: <FormattedMessage id="category.WasteManagementandRecycling" />
       },
-      { value: 'Real Estate', label: 'Real Estate' },
-      { value: 'Transport Services', label: 'Transport Services' },
-      { value: 'Sports and Recreation', label: 'Sports and Recreation' },
-      { value: 'Accommodation', label: 'Accommodation' },
-      { value: 'Tourist destinations', label: 'Tourist destinations' },
-      { value: 'Forest Services', label: 'Forest Services' },
-      { value: 'Restaurants', label: 'Restaurants' },
-      { value: 'Grocery', label: 'Grocery' },
-      { value: 'Health and wellness', label: 'Health and wellness' },
-      { value: 'Equipment rental', label: 'Equipment rental' },
-      { value: 'Other Services', label: 'Other Services' }
+      {
+        value: 'Real Estate',
+        label: <FormattedMessage id="category.RealEstate" />
+      },
+      {
+        value: 'Transport Services',
+        label: <FormattedMessage id="category.TransportServices" />
+      },
+      {
+        value: 'Sports and Recreation',
+        label: <FormattedMessage id="category.SportsandRecreation" />
+      },
+      {
+        value: 'Accommodation',
+        label: <FormattedMessage id="category.Accommodation" />
+      },
+      {
+        value: 'Tourist destinations',
+        label: <FormattedMessage id="category.Touristdestinations" />
+      },
+      {
+        value: 'Forest Services',
+        label: <FormattedMessage id="category.ForestServices" />
+      },
+      {
+        value: 'Restaurants',
+        label: <FormattedMessage id="category.Restaurants" />
+      },
+      { value: 'Grocery', label: <FormattedMessage id="category.Grocery" /> },
+      {
+        value: 'Health and wellness',
+        label: <FormattedMessage id="category.Healthandwellness" />
+      },
+      {
+        value: 'Equipment rental',
+        label: <FormattedMessage id="category.Equipmentrental" />
+      },
+      {
+        value: 'Other Services',
+        label: <FormattedMessage id="category.OtherServices" />
+      }
     ];
 
     let companyItems;
@@ -73,14 +110,20 @@ class Catalog extends Component {
           <CatalogItem key={company._id} company={company} />
         ));
       } else {
-        companyItems = <h4>No companies found...</h4>;
+        companyItems = (
+          <h4>
+            <FormattedMessage id="catalog.Nocompaniesfound" />
+          </h4>
+        );
       }
     }
 
     return (
       <div>
         <Navbar />
-        <Banner pageName="Catalog" />
+        <FormattedMessage id="catalog.catalog">
+          {catalog => <Banner pageName={catalog} />}
+        </FormattedMessage>
         <div className="main-container section-padding">
           <div className="container">
             <div className="row">
@@ -88,14 +131,18 @@ class Catalog extends Component {
                 <div className="search-add">
                   <form>
                     <div className="form-group">
-                      <input
-                        type="search"
-                        className="form-control"
-                        name="field-name"
-                        placeholder="Search for a company"
-                        onChange={this.updateSearch.bind(this)}
-                        value={this.state.search}
-                      />
+                      <FormattedMessage id="catalog.searchforacompany">
+                        {searchfoacompany => (
+                          <input
+                            type="search"
+                            className="form-control"
+                            name="field-name"
+                            placeholder={searchfoacompany}
+                            onChange={this.updateSearch.bind(this)}
+                            value={this.state.search}
+                          />
+                        )}
+                      </FormattedMessage>
                       <button type="submit" className="search-btn">
                         <span className="lni-search" />
                       </button>
@@ -111,7 +158,9 @@ class Catalog extends Component {
                 <div className="sidebar sticky right">
                   {/* Widget */}
                   <div className="widget">
-                    <h3 className="sidebar-title">Filter</h3>
+                    <h3 className="sidebar-title">
+                      <FormattedMessage id="catalog.filter" />
+                    </h3>
                     <div className="row with-forms">
                       <div className="col-md-12">
                         <SelectList
@@ -122,7 +171,6 @@ class Catalog extends Component {
                         />
                       </div>
                     </div>
-                    <button className="fullwidth btn btn-common">Search</button>
                   </div>
                   {/* Widget End */}
                 </div>

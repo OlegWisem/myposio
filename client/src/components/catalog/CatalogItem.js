@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import isEmpty from '../../validation/is-empty';
+import { FormattedMessage } from 'react-intl';
 
 class CatalogItem extends Component {
   render() {
@@ -38,19 +39,25 @@ class CatalogItem extends Component {
                   <ul className="additional-details">
                     {isEmpty(company.phone) ? null : (
                       <li>
-                        <strong>Tel.:</strong>
+                        <strong>
+                          <FormattedMessage id="catalog.phone" />
+                        </strong>
                         <span>{company.phone}</span>
                       </li>
                     )}
                     {isEmpty(company.email) ? null : (
                       <li>
-                        <strong>E-mail:</strong>
+                        <strong>
+                          <FormattedMessage id="catalog.email" />
+                        </strong>
                         <span>{company.email}</span>
                       </li>
                     )}
                     {isEmpty(company.website) ? null : (
                       <li>
-                        <strong>www:</strong>
+                        <strong>
+                          <FormattedMessage id="catalog.www" />
+                        </strong>
                         <span>
                           <a href={company.website}>{company.website}</a>
                         </span>
@@ -64,7 +71,7 @@ class CatalogItem extends Component {
                       to={`/company/${company._id}`}
                       className="btn btn-common mt-2"
                     >
-                      Learn more
+                      <FormattedMessage id="catalog.learnmore" />
                     </Link>
                   </div>
                 </div>

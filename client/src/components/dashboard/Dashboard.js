@@ -11,6 +11,7 @@ import Spinner from '../common/Spinner';
 import isEmpty from '../../validation/is-empty';
 import SideNavbar from '../layout/SideNavbar';
 import Navbar from '../layout/Navbar';
+import { FormattedMessage } from 'react-intl';
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -36,10 +37,12 @@ class Dashboard extends Component {
                 <Link to="/dashboard">{companyItem.name}</Link>
               </h3>
               {companyItem.isreviewed === true ? (
-                <span className="text-success">Published</span>
+                <span className="text-success">
+                  <FormattedMessage id="dashboard.published" />
+                </span>
               ) : (
                 <span className="text-danger" style={{ fontSize: 14 }}>
-                  Under Review
+                  <FormattedMessage id="dashboard.underreview" />
                 </span>
               )}
               <div className="row">
@@ -68,19 +71,25 @@ class Dashboard extends Component {
                   <ul className="additional-details">
                     {isEmpty(companyItem.phone) ? null : (
                       <li>
-                        <strong>Puh.:</strong>
+                        <strong>
+                          <FormattedMessage id="dashboard.phone" />
+                        </strong>
                         <span>{companyItem.phone}</span>
                       </li>
                     )}
                     {isEmpty(companyItem.email) ? null : (
                       <li>
-                        <strong>E-mail:</strong>
+                        <strong>
+                          <FormattedMessage id="dashboard.email" />
+                        </strong>
                         <span>{companyItem.email}</span>
                       </li>
                     )}
                     {isEmpty(companyItem.website) ? null : (
                       <li>
-                        <strong>www:</strong>
+                        <strong>
+                          <FormattedMessage id="dashboard.www" />
+                        </strong>
                         <span>
                           <a href={companyItem.website}>
                             {companyItem.website}
@@ -96,7 +105,7 @@ class Dashboard extends Component {
                       to={`/edit-company/${companyItem._id}`}
                       className="btn btn-common mt-2"
                     >
-                      Edit
+                      <FormattedMessage id="dashboard.edit" />
                     </Link>
                   </div>
                 </div>
@@ -109,7 +118,9 @@ class Dashboard extends Component {
         dashboardContent = (
           <div>
             <div className="text-center">
-              <h5>You have not yet setup company, please add some info.</h5>
+              <h5>
+                <FormattedMessage id="dashboard.nocompanies" />
+              </h5>
             </div>
           </div>
         );
@@ -118,7 +129,9 @@ class Dashboard extends Component {
     return (
       <div>
         <Navbar />
-        <Banner pageName="Dashboard" />
+        <FormattedMessage id="dashboard.dashboard">
+          {dashboard => <Banner pageName={dashboard} />}
+        </FormattedMessage>
         <section className="user-page section-padding">
           <div className="container">
             <div className="row">
@@ -127,7 +140,9 @@ class Dashboard extends Component {
               </div>
               <div className="col-lg-8 col-md-7 col-xs-12">
                 <div className="dashborad-box">
-                  <h4 className="title">Your Companies</h4>
+                  <h4 className="title">
+                    <FormattedMessage id="dashboard.yourcompanies" />
+                  </h4>
                   <div className="property-wrap">
                     <div className="property-item">
                       <div className="item-body">
@@ -137,7 +152,7 @@ class Dashboard extends Component {
                             to="/create-company"
                             className="btn btn-common mt-2"
                           >
-                            Add new company
+                            <FormattedMessage id="dashboard.addnewcompany" />
                           </Link>
                         </div>
                       </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 
 const Banner = ({ pageName }) => {
   return (
@@ -10,7 +11,7 @@ const Banner = ({ pageName }) => {
           <div className="text-center">
             <h2>{pageName}</h2>
             <Link to="/">
-              <i className="lni-home" /> Home
+              <i className="lni-home" /> <FormattedMessage id="banner.home" />
             </Link>
             <span className="crumbs-spacer">
               <i className="lni-chevron-right" />

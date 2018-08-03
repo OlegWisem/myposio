@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 //import { clearCurrentProfile } from '../../actions/authActions';
+import { setLocale } from '../../actions/localeActions';
+import { FormattedMessage } from 'react-intl';
 
 class Navbar extends Component {
   onLogoutClick(e) {
@@ -19,10 +21,10 @@ class Navbar extends Component {
     const guestLinks = (
       <div>
         <Link to="/login" className="header-top-button">
-          Log In
+          <FormattedMessage id="nav.login" />
         </Link>
         <Link to="/register" className="header-top-button white-bg">
-          Sign Up
+          <FormattedMessage id="nav.signup" />
         </Link>
       </div>
     );
@@ -30,14 +32,14 @@ class Navbar extends Component {
     const authLinks = (
       <div>
         <Link to="/dashboard" className="header-top-button white-bg">
-          Dashboard
+          <FormattedMessage id="nav.dashboard" />
         </Link>
         <a
           href=""
           onClick={this.onLogoutClick.bind(this)}
           className="header-top-button"
         >
-          Logout
+          <FormattedMessage id="nav.logout" />
         </a>
       </div>
     );
@@ -52,13 +54,16 @@ class Navbar extends Component {
                 {/* Start Contact Info */}
                 <ul className="links clearfix">
                   <li>
-                    <i className="lni-phone-handset" />+358 44 767 4218
+                    <i className="lni-phone-handset" />
+                    <FormattedMessage id="nav.phone" />
                   </li>
                   <li>
-                    <i className="lni-envelope" /> matkailu.neuvonta@posio.fi
+                    <i className="lni-envelope" />{' '}
+                    <FormattedMessage id="nav.email" />
                   </li>
                   <li>
-                    <i className="lni-map-marker" /> Maaninkavaarantie 5 POSIO{' '}
+                    <i className="lni-map-marker" />{' '}
+                    <FormattedMessage id="nav.address" />{' '}
                   </li>
                 </ul>
                 {/* End Contact Info */}
@@ -73,6 +78,7 @@ class Navbar extends Component {
         </div>
         {/* End Top Bar */}
         {/* Navbar Start */}
+
         <nav
           className="navbar navbar-expand-lg navbar-light bg-white"
           data-toggle="sticky-onscroll"
@@ -92,12 +98,16 @@ class Navbar extends Component {
                 <span className="navbar-toggler-icon" />
                 <span className="lin-menu" />
               </button>
-              <Link className="navbar-brand" to="/">
-                <img src={Logo} style={{ width: 90, marginRight: 5 }} alt="" />
-              </Link>
             </div>
             <div className="collapse navbar-collapse" id="main-navbar">
               <ul className="navbar-nav mr-auto w-100">
+                <li className="nav-item" style={{ width: 180 }}>
+                  <div className="logo">
+                    <Link to="/">
+                      <img src={Logo} alt="" />
+                    </Link>
+                  </div>
+                </li>
                 <li className="nav-item">
                   <NavLink
                     exact
@@ -105,7 +115,7 @@ class Navbar extends Component {
                     className="nav-link"
                     to="/"
                   >
-                    Home
+                    <FormattedMessage id="nav.home" />
                   </NavLink>
                 </li>
                 <li className="nav-item">
@@ -115,7 +125,7 @@ class Navbar extends Component {
                     className="nav-link"
                     to="/catalog"
                   >
-                    Catalog
+                    <FormattedMessage id="nav.catalog" />
                   </NavLink>
                 </li>
                 {isAuthenticated === true && (
@@ -126,17 +136,49 @@ class Navbar extends Component {
                       className="nav-link"
                       to="/dashboard"
                     >
-                      Dashboard
+                      <FormattedMessage id="nav.dashboard" />
                     </NavLink>
                   </li>
                 )}
+                <li className="nav-item">
+                  <a
+                    className="nav-link"
+                    role="button"
+                    onClick={() => this.props.setLocale('en')}
+                  >
+                    EN
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    className="nav-link"
+                    role="button"
+                    onClick={() => this.props.setLocale('fi')}
+                  >
+                    FI
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
           {/* Mobile Menu Start */}
           <ul className="mobile-menu">
-            <li className="active">
-              <Link to="/catalog">Catalog</Link>
+            <li>
+              <NavLink exact activeClassName="active" to="/">
+                <FormattedMessage id="nav.home" />
+              </NavLink>
+            </li>
+            <li>
+              <NavLink exact activeClassName="active" to="/catalog">
+                <FormattedMessage id="nav.catalog" />
+              </NavLink>
+            </li>
+            <li>
+              {isAuthenticated === true && (
+                <NavLink exact activeClassName="active" to="/dashboard">
+                  <FormattedMessage id="nav.dashboard" />
+                </NavLink>
+              )}
             </li>
           </ul>
           {/* Mobile Menu End */}
@@ -149,7 +191,8 @@ class Navbar extends Component {
 
 Navbar.propTypes = {
   logoutUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  setLocale: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -158,5 +201,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser }
+  { logoutUser, setLocale }
 )(Navbar);

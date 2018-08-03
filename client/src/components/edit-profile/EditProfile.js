@@ -119,14 +119,27 @@ class EditProfile extends Component {
                             onChange={this.onChange}
                             error={errors.phone}
                           />
-                          <TextField
-                            label="Avatar"
-                            placeholder="Upload your avatar"
-                            name="avatar"
-                            type="file"
-                            onChange={this.onFileSelect}
-                            error={errors.avatar}
-                          />
+                          <label>Avatar</label>
+                          <div className="custom-file">
+                            <input
+                              type="file"
+                              className="custom-file-input"
+                              id="customFile"
+                            />
+                            <label
+                              className="custom-file-label"
+                              for="customFile"
+                              onChange={this.onFileSelect}
+                            >
+                              Upload your avatar
+                            </label>
+                          </div>
+                          {errors.avatar && (
+                            <div className="invalid-feedback">
+                              {errors.avatar}
+                            </div>
+                          )}
+
                           <div className="mx-auto">
                             <input
                               type="submit"

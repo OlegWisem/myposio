@@ -4,6 +4,7 @@ import { logoutUser } from '../../actions/authActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import isEmpty from '../../validation/is-empty';
+import { FormattedMessage } from 'react-intl';
 
 class SideNavbar extends Component {
   onLogoutClick(e) {
@@ -33,30 +34,35 @@ class SideNavbar extends Component {
             <ul>
               <li>
                 <NavLink exact activeClassName="active" to="/dashboard">
-                  <i className="lni-files" /> Dashboard
+                  <i className="lni-files" />{' '}
+                  <FormattedMessage id="sidenav.dashboard" />
                 </NavLink>
               </li>
               <li>
                 <NavLink exact activeClassName="active" to="/create-company">
-                  <i className="lni-plus" /> Add new company
+                  <i className="lni-plus" />{' '}
+                  <FormattedMessage id="sidenav.AddNewCompany" />
                 </NavLink>
               </li>
               <li>
                 <NavLink exact activeClassName="active" to="/edit-profile">
-                  <i className="lni-pencil-alt" /> Edit profile
+                  <i className="lni-pencil-alt" />{' '}
+                  <FormattedMessage id="sidenav.EditProfile" />
                 </NavLink>
               </li>
               {!user.isAdmin ? null : (
                 <li>
                   <NavLink exact activeClassName="active" to="/review">
-                    <i className="lni-check-mark-circle" /> Review companies
+                    <i className="lni-check-mark-circle" />{' '}
+                    <FormattedMessage id="sidenav.Reviewcompanies" />
                   </NavLink>
                 </li>
               )}
 
               <li>
                 <a href="" onClick={this.onLogoutClick.bind(this)}>
-                  <i className="lni-exit" />Log Out
+                  <i className="lni-exit" />
+                  <FormattedMessage id="sidenav.LogOut" />
                 </a>
               </li>
             </ul>

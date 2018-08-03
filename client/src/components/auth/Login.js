@@ -6,6 +6,7 @@ import { loginUser, clearErrors } from '../../actions/authActions';
 import TextField from '../common/TextField';
 import Banner from '../common/Banner';
 import Navbar from '../layout/Navbar';
+import { FormattedMessage } from 'react-intl';
 
 class Login extends Component {
   constructor(props) {
@@ -53,42 +54,62 @@ class Login extends Component {
     return (
       <div>
         <Navbar />
-        <Banner pageName="Login" />
+        <FormattedMessage id="login.login">
+          {login => <Banner pageName={login} />}
+        </FormattedMessage>
         <div id="content" className="section-padding">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-lg-5 col-md-6 col-xs-12">
                 <div className="page-login-form box">
-                  <h3>Login</h3>
+                  <h3>
+                    <FormattedMessage id="login.login" />
+                  </h3>
                   <form className="login-form" onSubmit={this.onSubmit}>
-                    <TextField
-                      placeholder="Email"
-                      name="email"
-                      type="email"
-                      icon="lni-user"
-                      value={this.state.email}
-                      onChange={this.onChange}
-                      error={errors.email}
-                    />
-                    <TextField
-                      placeholder="Password"
-                      name="password"
-                      type="password"
-                      icon="lni-lock"
-                      value={this.state.password}
-                      onChange={this.onChange}
-                      error={errors.password}
-                    />
-                    <input
-                      type="submit"
-                      value="Login"
-                      className="btn btn-common log-btn mt-3"
-                    />
+                    <FormattedMessage id="login.email">
+                      {email => (
+                        <TextField
+                          placeholder={email}
+                          name="email"
+                          type="email"
+                          icon="lni-user"
+                          value={this.state.email}
+                          onChange={this.onChange}
+                          error={errors.email}
+                        />
+                      )}
+                    </FormattedMessage>
+                    <FormattedMessage id="login.password">
+                      {password => (
+                        <TextField
+                          placeholder={password}
+                          name="password"
+                          type="password"
+                          icon="lni-lock"
+                          value={this.state.password}
+                          onChange={this.onChange}
+                          error={errors.password}
+                        />
+                      )}
+                    </FormattedMessage>
+                    <FormattedMessage id="login.login">
+                      {login => (
+                        <input
+                          type="submit"
+                          value={login}
+                          className="btn btn-common log-btn mt-3"
+                        />
+                      )}
+                    </FormattedMessage>
                     <p className="text-center">
-                      <Link to="/forgot-password">Forgot Password?</Link>
+                      <Link to="/forgot-password">
+                        <FormattedMessage id="login.ForgotPassword" />
+                      </Link>
                     </p>
                     <p className="text-center">
-                      <Link to="/register">Don't have an account?</Link>
+                      <Link to="/register">
+                        <FormattedMessage id="login.Donthaveanaccount" />
+                      </Link>
                     </p>
                   </form>
                 </div>

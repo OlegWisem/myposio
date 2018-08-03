@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from '../layout/Navbar';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 class Home extends Component {
   render() {
@@ -17,17 +18,17 @@ class Home extends Component {
               />
               <div className="carousel-caption d-md-block">
                 <h1 className="wow fadeInDown heading" data-wow-delay=".4s">
-                  Companies Catalog in Posio
+                  <FormattedMessage id="home.firstline" />
                 </h1>
                 <p className="fadeInUp wow" data-wow-delay=".6s">
-                  Publish and Search for a companies in Posio
+                  <FormattedMessage id="home.secondline" />
                 </p>
                 <Link
                   to="/catalog"
                   className="fadeInUp wow btn btn-common"
                   data-wow-delay=".6s"
                 >
-                  Catalog
+                  <FormattedMessage id="home.button" />
                 </Link>
               </div>
             </div>
