@@ -14,6 +14,9 @@ const fs = require('fs');
 // Load User model
 const User = require('../models/User');
 
+// Load translations
+const messages = require('../lang/messages');
+
 // Load Input Validation
 const validateRegisterInput = require('../validation/register');
 const validateProfileInput = require('../validation/profile');
@@ -64,6 +67,9 @@ router.get('/test', (req, res) => res.json({ msg: 'Users Works' }));
 // @desc    Register user
 // @access  Public
 router.post('/register', (req, res) => {
+  //Check for language
+  if (!req.body.locale)
+    return res.status(400).json({ lang: 'Locale value is required' });
   const { errors, isValid } = validateRegisterInput(req.body);
 
   // Check Validation
@@ -73,7 +79,9 @@ router.post('/register', (req, res) => {
 
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
-      errors.email = 'Email already exists';
+      if (req.body.locale === 'fi')
+        errors.email = messages.fi['register.emailExists'];
+      else errors.email = messages.en['register.emailExists'];
       return res.status(400).json(errors);
     } else {
       const newUser = new User({
@@ -103,6 +111,9 @@ router.post(
   '/changepassword',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    if (!req.body.locale)
+      return res.status(400).json({ lang: 'Locale value is required' });
+
     const { errors, isValid } = validateChangePasswordInput(req.body);
 
     // Check Validation
@@ -116,7 +127,9 @@ router.post(
     User.findOne({ email: req.body.email }).then(user => {
       // Check for user
       if (!user) {
-        errors.email = 'User not found';
+        if (req.body.locale === 'fi')
+          errors.email = messages.fi['login.userNotFound'];
+        else errors.email = messages.en['login.userNotFound'];
         return res.status(404).json(errors);
       } else {
         // Check Old Password
@@ -131,7 +144,12 @@ router.post(
               });
             });
           } else {
-            errors.oldpassword = 'Password incorrect';
+            if (req.body.locale === 'fi')
+              errors.oldpassword =
+                messages.fi['changePassword.passwordIncorrect'];
+            else
+              errors.oldpassword =
+                messages.en['changePassword.passwordIncorrect'];
             return res.status(400).json(errors);
           }
         });
@@ -144,6 +162,10 @@ router.post(
 // @desc    Login User / Returning JWT Token
 // @access  Public
 router.post('/login', (req, res) => {
+  //Check for language
+  if (!req.body.locale)
+    return res.status(400).json({ lang: 'Locale value is required' });
+
   const { errors, isValid } = validateLoginInput(req.body);
 
   // Check Validation
@@ -158,7 +180,9 @@ router.post('/login', (req, res) => {
   User.findOne({ email }).then(user => {
     // Check for user
     if (!user) {
-      errors.email = 'User not found';
+      if (req.body.locale === 'fi')
+        errors.email = messages.fi['login.userNotFound'];
+      else errors.email = messages.en['login.userNotFound'];
       return res.status(404).json(errors);
     }
 
@@ -190,7 +214,9 @@ router.post('/login', (req, res) => {
           }
         );
       } else {
-        errors.password = 'Password incorrect';
+        if (req.body.locale === 'fi')
+          errors.password = messages.fi['login.passwordIncorrect'];
+        else errors.password = messages.en['login.passwordIncorrect'];
         return res.status(400).json(errors);
       }
     });
@@ -222,6 +248,9 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   upload.single('avatar'),
   (req, res) => {
+    //Check for language
+    if (!req.body.locale)
+      return res.status(400).json({ lang: 'Locale value is required' });
     const { errors, isValid } = validateProfileInput(req.body);
 
     // Check Validation
@@ -288,6 +317,10 @@ router.get('/mail/test', (req, res) => {
 // @desc    Forgot password - generate token and send e-mail
 // @access  Public
 router.post('/forgot', (req, res) => {
+  //Check for language
+  if (!req.body.locale)
+    return res.status(400).json({ lang: 'Locale value is required' });
+
   const { errors, isValid } = validateForgotPasswordInput(req.body);
 
   // Check Validation
@@ -299,7 +332,9 @@ router.post('/forgot', (req, res) => {
   User.findOne({ email: req.body.email }).then(user => {
     // Check for user
     if (!user) {
-      errors.email = 'User not found';
+      if (req.body.locale === 'fi')
+        errors.email = messages.fi['forgotpassword.userNotFound'];
+      else errors.email = messages.en['forgotpassword.userNotFound'];
       return res.status(404).json(errors);
     }
     crypto.randomBytes(20, (err, buffer) => {
@@ -323,7 +358,8 @@ router.post('/forgot', (req, res) => {
             templateId: 'e52d49f2-014e-4ae3-8845-e9e08e94742d',
             substitutions: {
               email: req.body.email,
-              token: token
+              token: token,
+              lang: req.body.locale
             }
           };
           sendGrid.send(msg);
@@ -339,6 +375,9 @@ router.post('/forgot', (req, res) => {
 // @desc    Forgot password - validate token
 // @access  Public
 router.get('/reset', (req, res) => {
+  //Check for language
+  if (!req.query.lang)
+    return res.status(400).json({ lang: 'Locale value is required' });
   const { errors, isValid } = validateResetPasswordInput(req.query);
 
   // Check Validation
@@ -353,12 +392,16 @@ router.get('/reset', (req, res) => {
   }).then(user => {
     // Check for user
     if (!user) {
-      errors.email = 'Invalid request';
+      if (req.query.lang === 'fi')
+        errors.email = messages.fi['resetPassword.requestInvalid'];
+      else errors.email = messages.en['resetPassword.requestInvalid'];
       return res.status(404).json(errors);
     }
     // Check for token
     if (moment().isAfter(user.reset_password_expires)) {
-      errors.email = 'Token has expired';
+      if (req.query.lang === 'fi')
+        errors.email = messages.fi['resetPassword.tokenExpired'];
+      else errors.email = messages.en['resetPassword.tokenExpired'];
       return res.status(404).json(errors);
     }
     res.json({ valid: true });
@@ -369,6 +412,9 @@ router.get('/reset', (req, res) => {
 // @desc    Forgot password - set new password
 // @access  Public
 router.post('/reset', (req, res) => {
+  //Check for language
+  if (!req.body.locale)
+    return res.status(400).json({ lang: 'Locale value is required' });
   const { errors, isValid } = validateNewPasswordInput(req.query, req.body);
 
   // Check Validation
@@ -383,13 +429,17 @@ router.post('/reset', (req, res) => {
   }).then(user => {
     // Check for user
     if (!user) {
-      errors.email = 'Invalid request';
+      if (req.body.locale === 'fi')
+        errors.email = messages.fi['newPassword.requestInvalid'];
+      else errors.email = messages.en['newPassword.requestInvalid'];
       return res.status(404).json(errors);
     }
 
     // Check for token
     if (moment().isAfter(user.reset_password_expires)) {
-      errors.token = 'Token has expired';
+      if (req.body.locale === 'fi')
+        errors.token = messages.fi['newPassword.tokenExpired'];
+      else errors.token = messages.en['newPassword.tokenExpired'];
       return res.status(404).json(errors);
     }
 

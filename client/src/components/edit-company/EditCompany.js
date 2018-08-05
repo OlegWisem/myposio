@@ -16,6 +16,7 @@ import SideNavbar from '../layout/SideNavbar';
 import Navbar from '../layout/Navbar';
 import SelectList from '../common/SelectList';
 import { FormattedMessage } from 'react-intl';
+import options from '../common/Options';
 
 class EditCompany extends Component {
   constructor(props) {
@@ -88,7 +89,8 @@ class EditCompany extends Component {
       twitter: this.state.twitter,
       facebook: this.state.facebook,
       instagram: this.state.instagram,
-      category: this.state.category
+      category: this.state.category,
+      locale: this.props.locale.lang
     };
 
     this.props.editCompany(
@@ -99,66 +101,7 @@ class EditCompany extends Component {
   };
   render() {
     const { errors } = this.state;
-    const options = [
-      { value: 0, label: <FormattedMessage id="category.SelectCategory" /> },
-      {
-        value: 'Service stations',
-        label: <FormattedMessage id="category.Servicestations" />
-      },
-      {
-        value: 'Maintenance and Construction',
-        label: <FormattedMessage id="category.MaintenanceandConstruction" />
-      },
-      {
-        value: 'Furniture and Home Sales',
-        label: <FormattedMessage id="category.FurnitureandHomeSales" />
-      },
-      {
-        value: 'Waste Management and Recycling',
-        label: <FormattedMessage id="category.WasteManagementandRecycling" />
-      },
-      {
-        value: 'Real Estate',
-        label: <FormattedMessage id="category.RealEstate" />
-      },
-      {
-        value: 'Transport Services',
-        label: <FormattedMessage id="category.TransportServices" />
-      },
-      {
-        value: 'Sports and Recreation',
-        label: <FormattedMessage id="category.SportsandRecreation" />
-      },
-      {
-        value: 'Accommodation',
-        label: <FormattedMessage id="category.Accommodation" />
-      },
-      {
-        value: 'Tourist destinations',
-        label: <FormattedMessage id="category.Touristdestinations" />
-      },
-      {
-        value: 'Forest Services',
-        label: <FormattedMessage id="category.ForestServices" />
-      },
-      {
-        value: 'Restaurants',
-        label: <FormattedMessage id="category.Restaurants" />
-      },
-      { value: 'Grocery', label: <FormattedMessage id="category.Grocery" /> },
-      {
-        value: 'Health and wellness',
-        label: <FormattedMessage id="category.Healthandwellness" />
-      },
-      {
-        value: 'Equipment rental',
-        label: <FormattedMessage id="category.Equipmentrental" />
-      },
-      {
-        value: 'Other Services',
-        label: <FormattedMessage id="category.OtherServices" />
-      }
-    ];
+
     return (
       <div>
         <Navbar />
@@ -445,6 +388,7 @@ class EditCompany extends Component {
 
 EditCompany.propTypes = {
   auth: PropTypes.object.isRequired,
+  locale: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   company: PropTypes.object.isRequired
 };
@@ -452,7 +396,8 @@ EditCompany.propTypes = {
 const mapStateToProps = state => ({
   auth: state.auth,
   company: state.company,
-  errors: state.errors
+  errors: state.errors,
+  locale: state.locale
 });
 
 export default connect(

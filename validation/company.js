@@ -12,64 +12,87 @@ module.exports = function validateCompanyInput(data) {
   data.category = !isEmpty(data.category) ? data.category : '';
 
   if (!Validator.isLength(data.name, { min: 2, max: 50 })) {
-    errors.name = 'Name needs to be between 2 and 50 characters';
-  }
-
-  if (!Validator.isLength(data.field, { min: 2, max: 50 })) {
-    errors.field = 'Company field needs to be between 2 and 50 characters';
+    if (data.locale === 'fi') errors.name = messages.fi['company.nameLength'];
+    else errors.name = messages.en['company.nameLength'];
   }
 
   if (Validator.isEmpty(data.name)) {
-    errors.name = 'Company name is required';
+    if (data.locale === 'fi') errors.name = messages.fi['company.nameRequired'];
+    else errors.name = messages.en['company.nameRequired'];
   }
 
   if (Validator.isEmpty(data.category)) {
-    errors.category = 'Category is required';
+    if (data.locale === 'fi')
+      errors.category = messages.fi['company.categoryRequired'];
+    else errors.category = messages.en['company.categoryRequired'];
   }
 
   if (data.category === '0') {
-    errors.category = 'Category is required';
+    if (data.locale === 'fi')
+      errors.category = messages.fi['company.categoryRequired'];
+    else errors.category = messages.en['company.categoryRequired'];
+  }
+
+  if (!Validator.isLength(data.field, { min: 2, max: 50 })) {
+    if (data.locale === 'fi') errors.field = messages.fi['company.fieldLength'];
+    else errors.field = messages.en['company.fieldLength'];
   }
 
   if (Validator.isEmpty(data.field)) {
-    errors.field = 'Company field is required';
+    if (data.locale === 'fi')
+      errors.field = messages.fi['company.fieldRequired'];
+    else errors.field = messages.en['company.fieldRequired'];
   }
 
   if (Validator.isEmpty(data.address)) {
-    errors.address = 'Address field is required';
+    if (data.locale === 'fi')
+      errors.address = messages.fi['company.addressRequired'];
+    else errors.address = messages.en['company.addressRequired'];
   }
 
   if (Validator.isEmpty(data.description)) {
-    errors.description = 'Description field is required';
+    if (data.locale === 'fi')
+      errors.description = messages.fi['company.descriptionRequired'];
+    else errors.description = messages.en['company.descriptionRequired'];
   }
 
   if (!isEmpty(data.website)) {
     if (!Validator.isURL(data.website)) {
-      errors.website = 'Not a valid URL';
+      if (data.locale === 'fi')
+        errors.website = messages.fi['company.websiteValid'];
+      else errors.website = messages.en['company.websiteValid'];
     }
   }
 
   if (!isEmpty(data.youtube)) {
     if (!Validator.isURL(data.youtube)) {
-      errors.youtube = 'Not a valid URL';
+      if (data.locale === 'fi')
+        errors.youtube = messages.fi['company.youtubeValid'];
+      else errors.youtube = messages.en['company.youtubeValid'];
     }
   }
 
   if (!isEmpty(data.twitter)) {
     if (!Validator.isURL(data.twitter)) {
-      errors.twitter = 'Not a valid URL';
+      if (data.locale === 'fi')
+        errors.twitter = messages.fi['company.twitterValid'];
+      else errors.twitter = messages.en['company.twitterValid'];
     }
   }
 
   if (!isEmpty(data.facebook)) {
     if (!Validator.isURL(data.facebook)) {
-      errors.facebook = 'Not a valid URL';
+      if (data.locale === 'fi')
+        errors.facebook = messages.fi['company.facebookValid'];
+      else errors.facebook = messages.en['company.facebookValid'];
     }
   }
 
   if (!isEmpty(data.instagram)) {
     if (!Validator.isURL(data.instagram)) {
-      errors.instagram = 'Not a valid URL';
+      if (data.locale === 'fi')
+        errors.instagram = messages.fi['company.instagramValid'];
+      else errors.instagram = messages.en['company.instagramValid'];
     }
   }
 

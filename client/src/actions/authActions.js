@@ -119,7 +119,11 @@ export const requestNewPassword = (userData, history) => dispatch => {
 // Validate token
 export const validateToken = userData => dispatch => {
   axios
-    .get(`api/users/reset?email=${userData.email}&token=${userData.token}`)
+    .get(
+      `api/users/reset?email=${userData.email}&token=${userData.token}&lang=${
+        userData.lang
+      }`
+    )
     .then(res =>
       dispatch({
         type: VALIDATE_TOKEN,

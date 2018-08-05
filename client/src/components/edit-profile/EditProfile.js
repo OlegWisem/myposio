@@ -57,6 +57,7 @@ class EditProfile extends Component {
     data.append('name', this.state.name);
     data.append('email', this.state.email);
     data.append('phone', this.state.phone);
+    data.append('locale', this.props.locale.lang);
 
     if (
       this.props.auth.profile.name !== this.state.name ||

@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import Geocode from 'react-geocode';
 import style from './CompanyMapStyles';
 import { FormattedMessage } from 'react-intl';
+import options from '../common/Options';
 
 class Company extends Component {
   constructor(props) {
@@ -51,6 +52,7 @@ class Company extends Component {
           map,
           icon: 'img/location.png'
         });
+        console.log(marker);
       },
       error => {
         console.error(error);
@@ -124,7 +126,13 @@ class Company extends Component {
                           <strong>
                             <FormattedMessage id="company.Category" />
                           </strong>
-                          <span>{this.state.category}</span>
+                          <span>
+                            {
+                              options.find(
+                                element => element.value === this.state.category
+                              ).label
+                            }
+                          </span>
                         </li>
                       )}
                       {isEmpty(this.state.phone) ? null : (

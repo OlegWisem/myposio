@@ -1,5 +1,6 @@
 const Validator = require('validator');
 const isEmpty = require('./is-empty');
+const messages = require('../lang/messages');
 
 module.exports = function validateLoginInput(data) {
   let errors = {};
@@ -8,13 +9,16 @@ module.exports = function validateLoginInput(data) {
   data.password = !isEmpty(data.password) ? data.password : '';
 
   if (!Validator.isEmail(data.email)) {
-    errors.email = 'Email is invalid';
+    if (data.locale === 'fi') errors.email = messages.fi['login.emailInvalid'];
+    else errors.email = messages.en['login.emailInvalid'];
   }
   if (Validator.isEmpty(data.email)) {
-    errors.email = 'Email field is required';
+    if (data.locale === 'fi') errors.email = messages.fi['login.emailRequired'];
+    else errors.email = messages.en['login.emailRequired'];
   }
   if (Validator.isEmpty(data.password)) {
-    errors.password = 'Password field is required';
+    if (data.locale === 'fi') errors.password = messages.fi['login.password'];
+    else errors.password = messages.en['login.password'];
   }
 
   return {

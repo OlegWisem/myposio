@@ -8,19 +8,25 @@ module.exports = function validateProfileInput(data) {
   data.email = !isEmpty(data.email) ? data.email : '';
 
   if (!Validator.isLength(data.name, { min: 2, max: 30 })) {
-    errors.name = 'Name must be between 2 and 30 characters';
+    if (data.locale === 'fi') errors.name = messages.fi['profile.nameLength'];
+    else errors.name = messages.en['profile.nameLength'];
   }
 
   if (Validator.isEmpty(data.name)) {
-    errors.name = 'Name field is required';
+    if (data.locale === 'fi') errors.name = messages.fi['profile.nameRequired'];
+    else errors.name = messages.en['profile.nameRequired'];
   }
 
   if (!Validator.isEmail(data.email)) {
-    errors.email = 'Email is invalid';
+    if (data.locale === 'fi')
+      errors.email = messages.fi['profile.emailInvalid'];
+    else errors.email = messages.en['profile.emailInvalid'];
   }
 
   if (Validator.isEmpty(data.email)) {
-    errors.email = 'Email field is required';
+    if (data.locale === 'fi')
+      errors.email = messages.fi['profile.emailRequired'];
+    else errors.email = messages.en['profile.emailRequired'];
   }
 
   return {

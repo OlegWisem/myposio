@@ -42,7 +42,8 @@ class Register extends Component {
       email: this.state.email,
       phone: this.state.phone,
       password: this.state.password,
-      password2: this.state.password2
+      password2: this.state.password2,
+      locale: this.props.locale.lang
     };
 
     this.props.registerUser(newUser, this.props.history);
@@ -170,12 +171,14 @@ class Register extends Component {
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
+  locale: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  locale: state.locale
 });
 
 export default connect(

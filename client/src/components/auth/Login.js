@@ -42,7 +42,8 @@ class Login extends Component {
 
     const userData = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      locale: this.props.locale.lang
     };
 
     this.props.loginUser(userData);
@@ -125,12 +126,14 @@ class Login extends Component {
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
+  locale: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  locale: state.locale
 });
 
 export default connect(

@@ -29,7 +29,8 @@ class ResetPassword extends Component {
     const parsed = new URLSearchParams(this.props.location.search);
     const userData = {
       email: !isEmpty(parsed.get('email')) ? parsed.get('email') : '',
-      token: !isEmpty(parsed.get('token')) ? parsed.get('token') : ''
+      token: !isEmpty(parsed.get('token')) ? parsed.get('token') : '',
+      lang: !isEmpty(parsed.get('lang')) ? parsed.get('lang') : ''
     };
     this.props.validateToken(userData);
   }
@@ -61,7 +62,8 @@ class ResetPassword extends Component {
 
     const userData = {
       password: this.state.password,
-      password2: this.state.password2
+      password2: this.state.password2,
+      locale: this.props.locale.lang
     };
     const parsed = new URLSearchParams(this.props.location.search);
     const paramsData = {
@@ -158,12 +160,14 @@ ResetPassword.propTypes = {
   validateToken: PropTypes.func.isRequired,
   setNewPassword: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
+  locale: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  locale: state.locale
 });
 
 export default connect(

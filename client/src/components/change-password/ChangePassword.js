@@ -35,10 +35,13 @@ class ChangePassword extends Component {
       email: this.props.auth.user.email,
       oldpassword: this.state.oldpassword,
       password: this.state.password,
-      password2: this.state.password2
+      password2: this.state.password2,
+      locale: this.props.locale.lang
     };
-
-    if (window.confirm('Are you sure?')) {
+    let message = '';
+    if (this.props.locale.lang === 'en') message = 'Are you sure?';
+    else message = 'Oletko varma?';
+    if (window.confirm(message)) {
       this.props.changePassword(userData);
     }
   };
@@ -141,12 +144,14 @@ class ChangePassword extends Component {
 
 ChangePassword.propTypes = {
   auth: PropTypes.object.isRequired,
+  locale: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  locale: state.locale
 });
 
 export default connect(

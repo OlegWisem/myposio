@@ -40,7 +40,8 @@ class ForgotPassword extends Component {
     e.preventDefault();
 
     const userData = {
-      email: this.state.email
+      email: this.state.email,
+      locale: this.props.locale.lang
     };
 
     this.props.requestNewPassword(userData, this.props.history);
@@ -105,12 +106,14 @@ class ForgotPassword extends Component {
 ForgotPassword.propTypes = {
   requestNewPassword: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
+  locale: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  locale: state.locale
 });
 
 export default connect(

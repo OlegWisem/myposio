@@ -10,35 +10,52 @@ module.exports = function validateRegisterInput(data) {
   data.password2 = !isEmpty(data.password2) ? data.password2 : '';
 
   if (!Validator.isLength(data.name, { min: 2, max: 30 })) {
-    errors.name = 'Name must be between 2 and 30 characters';
+    if (data.locale === 'fi') errors.name = messages.fi['register.nameLength'];
+    else errors.name = messages.en['register.nameLength'];
   }
 
   if (Validator.isEmpty(data.name)) {
-    errors.name = 'Name field is required';
+    if (data.locale === 'fi')
+      errors.name = messages.fi['register.nameRequired'];
+    else errors.name = messages.en['register.nameRequired'];
   }
 
   if (!Validator.isEmail(data.email)) {
-    errors.email = 'Email is invalid';
+    if (data.locale === 'fi')
+      errors.email = messages.fi['register.emailInvalid'];
+    else errors.email = messages.en['register.emailInvalid'];
   }
 
   if (Validator.isEmpty(data.email)) {
-    errors.email = 'Email field is required';
+    if (data.locale === 'fi')
+      errors.email = messages.fi['register.emailRequired'];
+    else errors.email = messages.en['register.emailRequired'];
   }
 
-  if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
-    errors.password = 'Password must be at least 6 characters';
+  var regex = RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$');
+
+  if (!regex.test(data.password)) {
+    if (data.locale === 'fi')
+      errors.password = messages.fi['register.passwordReg'];
+    else errors.password = messages.en['register.passwordReg'];
   }
 
   if (Validator.isEmpty(data.password)) {
-    errors.password = 'Password field is required';
+    if (data.locale === 'fi')
+      errors.password = messages.fi['register.passwordRequired'];
+    else errors.password = messages.en['register.passwordRequired'];
   }
 
   if (!Validator.equals(data.password, data.password2)) {
-    errors.password2 = 'Passwords must match';
+    if (data.locale === 'fi')
+      errors.password2 = messages.fi['register.retypeMatch'];
+    else errors.password2 = messages.en['register.retypeMatch'];
   }
 
   if (Validator.isEmpty(data.password2)) {
-    errors.password2 = 'Confirm Password field is required';
+    if (data.locale === 'fi')
+      errors.password2 = messages.fi['register.retypeRequired'];
+    else errors.password2 = messages.en['register.retypeRequired'];
   }
 
   return {

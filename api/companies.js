@@ -23,6 +23,8 @@ router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    if (!req.body.locale)
+      return res.status(400).json({ lang: 'Locale value is required' });
     const { errors, isValid } = validateCompanyInput(req.body);
 
     // Check Validation
@@ -65,6 +67,8 @@ router.post(
   '/:company_id',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    if (!req.body.locale)
+      return res.status(400).json({ lang: 'Locale value is required' });
     const { errors, isValid } = validateCompanyInput(req.body);
 
     // Check Validation

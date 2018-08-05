@@ -7,10 +7,14 @@ module.exports = function validateForgotPasswordInput(data) {
   data.email = !isEmpty(data.email) ? data.email : '';
 
   if (!Validator.isEmail(data.email)) {
-    errors.email = 'Email is invalid';
+    if (data.locale === 'fi')
+      errors.email = messages.fi['forgotpassword.emailInvalid'];
+    else errors.email = messages.en['forgotpassword.emailInvalid'];
   }
   if (Validator.isEmpty(data.email)) {
-    errors.email = 'Email field is required';
+    if (data.locale === 'fi')
+      errors.email = messages.fi['forgotpassword.emailRequired'];
+    else errors.email = messages.en['forgotpassword.emailRequired'];
   }
 
   return {
