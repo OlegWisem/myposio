@@ -13,6 +13,7 @@ import Spinner from '../common/Spinner';
 import isEmpty from '../../validation/is-empty';
 import SideNavbar from '../layout/SideNavbar';
 import Navbar from '../layout/Navbar';
+import { FormattedMessage } from 'react-intl';
 
 class Review extends Component {
   componentDidMount() {
@@ -59,19 +60,25 @@ class Review extends Component {
                   <ul className="additional-details">
                     {isEmpty(companyItem.phone) ? null : (
                       <li>
-                        <strong>Puh.:</strong>
+                        <strong>
+                          <FormattedMessage id="review.phone" />
+                        </strong>
                         <span>{companyItem.phone}</span>
                       </li>
                     )}
                     {isEmpty(companyItem.email) ? null : (
                       <li>
-                        <strong>E-mail:</strong>
+                        <strong>
+                          <FormattedMessage id="review.email" />
+                        </strong>
                         <span>{companyItem.email}</span>
                       </li>
                     )}
                     {isEmpty(companyItem.website) ? null : (
                       <li>
-                        <strong>www:</strong>
+                        <strong>
+                          <FormattedMessage id="review.www" />
+                        </strong>
                         <span>
                           <a href={companyItem.website}>
                             {companyItem.website}
@@ -87,7 +94,14 @@ class Review extends Component {
                       to={`/company/${companyItem._id}`}
                       className="btn btn-common mt-2"
                     >
-                      View
+                      <FormattedMessage id="review.View" />
+                    </Link>
+                    <br />
+                    <Link
+                      to={`/edit-company/${companyItem._id}`}
+                      className="btn btn-common mt-2"
+                    >
+                      <FormattedMessage id="review.Edit" />
                     </Link>
                   </div>
                 </div>
@@ -97,7 +111,7 @@ class Review extends Component {
                   onClick={() => this.props.publishCompany(companyItem._id)}
                   className="btn btn-success mt-2"
                 >
-                  Publish
+                  <FormattedMessage id="review.Publish" />
                 </button>
                 <button
                   onClick={() =>
@@ -108,18 +122,19 @@ class Review extends Component {
                   }
                   className="btn btn-danger mt-2 ml-2"
                 >
-                  Delete
+                  <FormattedMessage id="review.Delete" />
                 </button>
               </div>
             </div>
           </div>
         ));
       } else {
-        // User is logged in but has no company
         dashboardContent = (
           <div>
             <div className="text-center">
-              <h5>You have not yet setup company, please add some info.</h5>
+              <h5>
+                <FormattedMessage id="review.NoCompany" />
+              </h5>
             </div>
           </div>
         );
@@ -128,7 +143,9 @@ class Review extends Component {
     return (
       <div>
         <Navbar />
-        <Banner pageName="Review Companies" />
+        <FormattedMessage id="review.reviewcompanies">
+          {reviewcompanies => <Banner pageName={reviewcompanies} />}
+        </FormattedMessage>
         <section className="user-page section-padding">
           <div className="container">
             <div className="row">
@@ -137,7 +154,9 @@ class Review extends Component {
               </div>
               <div className="col-lg-8 col-md-7 col-xs-12">
                 <div className="dashborad-box">
-                  <h4 className="title">Companies for Review</h4>
+                  <h4 className="title">
+                    <FormattedMessage id="review.CompaniesforReview" />
+                  </h4>
                   <div className="property-wrap">
                     <div className="property-item">
                       <div className="item-body">{dashboardContent}</div>

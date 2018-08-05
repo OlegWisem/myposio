@@ -9,6 +9,8 @@ import isEmpty from '../../validation/is-empty';
 import GoogleMapReact from 'google-map-react';
 import { Link } from 'react-router-dom';
 import Geocode from 'react-geocode';
+import style from './CompanyMapStyles';
+import { FormattedMessage } from 'react-intl';
 
 class Company extends Component {
   constructor(props) {
@@ -20,6 +22,7 @@ class Company extends Component {
       companyid: '',
       address: '',
       description: '',
+      category: '',
       phone: '',
       email: '',
       website: '',
@@ -72,168 +75,7 @@ class Company extends Component {
   render() {
     const { company_item, loading } = this.props.company;
     const { user, social } = this.state;
-
-    var $main_color = '#2d313f',
-      $saturation = -20,
-      $brightness = 5;
-
-    var style = [
-      {
-        //set saturation for the labels on the map
-        elementType: 'labels',
-        stylers: [{ saturation: $saturation }]
-      },
-      {
-        //poi stands for point of interest - don't show these lables on the map
-        featureType: 'poi',
-        elementType: 'labels',
-        stylers: [{ visibility: 'off' }]
-      },
-      {
-        //don't show highways lables on the map
-        featureType: 'road.highway',
-        elementType: 'labels',
-        stylers: [{ visibility: 'off' }]
-      },
-      {
-        //don't show local road lables on the map
-        featureType: 'road.local',
-        elementType: 'labels.icon',
-        stylers: [{ visibility: 'off' }]
-      },
-      {
-        //don't show arterial road lables on the map
-        featureType: 'road.arterial',
-        elementType: 'labels.icon',
-        stylers: [{ visibility: 'off' }]
-      },
-      {
-        //don't show road lables on the map
-        featureType: 'road',
-        elementType: 'geometry.stroke',
-        stylers: [{ visibility: 'off' }]
-      },
-      //style different elements on the map
-      {
-        featureType: 'transit',
-        elementType: 'geometry.fill',
-        stylers: [
-          { hue: $main_color },
-          { visibility: 'on' },
-          { lightness: $brightness },
-          { saturation: $saturation }
-        ]
-      },
-      {
-        featureType: 'poi',
-        elementType: 'geometry.fill',
-        stylers: [
-          { hue: $main_color },
-          { visibility: 'on' },
-          { lightness: $brightness },
-          { saturation: $saturation }
-        ]
-      },
-      {
-        featureType: 'poi.government',
-        elementType: 'geometry.fill',
-        stylers: [
-          { hue: $main_color },
-          { visibility: 'on' },
-          { lightness: $brightness },
-          { saturation: $saturation }
-        ]
-      },
-      {
-        featureType: 'poi.sport_complex',
-        elementType: 'geometry.fill',
-        stylers: [
-          { hue: $main_color },
-          { visibility: 'on' },
-          { lightness: $brightness },
-          { saturation: $saturation }
-        ]
-      },
-      {
-        featureType: 'poi.attraction',
-        elementType: 'geometry.fill',
-        stylers: [
-          { hue: $main_color },
-          { visibility: 'on' },
-          { lightness: $brightness },
-          { saturation: $saturation }
-        ]
-      },
-      {
-        featureType: 'poi.business',
-        elementType: 'geometry.fill',
-        stylers: [
-          { hue: $main_color },
-          { visibility: 'on' },
-          { lightness: $brightness },
-          { saturation: $saturation }
-        ]
-      },
-      {
-        featureType: 'transit',
-        elementType: 'geometry.fill',
-        stylers: [
-          { hue: $main_color },
-          { visibility: 'on' },
-          { lightness: $brightness },
-          { saturation: $saturation }
-        ]
-      },
-      {
-        featureType: 'transit.station',
-        elementType: 'geometry.fill',
-        stylers: [
-          { hue: $main_color },
-          { visibility: 'on' },
-          { lightness: $brightness },
-          { saturation: $saturation }
-        ]
-      },
-      {
-        featureType: 'landscape',
-        stylers: [
-          { hue: $main_color },
-          { visibility: 'on' },
-          { lightness: $brightness },
-          { saturation: $saturation }
-        ]
-      },
-      {
-        featureType: 'road',
-        elementType: 'geometry.fill',
-        stylers: [
-          { hue: $main_color },
-          { visibility: 'on' },
-          { lightness: $brightness },
-          { saturation: $saturation }
-        ]
-      },
-      {
-        featureType: 'road.highway',
-        elementType: 'geometry.fill',
-        stylers: [
-          { hue: $main_color },
-          { visibility: 'on' },
-          { lightness: $brightness },
-          { saturation: $saturation }
-        ]
-      },
-      {
-        featureType: 'water',
-        elementType: 'geometry',
-        stylers: [
-          { hue: $main_color },
-          { visibility: 'on' },
-          { lightness: $brightness },
-          { saturation: $saturation }
-        ]
-      }
-    ];
+    const admin = this.props.auth.user;
 
     const mapOptions = {
       styles: style
@@ -267,40 +109,62 @@ class Company extends Component {
                 {/* Product Info Start */}
                 <div className="col-lg-8 col-md-12 col-xs-12">
                   <div className="inner-box property-dsc">
-                    <h2 className="desc-title">Company Description</h2>
+                    <h2 className="desc-title">
+                      <FormattedMessage id="company.CompanyDescription" />
+                    </h2>
                     <p>{this.state.description}</p>
                   </div>
                   <div className="inner-box short-info">
-                    <h2 className="desc-title">Summary</h2>
+                    <h2 className="desc-title">
+                      <FormattedMessage id="company.Summary" />
+                    </h2>
                     <ul className="additional-details">
+                      {isEmpty(this.state.category) ? null : (
+                        <li>
+                          <strong>
+                            <FormattedMessage id="company.Category" />
+                          </strong>
+                          <span>{this.state.category}</span>
+                        </li>
+                      )}
                       {isEmpty(this.state.phone) ? null : (
                         <li>
-                          <strong>Phone.:</strong>
+                          <strong>
+                            <FormattedMessage id="company.Phone" />
+                          </strong>
                           <span>{this.state.phone}</span>
                         </li>
                       )}
                       {isEmpty(this.state.email) ? null : (
                         <li>
-                          <strong>E-mail:</strong>
+                          <strong>
+                            <FormattedMessage id="company.Email" />
+                          </strong>
                           <span>{this.state.email}</span>
                         </li>
                       )}
                       {isEmpty(this.state.website) ? null : (
                         <li>
-                          <strong>www:</strong>
+                          <strong>
+                            <FormattedMessage id="company.www" />
+                          </strong>
                           <span>{this.state.website}</span>
                         </li>
                       )}
                       {isEmpty(this.state.companyid) ? null : (
                         <li>
-                          <strong>Company ID:</strong>
+                          <strong>
+                            <FormattedMessage id="company.BusinessID" />
+                          </strong>
                           <span>{this.state.companyid}</span>
                         </li>
                       )}
                     </ul>
                   </div>
                   <div className="inner-box location-map">
-                    <h2 className="desc-title">Location On Map</h2>
+                    <h2 className="desc-title">
+                      <FormattedMessage id="company.LocationOnMap" />
+                    </h2>
                     <div style={{ height: '50vh', width: '100%' }}>
                       <GoogleMapReact
                         bootstrapURLKeys={{
@@ -338,29 +202,43 @@ class Company extends Component {
                           )}
                         </div>
                       </div>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Your Email"
-                      />
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Your Phone"
-                      />
-                      <textarea
-                        className="form-control"
-                        placeholder="Your Message"
-                        defaultValue={''}
-                      />
+                      <FormattedMessage id="company.YourEmail">
+                        {YourEmail => (
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder={YourEmail}
+                          />
+                        )}
+                      </FormattedMessage>
+                      <FormattedMessage id="company.YourPhone">
+                        {YourPhone => (
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder={YourPhone}
+                          />
+                        )}
+                      </FormattedMessage>
+                      <FormattedMessage id="company.YourMessage">
+                        {YourMessage => (
+                          <textarea
+                            className="form-control"
+                            placeholder={YourMessage}
+                            defaultValue={''}
+                          />
+                        )}
+                      </FormattedMessage>
                       <button className="btn btn-common fullwidth mt-4">
-                        Send Message
+                        <FormattedMessage id="company.SendMessage" />
                       </button>
                     </div>
                   </div>
                   {/* Social Media */}
                   <div className="widget widget-social">
-                    <h3 className="sidebar-title">Social Media</h3>
+                    <h3 className="sidebar-title">
+                      <FormattedMessage id="company.SocialMedia" />
+                    </h3>
                     <ul className="social-icons">
                       {isEmpty(social.twitter) ? null : (
                         <li>
@@ -377,14 +255,16 @@ class Company extends Component {
                         </li>
                       )}
                     </ul>
-                    <div className="text-center">
-                      <Link
-                        to={`/edit-company/${this.props.match.params.id}`}
-                        className="btn btn-common mt-2"
-                      >
-                        Edit This Company
-                      </Link>
-                    </div>
+                    {!admin.isAdmin ? null : (
+                      <div className="text-center">
+                        <Link
+                          to={`/edit-company/${this.props.match.params.id}`}
+                          className="btn btn-common mt-2"
+                        >
+                          <FormattedMessage id="company.EditThisCompany" />
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </aside>
                 {/*End sidebar*/}
@@ -404,11 +284,13 @@ class Company extends Component {
 }
 
 Company.propTypes = {
+  auth: PropTypes.object.isRequired,
   getCompanyByID: PropTypes.func.isRequired,
   company: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   company: state.company
 });
 

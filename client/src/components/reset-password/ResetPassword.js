@@ -11,6 +11,7 @@ import TextField from '../common/TextField';
 import Banner from '../common/Banner';
 import Navbar from '../layout/Navbar';
 import isEmpty from '../../validation/is-empty';
+import { FormattedMessage } from 'react-intl';
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -84,40 +85,64 @@ class ResetPassword extends Component {
     } else {
       resetContent = (
         <form className="login-form" onSubmit={this.onSubmit}>
-          <TextField
-            label="New Password"
-            placeholder="Enter New Password"
-            name="password"
-            type="password"
-            onChange={this.onChange}
-            error={errors.password}
-          />
-          <TextField
-            label="Retype Password"
-            placeholder="Retype Password"
-            name="password2"
-            type="password"
-            onChange={this.onChange}
-            error={errors.password2}
-          />
-          <input
-            type="submit"
-            value="Set New Password"
-            className="btn btn-common log-btn mt-3"
-          />
+          <FormattedMessage id="resetpassword.NewPassword">
+            {NewPassword => (
+              <FormattedMessage id="resetpassword.EnterNewPassword">
+                {EnterNewPassword => (
+                  <TextField
+                    label={NewPassword}
+                    placeholder={EnterNewPassword}
+                    name="password"
+                    type="password"
+                    onChange={this.onChange}
+                    error={errors.password}
+                  />
+                )}
+              </FormattedMessage>
+            )}
+          </FormattedMessage>
+          <FormattedMessage id="resetpassword.RetypePassword">
+            {RetypePassword => (
+              <FormattedMessage id="resetpassword.EnterRetypePassword">
+                {EnterRetypePassword => (
+                  <TextField
+                    label={RetypePassword}
+                    placeholder={EnterRetypePassword}
+                    name="password2"
+                    type="password"
+                    onChange={this.onChange}
+                    error={errors.password2}
+                  />
+                )}
+              </FormattedMessage>
+            )}
+          </FormattedMessage>
+          <FormattedMessage id="resetpassword.SetNewPassword">
+            {SetNewPassword => (
+              <input
+                type="submit"
+                value={SetNewPassword}
+                className="btn btn-common log-btn mt-3"
+              />
+            )}
+          </FormattedMessage>
         </form>
       );
     }
     return (
       <div>
         <Navbar />
-        <Banner pageName="Reset Password" />
+        <FormattedMessage id="resetpassword.resetpassword">
+          {resetpassword => <Banner pageName={resetpassword} />}
+        </FormattedMessage>
         <div id="content" className="section-padding">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-lg-5 col-md-6 col-xs-12">
                 <div className="page-login-form box">
-                  <h3>Reset Password</h3>
+                  <h3>
+                    <FormattedMessage id="resetpassword.resetpassword" />
+                  </h3>
                   {resetContent}
                 </div>
               </div>

@@ -8,6 +8,7 @@ import Banner from '../common/Banner';
 import TextField from '../common/TextField';
 import SideNavbar from '../layout/SideNavbar';
 import Navbar from '../layout/Navbar';
+import { FormattedMessage } from 'react-intl';
 
 class EditProfile extends Component {
   constructor(props) {
@@ -51,6 +52,7 @@ class EditProfile extends Component {
   onSubmit = e => {
     e.preventDefault();
     const data = new FormData();
+    let message = '';
     data.append('avatar', this.state.avatar);
     data.append('name', this.state.name);
     data.append('email', this.state.email);
@@ -60,8 +62,13 @@ class EditProfile extends Component {
       this.props.auth.profile.name !== this.state.name ||
       this.props.auth.profile.email !== this.state.email
     ) {
-      if (window.confirm('Are you sure? You will be logged out.')) {
+      if (this.props.locale.lang === 'en')
+        message = 'Are you sure? You will be logged out.';
+      else message = 'Oletko varma? Sinut kirjaudut ulos.';
+      if (window.confirm(message)) {
         this.props.updateProfile(data, this.props.history, true);
+      } else {
+        return;
       }
     }
     this.props.updateProfile(data, this.props.history, false);
@@ -72,7 +79,9 @@ class EditProfile extends Component {
     return (
       <div>
         <Navbar />
-        <Banner pageName="Edit company" />
+        <FormattedMessage id="editprofile.editprofile">
+          {editprofile => <Banner pageName={editprofile} />}
+        </FormattedMessage>
         <section className="user-page section-padding">
           <div className="container">
             <div className="row">
@@ -81,7 +90,9 @@ class EditProfile extends Component {
               </div>
               <div className="col-lg-8 col-md-7 col-xs-12">
                 <div className="my-address">
-                  <h3 className="heading">Edit profile</h3>
+                  <h3 className="heading">
+                    <FormattedMessage id="editprofile.editprofile" />
+                  </h3>
                   <div className="section-inforamation">
                     <form
                       className="login-form"
@@ -90,48 +101,72 @@ class EditProfile extends Component {
                     >
                       <div className="row justify-content-center">
                         <div className="col-lg-7 col-md-8 col-xs-12">
-                          <TextField
-                            label="Your name"
-                            placeholder="Enter Your Name"
-                            name="name"
-                            type="text"
-                            value={this.state.name}
-                            onChange={this.onChange}
-                            error={errors.name}
-                          />
-
-                          <TextField
-                            label="Your E-mail"
-                            placeholder="Enter Your E-mail"
-                            name="email"
-                            type="text"
-                            value={this.state.email}
-                            onChange={this.onChange}
-                            error={errors.email}
-                          />
-
-                          <TextField
-                            label="Phone number"
-                            placeholder="Enter Your phone"
-                            name="phone"
-                            type="text"
-                            value={this.state.phone}
-                            onChange={this.onChange}
-                            error={errors.phone}
-                          />
-                          <label>Avatar</label>
+                          <FormattedMessage id="editprofile.Yourname">
+                            {Yourname => (
+                              <FormattedMessage id="editprofile.EnterYourName">
+                                {EnterYourName => (
+                                  <TextField
+                                    label={Yourname}
+                                    placeholder={EnterYourName}
+                                    name="name"
+                                    type="text"
+                                    value={this.state.name}
+                                    onChange={this.onChange}
+                                    error={errors.name}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
+                          <FormattedMessage id="editprofile.YourEmail">
+                            {YourEmail => (
+                              <FormattedMessage id="editprofile.EnterYourEmail">
+                                {EnterYourEmail => (
+                                  <TextField
+                                    label={YourEmail}
+                                    placeholder={EnterYourEmail}
+                                    name="email"
+                                    type="text"
+                                    value={this.state.email}
+                                    onChange={this.onChange}
+                                    error={errors.email}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
+                          <FormattedMessage id="editprofile.Phonenumber">
+                            {Phonenumber => (
+                              <FormattedMessage id="editprofile.EnterYourphone">
+                                {EnterYourphone => (
+                                  <TextField
+                                    label={Phonenumber}
+                                    placeholder={EnterYourphone}
+                                    name="phone"
+                                    type="text"
+                                    value={this.state.phone}
+                                    onChange={this.onChange}
+                                    error={errors.phone}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
+                          <label>
+                            <FormattedMessage id="editprofile.Avatar" />
+                          </label>
                           <div className="custom-file">
                             <input
                               type="file"
                               className="custom-file-input"
                               id="customFile"
+                              onChange={this.onFileSelect}
                             />
                             <label
                               className="custom-file-label"
-                              for="customFile"
-                              onChange={this.onFileSelect}
+                              htmlFor="customFile"
                             >
-                              Upload your avatar
+                              <FormattedMessage id="editprofile.Uploadyouravatar" />
                             </label>
                           </div>
                           {errors.avatar && (
@@ -140,17 +175,21 @@ class EditProfile extends Component {
                             </div>
                           )}
 
-                          <div className="mx-auto">
-                            <input
-                              type="submit"
-                              value="Edit profile"
-                              className="btn btn-common mt-2"
-                            />
+                          <div className="mx-auto mt-4">
+                            <FormattedMessage id="editprofile.editprofile">
+                              {editprofile => (
+                                <input
+                                  type="submit"
+                                  value={editprofile}
+                                  className="btn btn-common mt-2"
+                                />
+                              )}
+                            </FormattedMessage>
                             <Link
                               to="/change-password"
                               className="btn btn-common mt-2 ml-2"
                             >
-                              Change password
+                              <FormattedMessage id="editprofile.Changepassword" />
                             </Link>
                           </div>
                         </div>
@@ -169,11 +208,13 @@ class EditProfile extends Component {
 
 EditProfile.propTypes = {
   auth: PropTypes.object.isRequired,
+  locale: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  locale: state.locale,
   errors: state.errors
 });
 

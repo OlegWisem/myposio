@@ -6,6 +6,7 @@ import { clearErrors, requestNewPassword } from '../../actions/authActions';
 import TextField from '../common/TextField';
 import Banner from '../common/Banner';
 import Navbar from '../layout/Navbar';
+import { FormattedMessage } from 'react-intl';
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -51,30 +52,44 @@ class ForgotPassword extends Component {
     return (
       <div>
         <Navbar />
-        <Banner pageName="Forgot Password" />
+        <FormattedMessage id="forgotpassword.forgotpassword">
+          {forgotpassword => <Banner pageName={forgotpassword} />}
+        </FormattedMessage>
         <div id="content" className="section-padding">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-lg-5 col-md-6 col-xs-12">
                 <div className="page-login-form box">
-                  <h3>Forgot Password?</h3>
+                  <h3>
+                    <FormattedMessage id="forgotpassword.forgotpassword" />
+                  </h3>
                   <form className="login-form" onSubmit={this.onSubmit}>
-                    <TextField
-                      placeholder="Email"
-                      name="email"
-                      type="email"
-                      icon="lni-user"
-                      value={this.state.email}
-                      onChange={this.onChange}
-                      error={errors.email}
-                    />
-                    <input
-                      type="submit"
-                      value="Request New Password"
-                      className="btn btn-common log-btn mt-3"
-                    />
+                    <FormattedMessage id="forgotpassword.Email">
+                      {Email => (
+                        <TextField
+                          placeholder={Email}
+                          name="email"
+                          type="email"
+                          icon="lni-user"
+                          value={this.state.email}
+                          onChange={this.onChange}
+                          error={errors.email}
+                        />
+                      )}
+                    </FormattedMessage>
+                    <FormattedMessage id="forgotpassword.RequestNewPassword">
+                      {RequestNewPassword => (
+                        <input
+                          type="submit"
+                          value={RequestNewPassword}
+                          className="btn btn-common log-btn mt-3"
+                        />
+                      )}
+                    </FormattedMessage>
                     <p className="text-center">
-                      <Link to="/register">Don't have an account?</Link>
+                      <Link to="/register">
+                        <FormattedMessage id="forgotpassword.Donthaveanaccount" />
+                      </Link>
                     </p>
                   </form>
                 </div>

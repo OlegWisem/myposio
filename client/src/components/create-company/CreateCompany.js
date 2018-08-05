@@ -76,61 +76,80 @@ class CreateCompany extends Component {
     const options = [
       { value: 0, label: <FormattedMessage id="category.SelectCategory" /> },
       {
-        value: 'Service stations',
+        value: 'Car repair, service stations, vehicle inspection',
         label: <FormattedMessage id="category.Servicestations" />
       },
       {
-        value: 'Maintenance and Construction',
-        label: <FormattedMessage id="category.MaintenanceandConstruction" />
+        value: 'Excavation',
+        label: <FormattedMessage id="category.Excavation" />
       },
       {
-        value: 'Furniture and Home Sales',
-        label: <FormattedMessage id="category.FurnitureandHomeSales" />
+        value: 'Property maintenance, laundry, safety',
+        label: <FormattedMessage id="category.Propertymaintenance" />
       },
       {
-        value: 'Waste Management and Recycling',
-        label: <FormattedMessage id="category.WasteManagementandRecycling" />
+        value: 'Real estate, plots',
+        label: <FormattedMessage id="category.Realestate" />
       },
       {
-        value: 'Real Estate',
-        label: <FormattedMessage id="category.RealEstate" />
+        value: 'Accountancy, advocacy, notary',
+        label: <FormattedMessage id="category.Accountancy" />
       },
       {
-        value: 'Transport Services',
-        label: <FormattedMessage id="category.TransportServices" />
+        value: 'Flower shop, undertaker',
+        label: <FormattedMessage id="category.Flowershop" />
       },
       {
-        value: 'Sports and Recreation',
-        label: <FormattedMessage id="category.SportsandRecreation" />
+        value: 'Transport and towing, taxi',
+        label: <FormattedMessage id="category.Transportandtowing" />
       },
       {
-        value: 'Accommodation',
+        value: 'Sports and recreation, associations',
+        label: <FormattedMessage id="category.Sportsandrecreation" />
+      },
+      {
+        value: 'Plumber, construction, and electricity',
+        label: <FormattedMessage id="category.Plumberconstruction" />
+      },
+      {
+        value: 'Advertising, internet, and coding',
+        label: <FormattedMessage id="category.Advertising" />
+      },
+      {
+        value: 'Accommodation, travelling, and equipment rental',
         label: <FormattedMessage id="category.Accommodation" />
       },
       {
-        value: 'Tourist destinations',
-        label: <FormattedMessage id="category.Touristdestinations" />
+        value: 'Metalworks, industry maintenance',
+        label: <FormattedMessage id="category.Metalworks" />
       },
       {
-        value: 'Forest Services',
-        label: <FormattedMessage id="category.ForestServices" />
+        value: 'Banks, insurances, real estate management',
+        label: <FormattedMessage id="category.Banks" />
       },
       {
-        value: 'Restaurants',
+        value: 'Hairdresser, beauty treatment',
+        label: <FormattedMessage id="category.Hairdresser" />
+      },
+      {
+        value: 'Grocery, specialised shops',
+        label: <FormattedMessage id="category.Grocery" />
+      },
+      {
+        value: 'Restaurants, cafes, catering',
         label: <FormattedMessage id="category.Restaurants" />
       },
-      { value: 'Grocery', label: <FormattedMessage id="category.Grocery" /> },
       {
-        value: 'Health and wellness',
-        label: <FormattedMessage id="category.Healthandwellness" />
+        value: 'Health, wellness, massage',
+        label: <FormattedMessage id="category.Health" />
       },
       {
-        value: 'Equipment rental',
-        label: <FormattedMessage id="category.Equipmentrental" />
+        value: 'Roadworks, maintenance, forest services',
+        label: <FormattedMessage id="category.Roadworks" />
       },
       {
-        value: 'Other Services',
-        label: <FormattedMessage id="category.OtherServices" />
+        value: 'Other',
+        label: <FormattedMessage id="category.Other" />
       }
     ];
     return (
@@ -388,7 +407,7 @@ class CreateCompany extends Component {
                           </div>
                         </div>
                         <div className="mx-auto">
-                          <FormattedMessage id="createcompany.Addnewcompany">
+                          <FormattedMessage id="createcompany.addnewcompany">
                             {Addnewcompany => (
                               <input
                                 type="submit"

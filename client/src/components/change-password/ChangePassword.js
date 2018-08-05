@@ -7,6 +7,7 @@ import SideNavbar from '../layout/SideNavbar';
 import Navbar from '../layout/Navbar';
 import { withRouter } from 'react-router-dom';
 import { changePassword } from '../../actions/authActions';
+import { FormattedMessage } from 'react-intl';
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -47,7 +48,9 @@ class ChangePassword extends Component {
     return (
       <div>
         <Navbar />
-        <Banner pageName="Change Password" />
+        <FormattedMessage id="changepassword.changepassword">
+          {changepassword => <Banner pageName={changepassword} />}
+        </FormattedMessage>
         <section className="user-page section-padding">
           <div className="container">
             <div className="row">
@@ -56,41 +59,71 @@ class ChangePassword extends Component {
               </div>
               <div className="col-lg-8 col-md-7 col-xs-12">
                 <div className="my-address">
-                  <h3 className="heading">Change Password</h3>
+                  <h3 className="heading">
+                    <FormattedMessage id="changepassword.changepassword" />
+                  </h3>
                   <div className="section-inforamation">
                     <form className="login-form" onSubmit={this.onSubmit}>
                       <div className="row justify-content-center">
                         <div className="col-lg-7 col-md-8 col-xs-12">
-                          <TextField
-                            label="Old Password"
-                            placeholder="Enter Old Password"
-                            name="oldpassword"
-                            type="password"
-                            onChange={this.onChange}
-                            error={errors.oldpassword}
-                          />
-                          <TextField
-                            label="New Password"
-                            placeholder="Enter New Password"
-                            name="password"
-                            type="password"
-                            onChange={this.onChange}
-                            error={errors.password}
-                          />
-                          <TextField
-                            label="Retype Password"
-                            placeholder="Retype Password"
-                            name="password2"
-                            type="password"
-                            onChange={this.onChange}
-                            error={errors.password2}
-                          />
+                          <FormattedMessage id="changepassword.OldPassword">
+                            {OldPassword => (
+                              <FormattedMessage id="changepassword.EnterOldPassword">
+                                {EnterOldPassword => (
+                                  <TextField
+                                    label={OldPassword}
+                                    placeholder={EnterOldPassword}
+                                    name="oldpassword"
+                                    type="password"
+                                    onChange={this.onChange}
+                                    error={errors.oldpassword}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
+                          <FormattedMessage id="changepassword.NewPassword">
+                            {NewPassword => (
+                              <FormattedMessage id="changepassword.EnterNewPassword">
+                                {EnterNewPassword => (
+                                  <TextField
+                                    label={NewPassword}
+                                    placeholder={EnterNewPassword}
+                                    name="password"
+                                    type="password"
+                                    onChange={this.onChange}
+                                    error={errors.password}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
+                          <FormattedMessage id="changepassword.RetypePassword">
+                            {RetypePassword => (
+                              <FormattedMessage id="changepassword.EnterRetypePassword">
+                                {EnterRetypePassword => (
+                                  <TextField
+                                    label={RetypePassword}
+                                    placeholder={EnterRetypePassword}
+                                    name="password2"
+                                    type="password"
+                                    onChange={this.onChange}
+                                    error={errors.password2}
+                                  />
+                                )}
+                              </FormattedMessage>
+                            )}
+                          </FormattedMessage>
                           <div className="text-center">
-                            <input
-                              type="submit"
-                              value="Change Password"
-                              className="btn btn-common mt-2"
-                            />
+                            <FormattedMessage id="changepassword.changepassword">
+                              {changepassword => (
+                                <input
+                                  type="submit"
+                                  value={changepassword}
+                                  className="btn btn-common mt-2"
+                                />
+                              )}
+                            </FormattedMessage>
                           </div>
                         </div>
                       </div>
