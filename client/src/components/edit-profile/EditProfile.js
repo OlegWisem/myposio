@@ -101,7 +101,7 @@ class EditProfile extends Component {
                       encType="multipart/form-data"
                     >
                       <div className="row justify-content-center">
-                        <div className="col-lg-7 col-md-8 col-xs-12">
+                        <div className="col-lg-8 col-md-8 col-xs-12">
                           <FormattedMessage id="editprofile.Yourname">
                             {Yourname => (
                               <FormattedMessage id="editprofile.EnterYourName">
@@ -176,7 +176,7 @@ class EditProfile extends Component {
                             </div>
                           )}
 
-                          <div className="mx-auto mt-4">
+                          <div className="mx-auto mt-4 text-center">
                             <FormattedMessage id="editprofile.editprofile">
                               {editprofile => (
                                 <input

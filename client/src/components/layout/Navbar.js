@@ -141,22 +141,23 @@ class Navbar extends Component {
                   </li>
                 )}
                 <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    role="button"
-                    onClick={() => this.props.setLocale('en')}
-                  >
-                    EN
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    role="button"
-                    onClick={() => this.props.setLocale('fi')}
-                  >
-                    FI
-                  </a>
+                  {this.props.locale.lang === 'fi' ? (
+                    <a
+                      className="nav-link"
+                      role="button"
+                      onClick={() => this.props.setLocale('en')}
+                    >
+                      <img src="img/en.png" alt="en" />
+                    </a>
+                  ) : (
+                    <a
+                      className="nav-link"
+                      role="button"
+                      onClick={() => this.props.setLocale('fi')}
+                    >
+                      <img src="img/fi.png" alt="fi" />
+                    </a>
+                  )}
                 </li>
               </ul>
             </div>
@@ -192,11 +193,13 @@ class Navbar extends Component {
 Navbar.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
+  locale: PropTypes.object.isRequired,
   setLocale: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  locale: state.locale
 });
 
 export default connect(

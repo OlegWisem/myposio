@@ -1,7 +1,7 @@
 import { LOCALE_SET } from '../actions/types';
 
 const initialState = {
-  lang: 'en'
+  lang: 'fi'
 };
 
 export default function(state = initialState, action) {
