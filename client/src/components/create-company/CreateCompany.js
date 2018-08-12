@@ -30,6 +30,8 @@ class CreateCompany extends Component {
       facebook: '',
       instagram: '',
       category: '',
+      photo: null,
+      uploadMessage: '',
       errors: {}
     };
   }
@@ -50,31 +52,38 @@ class CreateCompany extends Component {
     this.setState({ category });
   };
 
+  onFileSelect = event => {
+    this.setState({
+      photo: event.target.files[0],
+      uploadMessage: event.target.value.replace('C:\\fakepath\\', '')
+    });
+  };
+
   onChange = e => this.setState({ [e.target.name]: e.target.value });
   onSubmit = e => {
     e.preventDefault();
 
-    const companyData = {
-      name: this.state.name,
-      field: this.state.field,
-      companyid: this.state.companyid,
-      address: this.state.address,
-      description: this.state.description,
-      phone: this.state.phone,
-      email: this.state.email,
-      website: this.state.website,
-      youtube: this.state.youtube,
-      twitter: this.state.twitter,
-      facebook: this.state.facebook,
-      instagram: this.state.instagram,
-      category: this.state.category,
-      locale: this.props.locale.lang
-    };
+    const companyData = new FormData();
+    companyData.append('photo', this.state.photo);
+    companyData.append('name', this.state.name);
+    companyData.append('field', this.state.field);
+    companyData.append('companyid', this.state.companyid);
+    companyData.append('address', this.state.address);
+    companyData.append('description', this.state.description);
+    companyData.append('phone', this.state.phone);
+    companyData.append('email', this.state.email);
+    companyData.append('website', this.state.website);
+    companyData.append('youtube', this.state.youtube);
+    companyData.append('twitter', this.state.twitter);
+    companyData.append('facebook', this.state.facebook);
+    companyData.append('instagram', this.state.instagram);
+    companyData.append('category', this.state.category);
+    companyData.append('locale', this.props.locale.lang);
 
     this.props.createCompany(companyData, this.props.history);
   };
   render() {
-    const { errors } = this.state;
+    const { errors, uploadMessage } = this.state;
 
     return (
       <div>
@@ -261,6 +270,35 @@ class CreateCompany extends Component {
                               </FormattedMessage>
                             )}
                           </FormattedMessage>
+                        </div>
+                        <div className="col-lg-12 mb-4">
+                          <label>
+                            <FormattedMessage id="editprofile.Avatar" />
+                          </label>
+                          <div className="custom-file">
+                            <input
+                              type="file"
+                              className="custom-file-input"
+                              id="customFile"
+                              onChange={this.onFileSelect}
+                              ref={ref => (this.fileUpload = ref)}
+                            />
+                            <label
+                              className="custom-file-label"
+                              htmlFor="customFile"
+                            >
+                              {uploadMessage ? (
+                                uploadMessage
+                              ) : (
+                                <FormattedMessage id="editprofile.Uploadyouravatar" />
+                              )}
+                            </label>
+                          </div>
+                          {errors.avatar && (
+                            <div className="invalid-feedback">
+                              {errors.avatar}
+                            </div>
+                          )}
                         </div>
                         <div className="col-sm-6 page-login-form">
                           <div className="login-form">

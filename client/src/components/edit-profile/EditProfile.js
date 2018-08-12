@@ -18,6 +18,7 @@ class EditProfile extends Component {
       email: '',
       phone: '',
       avatar: null,
+      uploadMessage: '',
       errors: {}
     };
   }
@@ -45,7 +46,8 @@ class EditProfile extends Component {
 
   onFileSelect = event => {
     this.setState({
-      avatar: event.target.files[0]
+      avatar: event.target.files[0],
+      uploadMessage: event.target.value.replace('C:\\fakepath\\', '')
     });
   };
 
@@ -75,7 +77,7 @@ class EditProfile extends Component {
     this.props.updateProfile(data, this.props.history, false);
   };
   render() {
-    const { errors } = this.state;
+    const { errors, uploadMessage } = this.state;
 
     return (
       <div>
@@ -162,12 +164,17 @@ class EditProfile extends Component {
                               className="custom-file-input"
                               id="customFile"
                               onChange={this.onFileSelect}
+                              ref={ref => (this.fileUpload = ref)}
                             />
                             <label
                               className="custom-file-label"
                               htmlFor="customFile"
                             >
-                              <FormattedMessage id="editprofile.Uploadyouravatar" />
+                              {uploadMessage ? (
+                                uploadMessage
+                              ) : (
+                                <FormattedMessage id="editprofile.Uploadyouravatar" />
+                              )}
                             </label>
                           </div>
                           {errors.avatar && (

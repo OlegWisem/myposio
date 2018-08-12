@@ -20,6 +20,7 @@ class Company extends Component {
       name: '',
       user: {},
       field: '',
+      avatar: '',
       companyid: '',
       address: '',
       description: '',
@@ -107,6 +108,14 @@ class Company extends Component {
                   </div>
                 </div>
               </div>
+              {isEmpty(this.state.photo) ? null : (
+                <div className="col-12">
+                  <div className="details-thumb">
+                    <img className="img-fluid" src={this.state.photo} alt="" />
+                  </div>
+                </div>
+              )}
+
               <div className="row">
                 {/* Product Info Start */}
                 <div className="col-lg-8 col-md-12 col-xs-12">
@@ -197,9 +206,18 @@ class Company extends Component {
                   <div className="widget mt3">
                     <div className="agent-inner">
                       <div className="agent-title">
+                        {isEmpty(user.avatar) ? null : (
+                          <div className="wrapper">
+                            <img
+                              src={user.avatar}
+                              alt=""
+                              className="agent-photo img-fluid"
+                            />
+                          </div>
+                        )}
                         <div
                           className="agent-details mt-2"
-                          style={{ marginLeft: 20 }}
+                          style={user.avatar ? null : { marginLeft: 20 }}
                         >
                           <h3>{user.name}</h3>
                           {isEmpty(user.phone) ? null : (

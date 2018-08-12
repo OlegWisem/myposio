@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const multer = require('multer');
+const MulterAzureStorage = require('multer-azure-storage');
 
 // Load Validation
 const validateCompanyInput = require('../validation/company');
@@ -10,6 +12,30 @@ const Company = require('../models/Company');
 
 // Load User Model
 const User = require('../models/User');
+
+// Set-up Multer
+
+// Accept only images
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({
+  storage: new MulterAzureStorage({
+    azureStorageConnectionString:
+      'DefaultEndpointsProtocol=https;AccountName=posio;AccountKey=hH7ckN8Dv/VgoO4ApT8ieFQuY7FcvGzAHgSLpHzHd5MoZe6gqy+ib0Ht0zAGo7kE86dIKr74n8DYbphsx3mNvw==;EndpointSuffix=core.windows.net',
+    containerName: 'catalog',
+    containerSecurity: 'blob'
+  }),
+  limits: {
+    fileSize: 1024 * 1024 * 10 // Max File size in bytes (10 mb)
+  },
+  fileFilter
+});
 
 // @route   GET api/companies/test
 // @desc    Tests companies route
@@ -22,6 +48,7 @@ router.get('/test', (req, res) => res.json({ msg: 'Profile Works' }));
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
+  upload.single('photo'),
   (req, res) => {
     if (!req.body.locale)
       return res.status(400).json({ lang: 'Locale value is required' });
@@ -47,6 +74,7 @@ router.post(
     if (req.body.website) companyFields.website = req.body.website;
     if (req.body.phone) companyFields.phone = req.body.phone;
     if (req.body.category) companyFields.category = req.body.category;
+    if (req.file.url) companyFields.photo = req.file.url;
 
     // Social
     companyFields.social = {};
@@ -214,7 +242,7 @@ router.get(
 // @access  Public
 router.get('/:id', (req, res) => {
   Company.findById(req.params.id)
-    .populate('user', ['name', 'phone', 'email'])
+    .populate('user', ['name', 'phone', 'email', 'avatar'])
     .then(company => res.json(company))
     .catch(err =>
       res.status(404).json({ nocompanyfound: 'No company found with that ID' })

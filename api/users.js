@@ -8,8 +8,8 @@ const sendGrid = require('@sendgrid/mail');
 const crypto = require('crypto');
 const moment = require('moment');
 const multer = require('multer');
-const sharp = require('sharp');
 const fs = require('fs');
+const MulterAzureStorage = require('multer-azure-storage');
 
 // Load User model
 const User = require('../models/User');
@@ -31,15 +31,8 @@ sendGrid.setApiKey(
   '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'
 );
 
+
 // Set-up Multer
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, './uploads/temp');
-  },
-  filename: function(req, file, cb) {
-    cb(null, new Date().getTime() + file.originalname);
-  }
-});
 
 // Accept only images
 const fileFilter = (req, file, cb) => {
@@ -51,7 +44,11 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({
-  storage,
+  storage: new MulterAzureStorage({
+    azureStorageConnectionString: 'DefaultEndpointsProtocol=https;AccountName=posio;AccountKey=hH7ckN8Dv/VgoO4ApT8ieFQuY7FcvGzAHgSLpHzHd5MoZe6gqy+ib0Ht0zAGo7kE86dIKr74n8DYbphsx3mNvw==;EndpointSuffix=core.windows.net',
+    containerName: 'avatar',
+    containerSecurity: 'blob'
+  }),
   limits: {
     fileSize: 1024 * 1024 * 10 // Max File size in bytes (10 mb)
   },
@@ -264,27 +261,8 @@ router.post(
     if (req.body.name) profileFields.name = req.body.name;
     if (req.body.email) profileFields.email = req.body.email;
     if (req.body.phone) profileFields.phone = req.body.phone;
-    if (req.file) {
-      profileFields.avatar =
-        req.protocol +
-        '://' +
-        req.get('host') +
-        '/uploads/' +
-        req.file.filename;
-    }
+    if (req.file.url) profileFields.avatar = req.file.url;
 
-    if (req.file) {
-      sharp.cache(false);
-      sharp('uploads/temp/' + req.file.filename)
-        .resize(200)
-        .toFile('uploads/' + req.file.filename)
-        .then(newFile => {
-          fs.unlink('uploads/temp/' + req.file.filename, err => {
-            if (err) throw err;
-          });
-        })
-        .catch(err => res.status(404).json(err));
-    }
     User.findOneAndUpdate(
       { _id: req.user.id },
       { $set: profileFields },

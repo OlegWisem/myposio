@@ -23,7 +23,7 @@ class Navbar extends Component {
         <Link to="/login" className="header-top-button">
           <FormattedMessage id="nav.login" />
         </Link>
-        <Link to="/register" className="header-top-button white-bg">
+        <Link to="/register" className="header-top-button">
           <FormattedMessage id="nav.signup" />
         </Link>
       </div>
@@ -31,7 +31,7 @@ class Navbar extends Component {
 
     const authLinks = (
       <div>
-        <Link to="/dashboard" className="header-top-button white-bg">
+        <Link to="/dashboard" className="header-top-button">
           <FormattedMessage id="nav.dashboard" />
         </Link>
         <a
@@ -46,41 +46,9 @@ class Navbar extends Component {
 
     return (
       <div id="header-wrap">
-        {/* Start Top Bar */}
-        <div className="top-bar">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-7 col-md-9 col-xs-12">
-                {/* Start Contact Info */}
-                <ul className="links clearfix">
-                  <li>
-                    <i className="lni-phone-handset" />
-                    <FormattedMessage id="nav.phone" />
-                  </li>
-                  <li>
-                    <i className="lni-envelope" />{' '}
-                    <FormattedMessage id="nav.email" />
-                  </li>
-                  <li>
-                    <i className="lni-map-marker" />{' '}
-                    <FormattedMessage id="nav.address" />{' '}
-                  </li>
-                </ul>
-                {/* End Contact Info */}
-              </div>
-              <div className="col-lg-5 col-md-3 col-xs-12">
-                <div className="header-top-right float-right">
-                  {isAuthenticated ? authLinks : guestLinks}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* End Top Bar */}
         {/* Navbar Start */}
-
         <nav
-          className="navbar navbar-expand-lg navbar-light bg-white"
+          className="navbar navbar-expand-lg navbar-light"
           data-toggle="sticky-onscroll"
         >
           <div className="container">
@@ -100,8 +68,8 @@ class Navbar extends Component {
               </button>
             </div>
             <div className="collapse navbar-collapse" id="main-navbar">
-              <ul className="navbar-nav mr-auto w-100">
-                <li className="nav-item" style={{ width: 180 }}>
+              <ul className="navbar-nav mr-auto">
+                <li className="nav-item" style={{ width: 190 }}>
                   <div className="logo">
                     <Link to="/">
                       <img src={Logo} alt="" />
@@ -160,6 +128,9 @@ class Navbar extends Component {
                   )}
                 </li>
               </ul>
+              <div className="header-top-right float-right">
+                {isAuthenticated ? authLinks : guestLinks}
+              </div>
             </div>
           </div>
           {/* Mobile Menu Start */}

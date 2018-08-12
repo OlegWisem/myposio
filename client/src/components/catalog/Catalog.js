@@ -43,9 +43,11 @@ class Catalog extends Component {
             -1
           );
         });
-        updatedList = updatedList.filter(item => {
-          return item.category.indexOf(this.state.category) !== -1;
-        });
+        if (this.state.category !== '0') {
+          updatedList = updatedList.filter(item => {
+            return item.category.indexOf(this.state.category) !== -1;
+          });
+        }
         companyItems = updatedList.map(company => (
           <CatalogItem key={company._id} company={company} />
         ));
@@ -75,7 +77,7 @@ class Catalog extends Component {
                         {searchfoacompany => (
                           <input
                             type="search"
-                            className="form-control"
+                            className="form-control-search"
                             name="field-name"
                             placeholder={searchfoacompany}
                             onChange={this.updateSearch.bind(this)}
@@ -83,6 +85,7 @@ class Catalog extends Component {
                           />
                         )}
                       </FormattedMessage>
+                      <div class="arrow-left-catalog" />
                       <button type="submit" className="search-btn">
                         <span className="lni-search" />
                       </button>
