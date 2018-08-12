@@ -20,7 +20,7 @@ class Home extends Component {
                     <FormattedMessage id="home.firstline" />
                   </h2>
                   <div className="row">
-                    <div className="col-lg-6 col-md-6 col-xs-6 offset-3">
+                    <div className="col-lg-6 col-md-6 col-xs-6 offset-lg-3">
                       <div className="content">
                         <form>
                           <div className="search-add">
