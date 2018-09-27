@@ -29,6 +29,13 @@ const UserSchema = new Schema({
   reset_password_expires: {
     type: Date
   },
+  passwordAttempts: {
+    type: Number,
+    default: 0
+  },
+  passwordLastAttempt: {
+    type: Date
+  },
   isAdmin: {
     type: Boolean,
     default: false

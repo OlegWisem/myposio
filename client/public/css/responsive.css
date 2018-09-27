@@ -137,9 +137,6 @@
   .footer-area .footer-titel {
     margin-top: 20px;
   }
-  .sidebar.right {
-    margin-top: 40px;
-  }
   .property-details .others {
     float: left;
   }
@@ -151,7 +148,7 @@
     margin-left: 0;
   }
   .pagination-container .pagination .page-item .page-link {
-    padding: .5rem .75rem;
+    padding: 0.5rem 0.75rem;
   }
   .pagination-container .pagination .btn {
     padding: 7px 9px;

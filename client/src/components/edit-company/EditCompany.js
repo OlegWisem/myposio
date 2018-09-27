@@ -17,6 +17,8 @@ import Navbar from '../layout/Navbar';
 import SelectList from '../common/SelectList';
 import { FormattedMessage } from 'react-intl';
 import options from '../common/Options';
+import Cleave from 'cleave.js/react';
+import classnames from 'classnames';
 
 class EditCompany extends Component {
   constructor(props) {
@@ -30,10 +32,14 @@ class EditCompany extends Component {
       phone: '',
       email: '',
       website: '',
-      youtube: '',
-      twitter: '',
-      facebook: '',
-      instagram: '',
+      social: {
+        youtube: '',
+        twitter: '',
+        facebook: '',
+        instagram: ''
+      },
+      photo: null,
+      uploadMessage: '',
       errors: {}
     };
   }
@@ -73,25 +79,55 @@ class EditCompany extends Component {
   }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
+
+  onSocialChange = e => {
+    this.setState({
+      social: { ...this.state.social, [e.target.name]: e.target.value }
+    });
+  };
+
+  onFileSelect = event => {
+    this.setState({
+      photo: event.target.files[0],
+      uploadMessage: event.target.value.replace('C:\\fakepath\\', '')
+    });
+  };
+
   onSubmit = e => {
     e.preventDefault();
 
-    const companyData = {
-      name: this.state.name,
-      field: this.state.field,
-      companyid: this.state.companyid,
-      address: this.state.address,
-      description: this.state.description,
-      phone: this.state.phone,
-      email: this.state.email,
-      website: this.state.website,
-      youtube: this.state.youtube,
-      twitter: this.state.twitter,
-      facebook: this.state.facebook,
-      instagram: this.state.instagram,
-      category: this.state.category,
-      locale: this.props.locale.lang
-    };
+    let twitter = this.state.social.twitter;
+    if (twitter === 'http://' || twitter === undefined) twitter = '';
+
+    let youtube = this.state.social.youtube;
+    if (youtube === 'http://' || youtube === undefined) youtube = '';
+
+    let facebook = this.state.social.facebook;
+    if (facebook === 'http://' || facebook === undefined) facebook = '';
+
+    let instagram = this.state.social.instagram;
+    if (instagram === 'http://' || instagram === undefined) instagram = '';
+
+    const companyData = new FormData();
+    if (this.state.photo !== null)
+      companyData.append('photo', this.state.photo);
+    companyData.append('name', this.state.name);
+    companyData.append('field', this.state.field);
+    companyData.append('companyid', this.state.companyid);
+    companyData.append('address', this.state.address);
+    companyData.append('description', this.state.description);
+    companyData.append('phone', this.state.phone);
+    companyData.append('email', this.state.email);
+    companyData.append('website', this.state.website);
+    companyData.append('category', this.state.category);
+    companyData.append('secondaryCategory', this.state.secondaryCategory);
+    companyData.append('locale', this.props.locale.lang);
+
+    // Social
+    companyData.append('youtube', youtube);
+    companyData.append('twitter', twitter);
+    companyData.append('facebook', facebook);
+    companyData.append('instagram', instagram);
 
     this.props.editCompany(
       companyData,
@@ -100,8 +136,8 @@ class EditCompany extends Component {
     );
   };
   render() {
-    const { errors } = this.state;
-
+    const { errors, social, uploadMessage } = this.state;
+    console.log(social);
     return (
       <div>
         <Navbar />
@@ -156,6 +192,20 @@ class EditCompany extends Component {
                           </FormattedMessage>
                         </div>
                         <div className="col-sm-6">
+                          <FormattedMessage id="createcompany.secondaryCategory">
+                            {secondaryCategory => (
+                              <SelectList
+                                name="secondaryCategory"
+                                value={this.state.secondaryCategory}
+                                onChange={this.onChange}
+                                option={options}
+                                error={errors.secondaryCategory}
+                                label={secondaryCategory}
+                              />
+                            )}
+                          </FormattedMessage>
+                        </div>
+                        <div className="col-sm-6">
                           <FormattedMessage id="createcompany.CompanyField">
                             {CompanyField => (
                               <FormattedMessage id="createcompany.EnterYourCompanyField">
@@ -179,15 +229,28 @@ class EditCompany extends Component {
                             {BusinessID => (
                               <FormattedMessage id="createcompany.EnterYourBusinessID">
                                 {EnterYourBusinessID => (
-                                  <TextField
-                                    label={BusinessID}
-                                    placeholder={EnterYourBusinessID}
-                                    name="companyid"
-                                    type="text"
-                                    value={this.state.companyid}
-                                    onChange={this.onChange}
-                                    error={errors.companyid}
-                                  />
+                                  <div className="form-group">
+                                    <label>{BusinessID}</label>
+                                    <Cleave
+                                      className={classnames('form-control', {
+                                        'is-invalid': errors.companyid
+                                      })}
+                                      options={{
+                                        delimiter: '-',
+                                        blocks: [7, 1],
+                                        numericOnly: true
+                                      }}
+                                      placeholder={EnterYourBusinessID}
+                                      name="companyid"
+                                      value={this.state.companyid}
+                                      onChange={this.onChange}
+                                    />
+                                    {errors.companyid && (
+                                      <div className="invalid-feedback">
+                                        {errors.companyid}
+                                      </div>
+                                    )}
+                                  </div>
                                 )}
                               </FormattedMessage>
                             )}
@@ -198,15 +261,28 @@ class EditCompany extends Component {
                             {PhoneNumber => (
                               <FormattedMessage id="createcompany.PhoneNumberExample">
                                 {PhoneNumberExample => (
-                                  <TextField
-                                    label={PhoneNumber}
-                                    placeholder={PhoneNumberExample}
-                                    name="phone"
-                                    type="text"
-                                    value={this.state.phone}
-                                    onChange={this.onChange}
-                                    error={errors.phone}
-                                  />
+                                  <div className="form-group">
+                                    <label>{PhoneNumber}</label>
+                                    <Cleave
+                                      className={classnames('form-control', {
+                                        'is-invalid': errors.phone
+                                      })}
+                                      options={{
+                                        delimiter: ' ',
+                                        blocks: [3, 3, 4],
+                                        numericOnly: true
+                                      }}
+                                      placeholder={PhoneNumberExample}
+                                      name="phone"
+                                      value={this.state.phone}
+                                      onChange={this.onChange}
+                                    />
+                                    {errors.phone && (
+                                      <div className="invalid-feedback">
+                                        {errors.phone}
+                                      </div>
+                                    )}
+                                  </div>
                                 )}
                               </FormattedMessage>
                             )}
@@ -255,15 +331,27 @@ class EditCompany extends Component {
                             {CompanyWebsite => (
                               <FormattedMessage id="createcompany.EnterYourCompanyWebsite">
                                 {EnterYourCompanyWebsite => (
-                                  <TextField
-                                    label={CompanyWebsite}
-                                    placeholder={EnterYourCompanyWebsite}
-                                    name="website"
-                                    type="text"
-                                    value={this.state.website}
-                                    onChange={this.onChange}
-                                    error={errors.website}
-                                  />
+                                  <div className="form-group">
+                                    <label>{CompanyWebsite}</label>
+                                    <Cleave
+                                      className={classnames('form-control', {
+                                        'is-invalid': errors.website
+                                      })}
+                                      options={{
+                                        prefix: 'http://',
+                                        lowercase: true
+                                      }}
+                                      placeholder={EnterYourCompanyWebsite}
+                                      name="website"
+                                      value={this.state.website}
+                                      onChange={this.onChange}
+                                    />
+                                    {errors.website && (
+                                      <div className="invalid-feedback">
+                                        {errors.website}
+                                      </div>
+                                    )}
+                                  </div>
                                 )}
                               </FormattedMessage>
                             )}
@@ -288,19 +376,57 @@ class EditCompany extends Component {
                             )}
                           </FormattedMessage>
                         </div>
+                        <div className="col-lg-12 mb-4">
+                          <label>
+                            <FormattedMessage id="editprofile.Avatar" />
+                          </label>
+                          <div className="custom-file">
+                            <input
+                              type="file"
+                              className="custom-file-input"
+                              id="customFile"
+                              onChange={this.onFileSelect}
+                              ref={ref => (this.fileUpload = ref)}
+                            />
+                            <label
+                              className="custom-file-label"
+                              htmlFor="customFile"
+                            >
+                              {uploadMessage ? (
+                                uploadMessage
+                              ) : (
+                                <FormattedMessage id="editprofile.Uploadyouravatar" />
+                              )}
+                            </label>
+                          </div>
+                          {errors.avatar && (
+                            <div className="invalid-feedback">
+                              {errors.avatar}
+                            </div>
+                          )}
+                        </div>
                         <div className="col-sm-6 page-login-form">
                           <div className="login-form">
                             <FormattedMessage id="createcompany.URLtoyourTwitter">
                               {URLtoyourTwitter => (
-                                <TextField
-                                  placeholder={URLtoyourTwitter}
-                                  name="twitter"
-                                  icon="lni-twitter"
-                                  type="text"
-                                  value={this.state.twitter}
-                                  onChange={this.onChange}
-                                  error={errors.twitter}
-                                />
+                                <div className="form-group">
+                                  <div className="input-icon">
+                                    <i className="lni-twitter" />
+                                    <Cleave
+                                      className={classnames('form-control', {
+                                        'is-invalid': errors.twitter
+                                      })}
+                                      options={{
+                                        prefix: 'http://',
+                                        lowercase: true
+                                      }}
+                                      placeholder={URLtoyourTwitter}
+                                      name="twitter"
+                                      value={social.twitter}
+                                      onChange={this.onSocialChange}
+                                    />
+                                  </div>
+                                </div>
                               )}
                             </FormattedMessage>
                           </div>
@@ -309,15 +435,24 @@ class EditCompany extends Component {
                           <div className="login-form">
                             <FormattedMessage id="createcompany.URLtoyourFacebook">
                               {URLtoyourFacebook => (
-                                <TextField
-                                  placeholder={URLtoyourFacebook}
-                                  name="facebook"
-                                  icon="lni-facebook"
-                                  type="text"
-                                  value={this.state.facebook}
-                                  onChange={this.onChange}
-                                  error={errors.facebook}
-                                />
+                                <div className="form-group">
+                                  <div className="input-icon">
+                                    <i className="lni-facebook" />
+                                    <Cleave
+                                      className={classnames('form-control', {
+                                        'is-invalid': errors.facebook
+                                      })}
+                                      options={{
+                                        prefix: 'http://',
+                                        lowercase: true
+                                      }}
+                                      placeholder={URLtoyourFacebook}
+                                      name="facebook"
+                                      value={social.facebook}
+                                      onChange={this.onSocialChange}
+                                    />
+                                  </div>
+                                </div>
                               )}
                             </FormattedMessage>
                           </div>
@@ -326,15 +461,24 @@ class EditCompany extends Component {
                           <div className="login-form">
                             <FormattedMessage id="createcompany.URLtoyourInstagram">
                               {URLtoyourInstagram => (
-                                <TextField
-                                  placeholder={URLtoyourInstagram}
-                                  name="instagram"
-                                  icon="lni-instagram"
-                                  type="text"
-                                  value={this.state.instagram}
-                                  onChange={this.onChange}
-                                  error={errors.instagram}
-                                />
+                                <div className="form-group">
+                                  <div className="input-icon">
+                                    <i className="lni-instagram" />
+                                    <Cleave
+                                      className={classnames('form-control', {
+                                        'is-invalid': errors.instagram
+                                      })}
+                                      options={{
+                                        prefix: 'http://',
+                                        lowercase: true
+                                      }}
+                                      placeholder={URLtoyourInstagram}
+                                      name="instagram"
+                                      value={social.instagram}
+                                      onChange={this.onSocialChange}
+                                    />
+                                  </div>
+                                </div>
                               )}
                             </FormattedMessage>
                           </div>
@@ -343,15 +487,24 @@ class EditCompany extends Component {
                           <div className="login-form">
                             <FormattedMessage id="createcompany.URLtoyourYoutube">
                               {URLtoyourYoutube => (
-                                <TextField
-                                  placeholder={URLtoyourYoutube}
-                                  name="youtube"
-                                  icon="lni-display"
-                                  type="text"
-                                  value={this.state.youtube}
-                                  onChange={this.onChange}
-                                  error={errors.youtube}
-                                />
+                                <div className="form-group">
+                                  <div className="input-icon">
+                                    <i className="lni-display" />
+                                    <Cleave
+                                      className={classnames('form-control', {
+                                        'is-invalid': errors.youtube
+                                      })}
+                                      options={{
+                                        prefix: 'http://',
+                                        lowercase: true
+                                      }}
+                                      placeholder={URLtoyourYoutube}
+                                      name="youtube"
+                                      value={social.youtube}
+                                      onChange={this.onSocialChange}
+                                    />
+                                  </div>
+                                </div>
                               )}
                             </FormattedMessage>
                           </div>

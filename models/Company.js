@@ -17,8 +17,7 @@ const CompanySchema = new Schema({
     required: true
   },
   companyid: {
-    type: String,
-    required: true
+    type: String
   },
   address: {
     type: String,
@@ -39,6 +38,13 @@ const CompanySchema = new Schema({
     type: String
   },
   category: {
+    type: String
+  },
+  requests: {
+    type: Number,
+    default: 0
+  },
+  secondaryCategory: {
     type: String
   },
   photo: {

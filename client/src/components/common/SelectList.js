@@ -12,7 +12,7 @@ const SelectList = ({ name, value, label, error, onChange, option }) => {
     <div className="form-group">
       {label && <label>{label}</label>}
       <select
-        className={classnames('form-control', {
+        className={classnames('form-control classic', {
           'is-invalid': error
         })}
         name={name}

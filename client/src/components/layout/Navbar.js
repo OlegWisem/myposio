@@ -9,6 +9,23 @@ import { setLocale } from '../../actions/localeActions';
 import { FormattedMessage } from 'react-intl';
 
 class Navbar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sideDrawerOpen: false
+    };
+  }
+
+  drawerToggleClickHandler = () => {
+    this.setState(prevState => {
+      return { sideDrawerOpen: !prevState.sideDrawerOpen };
+    });
+  };
+
+  backdropClickHangler = () => {
+    this.setState({ sideDrawerOpen: false });
+  };
+
   onLogoutClick(e) {
     e.preventDefault();
     //this.props.clearCurrentProfile();
@@ -44,11 +61,16 @@ class Navbar extends Component {
       </div>
     );
 
+    let drawerClasses = 'side-drawer';
+    if (this.state.sideDrawerOpen) {
+      drawerClasses = 'side-drawer open';
+    }
+
     return (
       <div id="header-wrap">
         {/* Navbar Start */}
         <nav
-          className="navbar navbar-expand-lg navbar-light"
+          className="navbar navbar-expand-lg navbar-dark"
           data-toggle="sticky-onscroll"
         >
           <div className="container">
@@ -56,18 +78,13 @@ class Navbar extends Component {
             <div className="navbar-header">
               <button
                 className="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#main-navbar"
-                aria-controls="main-navbar"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
+                onClick={this.drawerToggleClickHandler.bind(this)}
               >
                 <span className="navbar-toggler-icon" />
                 <span className="lin-menu" />
               </button>
             </div>
-            <div className="collapse navbar-collapse" id="main-navbar">
+            <div className="collapse navbar-collapse">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item" style={{ width: 190 }}>
                   <div className="logo">
@@ -133,29 +150,105 @@ class Navbar extends Component {
               </div>
             </div>
           </div>
-          {/* Mobile Menu Start */}
-          <ul className="mobile-menu">
-            <li>
-              <NavLink exact activeClassName="active" to="/">
+        </nav>
+        {/* Navbar End */}
+
+        {/* Mobile Navbar*/}
+        <nav className={drawerClasses}>
+          <a
+            className="sidebar-close"
+            onClick={this.drawerToggleClickHandler.bind(this)}
+          >
+            <span className="lni-close" />
+          </a>
+          <ul className="sidebar-items">
+            <li className="nav-item">
+              <NavLink
+                exact
+                activeClassName="active"
+                className="nav-link"
+                to="/"
+              >
                 <FormattedMessage id="nav.home" />
               </NavLink>
             </li>
-            <li>
-              <NavLink exact activeClassName="active" to="/catalog">
+            <li className="nav-item">
+              <NavLink
+                exact
+                activeClassName="active"
+                className="nav-link"
+                to="/catalog"
+              >
                 <FormattedMessage id="nav.catalog" />
               </NavLink>
             </li>
-            <li>
-              {isAuthenticated === true && (
-                <NavLink exact activeClassName="active" to="/dashboard">
+            {isAuthenticated === true && (
+              <li className="nav-item">
+                <NavLink
+                  exact
+                  activeClassName="active"
+                  className="nav-link"
+                  to="/dashboard"
+                >
                   <FormattedMessage id="nav.dashboard" />
                 </NavLink>
+              </li>
+            )}
+
+            {isAuthenticated ? (
+              <div>
+                <li className="nav-item">
+                  <a
+                    href=""
+                    onClick={this.onLogoutClick.bind(this)}
+                    className="header-top-button nav-link"
+                  >
+                    <FormattedMessage id="nav.logout" />
+                  </a>
+                </li>
+              </div>
+            ) : (
+              <div>
+                <li className="nav-item">
+                  <Link to="/login" className="header-top-button nav-link">
+                    <FormattedMessage id="nav.login" />
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/register" className="header-top-button nav-link">
+                    <FormattedMessage id="nav.signup" />
+                  </Link>
+                </li>
+              </div>
+            )}
+
+            <li className="nav-item">
+              {this.props.locale.lang === 'fi' ? (
+                <a
+                  className="nav-link"
+                  role="button"
+                  onClick={() => this.props.setLocale('en')}
+                >
+                  <img src="img/en.png" alt="en" />
+                </a>
+              ) : (
+                <a
+                  className="nav-link"
+                  role="button"
+                  onClick={() => this.props.setLocale('fi')}
+                >
+                  <img src="img/fi.png" alt="fi" />
+                </a>
               )}
             </li>
           </ul>
-          {/* Mobile Menu End */}
         </nav>
-        {/* Navbar End */}
+        {this.state.sideDrawerOpen && (
+          <div
+            className="backdrop"
+            onClick={this.drawerToggleClickHandler.bind(this)}
+          />
+        )}
       </div>
     );
   }

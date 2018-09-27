@@ -19,6 +19,7 @@ class Login extends Component {
   }
 
   componentDidMount() {
+    document.title = 'MyPosio - Login';
     this.props.clearErrors();
   }
 

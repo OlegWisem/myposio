@@ -3,8 +3,9 @@ module.exports = messages = {
     'login.emailInvalid': 'Email is invalid',
     'login.emailRequired': 'Email field is required',
     'login.password': 'Password field is required',
-    'login.passwordIncorrect': 'Password incorrect',
+    'login.passwordIncorrect': 'Password incorrent. Attempts left: ', // NEW
     'login.userNotFound': 'User not found',
+    'login.userFrozen': 'Account is frozen for 30 minutes.', // NEW
     'register.nameLength': 'Name must be between 2 and 30 characters',
     'register.nameRequired': 'Name field is required',
     'register.emailInvalid': 'Email is invalid',
@@ -53,14 +54,16 @@ module.exports = messages = {
     'newPassword.passwordRequired': 'Password field is required',
     'newPassword.retypeMatch': 'Passwords must match',
     'newPassword.retypeRequired': 'Confirm Password field is required',
-    'newPassword.tokenExpired': 'Token has expired'
+    'newPassword.tokenExpired': 'Token has expired',
+    'passwordEmail.subject': 'Password Recovery' // NEW
   },
   fi: {
     'login.emailInvalid': 'Sähköposti ei ole oikein',
     'login.emailRequired': 'Sähköposti vaaditaan',
     'login.password': 'Salasana vaaditaan',
-    'login.passwordIncorrect': 'Salasana ei ole oikein',
+    'login.passwordIncorrect': 'Salasana ei ole oikein. Attempts left: ', // NEW
     'login.userNotFound': 'Käyttäjää ei löydetä',
+    'login.userFrozen': 'Account is frozen for 30 minutes.', // NEW
     'register.nameLength': 'Nimen tulee koostua 2 - 30 merkistä',
     'register.nameRequired': 'Nimi vaaditaan',
     'register.emailInvalid': 'Sähköposti ei ole oikein',
@@ -110,6 +113,7 @@ module.exports = messages = {
     'newPassword.passwordRequired': 'Salasana vaaditaan',
     'newPassword.retypeMatch': 'Salasanojen pitää täsmätä',
     'newPassword.retypeRequired': 'Uudelleenkirjoita salasana vaaditaan',
-    'newPassword.tokenExpired': 'Istunto on vanhentunut'
+    'newPassword.tokenExpired': 'Istunto on vanhentunut',
+    'passwordEmail.subject': 'Password Recovery' // NEW
   }
 };

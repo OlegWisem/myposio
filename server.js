@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
+const keys = require('../config/keys');
 
 // Init Routes
 const users = require('./api/users');
@@ -13,7 +14,7 @@ const app = express();
 
 // Connect to MongoDB
 mongoose
-  .connect('mongodb://myposio:123456qwerty@ds235401.mlab.com:35401/myposio')
+  .connect(keys.mongoDevURI)
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 

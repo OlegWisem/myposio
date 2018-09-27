@@ -9,6 +9,8 @@ import TextField from '../common/TextField';
 import SideNavbar from '../layout/SideNavbar';
 import Navbar from '../layout/Navbar';
 import { FormattedMessage } from 'react-intl';
+import Cleave from 'cleave.js/react';
+import classnames from 'classnames';
 
 class EditProfile extends Component {
   constructor(props) {
@@ -19,8 +21,11 @@ class EditProfile extends Component {
       phone: '',
       avatar: null,
       uploadMessage: '',
+      phoneRawValue: '',
       errors: {}
     };
+
+    this.onPhoneChange = this.onPhoneChange.bind(this);
   }
   componentDidMount() {
     this.props.getCurrentProfile();
@@ -50,6 +55,10 @@ class EditProfile extends Component {
       uploadMessage: event.target.value.replace('C:\\fakepath\\', '')
     });
   };
+
+  onPhoneChange(event) {
+    this.setState({ phoneRawValue: event.target.rawValue });
+  }
 
   onSubmit = e => {
     e.preventDefault();
@@ -142,15 +151,28 @@ class EditProfile extends Component {
                             {Phonenumber => (
                               <FormattedMessage id="editprofile.EnterYourphone">
                                 {EnterYourphone => (
-                                  <TextField
-                                    label={Phonenumber}
-                                    placeholder={EnterYourphone}
-                                    name="phone"
-                                    type="text"
-                                    value={this.state.phone}
-                                    onChange={this.onChange}
-                                    error={errors.phone}
-                                  />
+                                  <div className="form-group">
+                                    <label>{Phonenumber}</label>
+                                    <Cleave
+                                      className={classnames('form-control', {
+                                        'is-invalid': errors.phone
+                                      })}
+                                      options={{
+                                        delimiter: ' ',
+                                        blocks: [3, 3, 4],
+                                        numericOnly: true
+                                      }}
+                                      placeholder={EnterYourphone}
+                                      name="phone"
+                                      value={this.state.phone}
+                                      onChange={this.onChange}
+                                    />
+                                    {errors.phone && (
+                                      <div className="invalid-feedback">
+                                        {errors.phone}
+                                      </div>
+                                    )}
+                                  </div>
                                 )}
                               </FormattedMessage>
                             )}

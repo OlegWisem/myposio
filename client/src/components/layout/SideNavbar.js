@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import { logoutUser } from '../../actions/authActions';
+import { logoutUser, getCurrentProfile } from '../../actions/authActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import isEmpty from '../../validation/is-empty';
@@ -13,6 +13,10 @@ class SideNavbar extends Component {
     this.props.logoutUser();
   }
 
+  componentDidMount() {
+    this.props.getCurrentProfile();
+  }
+
   render() {
     const { user } = this.props.auth;
     return (
@@ -23,7 +27,11 @@ class SideNavbar extends Component {
             <h2>{user.name}</h2>
             <div className="wrapper">
               <img
-                src={isEmpty(user.avatar) ? 'img/avatar.jpg' : user.avatar}
+                src={
+                  isEmpty(this.props.auth.profile.avatar)
+                    ? 'img/avatar.jpg'
+                    : this.props.auth.profile.avatar
+                }
                 alt="avatar"
                 className="img-fluid profile-img"
               />
@@ -83,5 +91,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser }
+  { logoutUser, getCurrentProfile }
 )(SideNavbar);

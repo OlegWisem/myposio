@@ -45,10 +45,11 @@ export default {
     'category.Health': 'Health, wellness, massage',
     'category.Roadworks': 'Roadworks, maintenance, forest services',
     'category.Other': 'Other',
+    'catalog.title': 'MyPosio - Catalog', //NEW
     'catalog.catalog': 'Catalog',
     'catalog.searchforacompany': 'Search for a company',
     'catalog.learnmore': 'Learn More',
-    'catalog.filter': 'Filter',
+    'catalog.filter': 'Category', // NEW
     'catalog.Nocompaniesfound': 'No companies found...',
     'catalog.phone': 'Tel.:',
     'catalog.email': 'Email:',
@@ -57,6 +58,17 @@ export default {
     'home.firstline': 'Services and Companies in Posio',
     'home.secondline': 'Publish and Search for Services or/and Companies',
     'home.button': 'Catalog',
+    'home.searchInCatalog': 'Search in catalog', // NEW
+    'home.posio': 'Posio', // NEW
+    'home.servicesAndCompanies': 'Services and Companies', // NEW
+    'home.catalog': 'Catalog', // NEW
+    'home.catalogParagraph':
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero recusandae temporibus reprehenderit. Voluptatem id consectetur quaerat, tenetur nam doloribus quos.', // NEW
+    'home.catalogButton': 'Catalog', // NEW
+    'home.product': 'Product', // NEW
+    'home.productParagraph':
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero recusandae temporibus reprehenderit. Voluptatem id consectetur quaerat, tenetur nam doloribus quos.', // NEW
+    'home.productButton': 'Product', // NEW
     'login.login': 'Login',
     'login.email': 'Email',
     'login.password': 'Password',
@@ -87,6 +99,7 @@ export default {
     'createcompany.companyname': 'Company Name',
     'createcompany.EnterYourCompanyName': 'Enter Your Company Name',
     'createcompany.category': 'Choose a Category',
+    'createcompany.secondaryCategory': 'Choose a Secondary Category', // NEW
     'createcompany.CompanyField': "Company's main Activities",
     'createcompany.EnterYourCompanyField': 'Short description',
     'createcompany.BusinessID': 'Business ID',
@@ -129,6 +142,7 @@ export default {
     'company.CompanyDescription': 'Company Description',
     'company.Summary': 'Summary',
     'company.Category': 'Category:',
+    'company.secondaryCategory': 'Secondary category:', // NEW
     'company.Phone': 'Phone:',
     'company.Email': 'Email:',
     'company.www': 'www:',
@@ -211,6 +225,7 @@ export default {
     'footer.phone': '040 8012 205',
     'footer.email': 'veli-matti.ruotsalainen@posio.fi',
     'footer.copyright': 'Copyright © 2018',
+    'catalog.title': 'MyPosio - Hakemisto', //NEW
     'catalog.catalog': 'Palvelu- ja yritysluettelo',
     'catalog.searchforacompany': 'Etsi palvelua / yritystä',
     'catalog.learnmore': 'Lisätietoja',
@@ -223,6 +238,17 @@ export default {
     'home.firstline': 'Posion palvelu ja yrityshakemisto',
     'home.secondline': 'Julkaise ja/tai etsi palveluita',
     'home.button': 'Hakemisto',
+    'home.searchInCatalog': 'Search in catalog', // NEW
+    'home.posio': 'Posio', // NEW
+    'home.servicesAndCompanies': 'Services and Companies', // NEW
+    'home.catalog': 'Catalog', // NEW
+    'home.catalogParagraph':
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero recusandae temporibus reprehenderit. Voluptatem id consectetur quaerat, tenetur nam doloribus quos.', // NEW
+    'home.catalogButton': 'Catalog', // NEW
+    'home.product': 'Product', // NEW
+    'home.productParagraph':
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero recusandae temporibus reprehenderit. Voluptatem id consectetur quaerat, tenetur nam doloribus quos.', // NEW
+    'home.productButton': 'Product', // NEW
     'login.login': 'Kirjaudu sisääm',
     'login.email': 'Sähköposti',
     'login.password': 'Salasana',
@@ -253,6 +279,7 @@ export default {
     'createcompany.companyname': 'Yrityksen nimi',
     'createcompany.EnterYourCompanyName': 'Yrityksen toiminimi',
     'createcompany.category': 'Luokitus',
+    'createcompany.secondaryCategory': 'Toissijainen Luokitus', // NEW
     'createcompany.CompanyField': 'Yrityksen perustoiminta',
     'createcompany.EnterYourCompanyField': 'Lisää yrityksen päätoimialat',
     'createcompany.BusinessID': 'Yrityksen y-tunnus',
@@ -296,6 +323,7 @@ export default {
     'company.CompanyDescription': 'Yrityksen / palvelun kuvaus',
     'company.Summary': 'Kooste',
     'company.Category': 'Luettelo:',
+    'company.secondaryCategory': 'Secondary category:', // NEW
     'company.Phone': 'Puhelinnumero:',
     'company.Email': 'Sähköposti:',
     'company.www': 'www:',

@@ -27,10 +27,7 @@ const validateResetPasswordInput = require('../validation/resetPassword');
 const validateNewPasswordInput = require('../validation/newPassword');
 
 // Set Mail API key
-sendGrid.setApiKey(
-  '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'
-);
-
+sendGrid.setApiKey(keys.sendGridKey);
 
 // Set-up Multer
 
@@ -45,7 +42,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
   storage: new MulterAzureStorage({
-    azureStorageConnectionString: 'DefaultEndpointsProtocol=https;AccountName=posio;AccountKey=hH7ckN8Dv/VgoO4ApT8ieFQuY7FcvGzAHgSLpHzHd5MoZe6gqy+ib0Ht0zAGo7kE86dIKr74n8DYbphsx3mNvw==;EndpointSuffix=core.windows.net',
+    azureStorageConnectionString: keys.blobConnectionString,
     containerName: 'avatar',
     containerSecurity: 'blob'
   }),
@@ -183,6 +180,22 @@ router.post('/login', (req, res) => {
       return res.status(404).json(errors);
     }
 
+    // Check if account frozen
+    if (user.passwordAttempts >= 4) {
+      if (
+        moment().isBefore(
+          moment(new Date(user.passwordLastAttempt)).add(30, 'minutes')
+        )
+      ) {
+        if (req.body.locale === 'fi')
+          errors.email = messages.fi['login.userFrozen'];
+        else errors.email = messages.en['login.userFrozen'];
+        return res.status(400).json(errors);
+      } else {
+        // Reset attempts if unfrozen
+        user.set({ passwordAttempts: 0 });
+      }
+    }
     // Check Password
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
@@ -194,9 +207,15 @@ router.post('/login', (req, res) => {
           name: user.name,
           email: user.email,
           phone: user.phone,
-          avatar: user.avatar,
           isAdmin: user.isAdmin
         };
+
+        // Reset password attempts
+        user.set({
+          passwordAttempts: 0,
+          passwordLastAttempt: moment()
+        });
+        user.save();
 
         // Sign Token
         jwt.sign(
@@ -211,9 +230,16 @@ router.post('/login', (req, res) => {
           }
         );
       } else {
+        user.set({
+          passwordAttempts: user.passwordAttempts + 1,
+          passwordLastAttempt: moment()
+        });
+        user.save();
+        let attempts = 5 - user.passwordAttempts;
         if (req.body.locale === 'fi')
-          errors.password = messages.fi['login.passwordIncorrect'];
-        else errors.password = messages.en['login.passwordIncorrect'];
+          errors.password = messages.fi['login.passwordIncorrect'] + attempts;
+        else
+          errors.password = messages.en['login.passwordIncorrect'] + attempts;
         return res.status(400).json(errors);
       }
     });
@@ -261,7 +287,7 @@ router.post(
     if (req.body.name) profileFields.name = req.body.name;
     if (req.body.email) profileFields.email = req.body.email;
     if (req.body.phone) profileFields.phone = req.body.phone;
-    if (req.file.url) profileFields.avatar = req.file.url;
+    if (req.file) profileFields.avatar = req.file.url;
 
     User.findOneAndUpdate(
       { _id: req.user.id },
@@ -333,13 +359,16 @@ router.post('/forgot', (req, res) => {
             to: req.body.email,
             from: 'info@myposio.com',
             subject: 'Password Recovery',
-            templateId: 'e52d49f2-014e-4ae3-8845-e9e08e94742d',
+            templateId: keys.resetPasswordTemplateEn,
             substitutions: {
               email: req.body.email,
               token: token,
               lang: req.body.locale
             }
           };
+          if (req.body.locale === 'fi')
+            msg.subject = messages.fi['passwordEmail.subject'];
+          else msg.subject = messages.en['passwordEmail.subject'];
           sendGrid.send(msg);
 
           res.json({ success: true });

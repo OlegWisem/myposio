@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCompanyByID } from '../../actions/companyActions';
 import Spinner from '../common/Spinner';
-import Banner from '../common/Banner';
 import Navbar from '../layout/Navbar';
 import isEmpty from '../../validation/is-empty';
 import GoogleMapReact from 'google-map-react';
@@ -12,6 +11,8 @@ import Geocode from 'react-geocode';
 import style from './CompanyMapStyles';
 import { FormattedMessage } from 'react-intl';
 import options from '../common/Options';
+import Banner from '../common/Banner';
+import { withRouter } from 'react-router-dom';
 
 class Company extends Component {
   constructor(props) {
@@ -25,6 +26,7 @@ class Company extends Component {
       address: '',
       description: '',
       category: '',
+      secondaryCategory: '',
       phone: '',
       email: '',
       website: '',
@@ -62,7 +64,9 @@ class Company extends Component {
   }
 
   componentDidMount() {
+    document.title = `MyPosio - loading...`;
     this.props.getCompanyByID(this.props.match.params.id);
+    window.scrollTo(0, 0);
   }
 
   componentDidUpdate(prevProps) {
@@ -72,6 +76,9 @@ class Company extends Component {
         ...prevState,
         ...company
       }));
+    }
+    if (this.state.name !== '') {
+      document.title = `MyPosio - ${this.state.name}`;
     }
   }
 
@@ -87,43 +94,73 @@ class Company extends Component {
     let companyContent;
 
     if (company_item === null || loading) {
-      companyContent = <Spinner />;
+      companyContent = (
+        <div style={{ marginTop: '20vh', marginBottom: '20vh' }}>
+          <Spinner />
+        </div>
+      );
     } else {
       companyContent = (
         <div>
-          <Banner pageName={this.state.name} />
-
-          <div id="content" className="section-padding">
-            <div className="container">
-              <div className="property-details">
-                <div className="row">
-                  <div className="col-lg-12 col-md-12 col-xs-12">
-                    <div className="info">
-                      <h3>{this.state.name}</h3>
-                      <p className="room-type">{this.state.field}</p>
-                      <p className="address">
-                        <i className="lni-map-marker" /> {this.state.address}
-                      </p>
-                    </div>
+          {isEmpty(this.state.photo) ? (
+            <Banner pageName={this.state.name} />
+          ) : (
+            <div
+              id="page-banner-area-company"
+              className="page-banner"
+              style={{
+                background: `url(${this.state.photo}) no-repeat center`,
+                minHeight: '10vh'
+              }}
+            >
+              <div
+                className="page-banner-overlay"
+                style={{ minHeight: '60vh' }}
+              >
+                <div
+                  className="page-banner-title"
+                  style={{ paddingTop: '25vh', paddingBottom: '25vh' }}
+                >
+                  <div className="text-center">
+                    <h2 style={{ fontSize: '42px' }}>{this.state.name}</h2>
+                    <Link to="/catalog" style={{ fontSize: '20px' }}>
+                      <i className="lni-home" />{' '}
+                      <FormattedMessage id="catalog.catalog" />
+                    </Link>
+                    <span
+                      className="crumbs-spacer"
+                      style={{ fontSize: '20px' }}
+                    >
+                      <i className="lni-chevron-right" />
+                    </span>
+                    <span className="current" style={{ fontSize: '20px' }}>
+                      {this.state.name}
+                    </span>
                   </div>
                 </div>
               </div>
-              {isEmpty(this.state.photo) ? null : (
-                <div className="col-12">
-                  <div className="details-thumb">
-                    <img className="img-fluid" src={this.state.photo} alt="" />
-                  </div>
-                </div>
-              )}
+            </div>
+          )}
 
+          <div id="content" className="section-padding">
+            <div className="container">
               <div className="row">
                 {/* Product Info Start */}
                 <div className="col-lg-8 col-md-12 col-xs-12">
                   <div className="inner-box property-dsc">
-                    <h2 className="desc-title">
-                      <FormattedMessage id="company.CompanyDescription" />
-                    </h2>
-                    <p>{this.state.description}</p>
+                    <h1 className="company-title">{this.state.name}</h1>
+                    <p className="company-subtitle">{this.state.field}</p>
+                    <p className="address">
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                          this.state.address
+                        )}`}
+                        target="_blank"
+                      >
+                        {this.state.address}
+                      </a>{' '}
+                      <i className="lni-map-marker" />
+                    </p>
                   </div>
                   <div className="inner-box short-info">
                     <h2 className="desc-title">
@@ -144,6 +181,21 @@ class Company extends Component {
                           </span>
                         </li>
                       )}
+                      {isEmpty(this.state.secondaryCategory) ? null : (
+                        <li>
+                          <strong>
+                            <FormattedMessage id="company.secondaryCategory" />
+                          </strong>
+                          <span>
+                            {
+                              options.find(
+                                element =>
+                                  element.value === this.state.secondaryCategory
+                              ).label
+                            }
+                          </span>
+                        </li>
+                      )}
                       {isEmpty(this.state.phone) ? null : (
                         <li>
                           <strong>
@@ -157,7 +209,11 @@ class Company extends Component {
                           <strong>
                             <FormattedMessage id="company.Email" />
                           </strong>
-                          <span>{this.state.email}</span>
+                          <span>
+                            <a href={`mailto:${this.state.email}`}>
+                              {this.state.email}
+                            </a>
+                          </span>
                         </li>
                       )}
                       {isEmpty(this.state.website) ? null : (
@@ -165,7 +221,11 @@ class Company extends Component {
                           <strong>
                             <FormattedMessage id="company.www" />
                           </strong>
-                          <span>{this.state.website}</span>
+                          <span>
+                            <a href={this.state.website}>
+                              {this.state.website.replace(/(^\w+:|^)\/\//, '')}
+                            </a>
+                          </span>
                         </li>
                       )}
                       {isEmpty(this.state.companyid) ? null : (
@@ -178,6 +238,13 @@ class Company extends Component {
                       )}
                     </ul>
                   </div>
+                  <div className="inner-box property-dsc">
+                    <h2 className="desc-title">
+                      <FormattedMessage id="company.CompanyDescription" />
+                    </h2>
+                    <p>{this.state.description}</p>
+                  </div>
+
                   <div className="inner-box location-map">
                     <h2 className="desc-title">
                       <FormattedMessage id="company.LocationOnMap" />
@@ -280,15 +347,24 @@ class Company extends Component {
                           </a>
                         </li>
                       )}
+                      {isEmpty(social.instagram) ? null : (
+                        <li>
+                          <a className="instagram" href={social.instagram}>
+                            <i className="lni-instagram-filled" />
+                          </a>
+                        </li>
+                      )}
                     </ul>
                     {!admin.isAdmin ? null : (
-                      <div className="text-center">
-                        <Link
-                          to={`/edit-company/${this.props.match.params.id}`}
-                          className="btn btn-common mt-2"
-                        >
-                          <FormattedMessage id="company.EditThisCompany" />
-                        </Link>
+                      <div>
+                        <div className="text-center">
+                          <Link
+                            to={`/edit-company/${this.props.match.params.id}`}
+                            className="btn btn-common mt-2"
+                          >
+                            <FormattedMessage id="company.EditThisCompany" />
+                          </Link>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -320,7 +396,9 @@ const mapStateToProps = state => ({
   company: state.company
 });
 
-export default connect(
-  mapStateToProps,
-  { getCompanyByID }
-)(Company);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { getCompanyByID }
+  )(Company)
+);

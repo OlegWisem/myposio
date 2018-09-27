@@ -7,6 +7,8 @@ import TextField from '../common/TextField';
 import Banner from '../common/Banner';
 import Navbar from '../layout/Navbar';
 import { FormattedMessage } from 'react-intl';
+import Cleave from 'cleave.js/react';
+import classnames from 'classnames';
 
 class Register extends Component {
   constructor(props) {
@@ -22,6 +24,7 @@ class Register extends Component {
   }
 
   componentDidMount() {
+    document.title = 'MyPosio - Resiter';
     this.props.clearErrors();
   }
 
@@ -97,19 +100,36 @@ class Register extends Component {
                         />
                       )}
                     </FormattedMessage>
+
                     <FormattedMessage id="signup.YourPhone">
                       {YourPhone => (
-                        <TextField
-                          placeholder={YourPhone}
-                          name="phone"
-                          type="text"
-                          icon="lni-phone-handset"
-                          value={this.state.phone}
-                          onChange={this.onChange}
-                          error={errors.phone}
-                        />
+                        <div className="form-group">
+                          <div className="input-icon">
+                            <i className="lni-phone-handset" />
+                            <Cleave
+                              className={classnames('form-control', {
+                                'is-invalid': errors.phone
+                              })}
+                              options={{
+                                delimiter: ' ',
+                                blocks: [3, 3, 4],
+                                numericOnly: true
+                              }}
+                              placeholder={YourPhone}
+                              name="phone"
+                              value={this.state.phone}
+                              onChange={this.onChange}
+                            />
+                            {errors.phone && (
+                              <div className="invalid-feedback">
+                                {errors.phone}
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       )}
                     </FormattedMessage>
+
                     <FormattedMessage id="signup.Password">
                       {Password => (
                         <TextField

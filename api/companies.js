@@ -3,6 +3,8 @@ const router = express.Router();
 const passport = require('passport');
 const multer = require('multer');
 const MulterAzureStorage = require('multer-azure-storage');
+const keys = require('../config/keys');
+const sendGrid = require('@sendgrid/mail');
 
 // Load Validation
 const validateCompanyInput = require('../validation/company');
@@ -10,8 +12,15 @@ const validateCompanyInput = require('../validation/company');
 // Load Company Model
 const Company = require('../models/Company');
 
+// Load translations
+const messages = require('../lang/messages');
+
 // Load User Model
 const User = require('../models/User');
+
+// Set Mail API key
+sendGrid.setApiKey(keys.sendGridKey);
+sendGrid.setSubstitutionWrappers('{{', '}}');
 
 // Set-up Multer
 
@@ -26,8 +35,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
   storage: new MulterAzureStorage({
-    azureStorageConnectionString:
-      'DefaultEndpointsProtocol=https;AccountName=posio;AccountKey=hH7ckN8Dv/VgoO4ApT8ieFQuY7FcvGzAHgSLpHzHd5MoZe6gqy+ib0Ht0zAGo7kE86dIKr74n8DYbphsx3mNvw==;EndpointSuffix=core.windows.net',
+    azureStorageConnectionString: keys.blobConnectionString,
     containerName: 'catalog',
     containerSecurity: 'blob'
   }),
@@ -74,7 +82,9 @@ router.post(
     if (req.body.website) companyFields.website = req.body.website;
     if (req.body.phone) companyFields.phone = req.body.phone;
     if (req.body.category) companyFields.category = req.body.category;
-    if (req.file.url) companyFields.photo = req.file.url;
+    if (req.body.secondaryCategory)
+      companyFields.secondaryCategory = req.body.secondaryCategory;
+    if (req.file) companyFields.photo = req.file.url;
 
     // Social
     companyFields.social = {};
@@ -88,12 +98,13 @@ router.post(
   }
 );
 
-// @route   POST api/profile/:company_id
+// @route   POST api/companies/:company_id
 // @desc    Edit company
 // @access  Private
 router.post(
   '/:company_id',
   passport.authenticate('jwt', { session: false }),
+  upload.single('photo'),
   (req, res) => {
     if (!req.body.locale)
       return res.status(400).json({ lang: 'Locale value is required' });
@@ -118,6 +129,9 @@ router.post(
     if (req.body.website) companyFields.website = req.body.website;
     if (req.body.phone) companyFields.phone = req.body.phone;
     if (req.body.category) companyFields.category = req.body.category;
+    if (req.body.secondaryCategory)
+      companyFields.secondaryCategory = req.body.secondaryCategory;
+    if (req.file) companyFields.photo = req.file.url;
 
     // Social
     companyFields.social = {};
@@ -248,4 +262,36 @@ router.get('/:id', (req, res) => {
       res.status(404).json({ nocompanyfound: 'No company found with that ID' })
     );
 });
+
+// @route   POST api/companies/email/request
+// @desc    Send e-mail with request
+// @access  Public
+router.post('/email/request', (req, res) => {
+  if (!req.body.locale)
+    return res.status(400).json({ lang: 'Locale value is required' });
+
+  User.findById(req.body.id)
+    .then(user => {
+      // Send e-mail
+      const msg = {
+        to: req.body.email,
+        from: 'info@myposio.com',
+        templateId: keys.companyRequestTemplateEn,
+        substitutions: {
+          email: req.body.userEmail,
+          phone: req.body.phone,
+          message: req.body.message,
+          name: user.name
+        }
+      };
+      if (req.body.locale === 'fi')
+        msg.subject = messages.fi['passwordEmail.subject'];
+      else msg.subject = messages.en['passwordEmail.subject'];
+      sendGrid.send(msg);
+
+      res.json({ success: true });
+    })
+    .catch(err => res.status(404).json({ user: 'User not found' }));
+});
+
 module.exports = router;
